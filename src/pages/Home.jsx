@@ -15,15 +15,19 @@ import ContactForm from "../components/ContactForm";
 const whyAspireItems = [
   {
     title: "Remote Access for Admin",
+    labelLine1: "Remote Access",
+    labelLine2: "for Admin",
     desc: "Manage projects, sales, teams, and daily operations anytime through one centralized dashboard.",
     icon: "/images/Task Mangement Icon (eng).png",
     bubbleIcon: "/images/remote-access.png",
     video: "/images/Remote Access for Admin.MP4",
-    angle: 152, // Left down (bottom-left - raised upper on the circle)
+    angle: 160, // Left down (shifted upper along circle)
     labelSide: "left",
   },
   {
     title: "Quick & Informed Decision Making",
+    labelLine1: "Quick & Informed",
+    labelLine2: "Decision Making",
     desc: "Access real-time reports, analytics, and data to make faster and more confident business decisions.",
     icon: "/images/Booking Management Icon.png",
     bubbleIcon: "/images/decision-making.png",
@@ -33,6 +37,8 @@ const whyAspireItems = [
   },
   {
     title: "Stay on Top of Your Deadlines",
+    labelLine1: "Stay on Top of",
+    labelLine2: "Your Deadlines",
     desc: "Track tasks, milestones, and progress with smart reminders and automated notifications.",
     icon: "/images/Attendance Management ICon.png",
     bubbleIcon: "/images/top-of-deadlines.png",
@@ -42,11 +48,13 @@ const whyAspireItems = [
   },
   {
     title: "Automated Workflows",
+    labelLine1: "Automated",
+    labelLine2: "Workflows",
     desc: "Automate approvals, reminders, notifications, and routine tasks to save time and improve efficiency.",
     icon: "/images/Reports Analytics ICon.png",
     bubbleIcon: "/images/automated-workflow.png",
     video: "/images/Automated Workflow.mp4",
-    angle: 28, // Right bottom (bottom-right - raised upper on the circle)
+    angle: 20, // Right bottom (shifted upper along circle)
     labelSide: "right",
   },
 ];
@@ -83,27 +91,22 @@ function CommentsQuestionIcon({ isSolid, className, style }) {
     >
       <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
       <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-      <line x1="12" y1="17" x2="12.01" y2="17" strokeWidth="3" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
     </svg>
   );
 }
 
-// ---- WHY ASPIRE SCROLL-DRIVEN & AUTO-SCROLLING CIRCULAR VIDEO CAROUSEL ----
+// ---- WHY ASPIRE AUTO-SCROLLING & INTERACTIVE CIRCULAR VIDEO CAROUSEL ----
 function WhyAspireSection() {
-  const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [radius, setRadius] = useState(380);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+  const [radius, setRadius] = useState(320);
 
   // Calculate enlarged circle radius dynamically based on screen size
   useEffect(() => {
     const updateRadius = () => {
-      const vmin = Math.min(window.innerWidth, window.innerHeight);
-      const calculatedRadius = Math.max(260, Math.min(vmin * 0.42, 420));
+      const vh = window.innerHeight;
+      const vw = window.innerWidth;
+      const calculatedRadius = Math.max(250, Math.min(vh * 0.42, vw * 0.42, 400));
       setRadius(calculatedRadius);
     };
 
@@ -112,19 +115,6 @@ function WhyAspireSection() {
     return () => window.removeEventListener("resize", updateRadius);
   }, []);
 
-  // Update active card on manual scroll
-  useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (v) => {
-      const idx = Math.min(
-        whyAspireItems.length - 1,
-        Math.floor(v * whyAspireItems.length)
-      );
-      setActiveIndex(idx);
-    });
-    return () => unsubscribe();
-  }, [scrollYProgress]);
-
-  // Auto-advance to the next card when the current video finishes playing
   const handleVideoEnd = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % whyAspireItems.length);
   };
@@ -133,46 +123,62 @@ function WhyAspireSection() {
     setActiveIndex(index);
   };
 
+  const svgSize = (radius + 40) * 2;
+
   return (
     <section
-      ref={containerRef}
-      className="relative"
-      style={{ height: `${whyAspireItems.length * 120}vh` }}
+      id="why-aspire"
+      className="relative w-full h-screen min-h-[100dvh] min-h-[600px] flex flex-col items-center justify-between pt-10 md:pt-14 pb-8 overflow-hidden box-border vector-on-light blend-to-light"
+      style={{
+        backgroundColor: "#FFFFFF",
+      }}
     >
-      <div
-        className="sticky top-0 h-screen w-full flex flex-col items-center justify-between pt-16 pb-6 overflow-hidden"
-        style={{
-          backgroundImage: "url(/images/white_background.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        {/* Header Section */}
-        <div className="text-center px-4 z-20 max-w-4xl mx-auto shrink-0 mt-2">
-          <h2 className="text-3xl md:text-5xl font-bold leading-tight text-primary opacity-90 mb-2">
-            Why AspiRE?
-          </h2>
-          <p
-            className="text-xs md:text-base lg:text-lg leading-snug font-medium whitespace-nowrap sm:whitespace-normal md:whitespace-nowrap"
-            style={{ color: "#383838" }}
-          >
-            Built by industry experts to solve the real bottlenecks in construction and development
-          </p>
-        </div>
+      {/* Header Section */}
+      <div className="text-center px-4 z-20 max-w-4xl mx-auto shrink-0 mt-1 mb-2">
+        <h2 className="text-3xl md:text-5xl font-bold leading-tight text-primary opacity-90 mb-1.5">
+          Why AspiRE?
+        </h2>
+        <p
+          className="text-xs md:text-base lg:text-lg leading-snug font-medium whitespace-nowrap sm:whitespace-normal md:whitespace-nowrap"
+          style={{ color: "#383838" }}
+        >
+          Built by industry experts to solve the real bottlenecks in construction and development
+        </p>
+      </div>
 
-        {/* Circular Stage Arena */}
-        <div className="relative w-full max-w-7xl flex-1 flex items-center justify-center min-h-0 translate-y-8 md:translate-y-10">
+      {/* Circular Stage Arena - Shifted lower down with mt-6 md:mt-8 translate-y-4 md:translate-y-6 */}
+      <div className="relative w-full max-w-7xl flex-1 flex items-center justify-center min-h-0 mt-6 md:mt-8 translate-y-4 md:translate-y-6">
 
-          {/* Main Clean Circular Ring */}
-          <div
-            className="absolute rounded-full pointer-events-none transition-all duration-300"
+          {/* Fully Lined Solid Circle Ring fading towards the bottom end */}
+          <svg
+            className="absolute pointer-events-none transition-all duration-300 z-1"
+            width={svgSize}
+            height={svgSize}
+            viewBox={`0 0 ${svgSize} ${svgSize}`}
             style={{
-              width: `${radius * 2}px`,
-              height: `${radius * 2}px`,
-              border: "3px solid #2C6035",
-              zIndex: 1,
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
             }}
-          />
+          >
+            <defs>
+              <linearGradient id="solidRingFadeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#2C6035" stopOpacity="1" />
+                <stop offset="40%" stopColor="#2C6035" stopOpacity="0.9" />
+                <stop offset="70%" stopColor="#2C6035" stopOpacity="0.45" />
+                <stop offset="92%" stopColor="#2C6035" stopOpacity="0.08" />
+                <stop offset="100%" stopColor="#2C6035" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <circle
+              cx={svgSize / 2}
+              cy={svgSize / 2}
+              r={radius}
+              fill="none"
+              stroke="url(#solidRingFadeGradient)"
+              strokeWidth="3.5"
+            />
+          </svg>
 
           {/* Bubbles Centered Exactly ON TOP of the Circle Ring */}
           {whyAspireItems.map((item, index) => {
@@ -196,23 +202,39 @@ function WhyAspireSection() {
                   zIndex: isActive ? 30 : 25,
                 }}
               >
-                {/* Bubble Icon Container */}
+                {/* Bubble Icon Container with Anticipation Shrink-then-Pop Animation */}
                 <motion.div
-                  className={`rounded-full flex items-center justify-center shadow-lg border-2 select-none transition-all duration-300 ${isActive
+                  className={`rounded-full flex items-center justify-center shadow-lg border-2 select-none transition-colors duration-300 ${isActive
                       ? "bg-[#2C6035] border-[#2C6035]"
                       : "bg-white border-[#2C6035] hover:scale-110"
                     }`}
-                  animate={{
-                    width: isActive ? 96 : 72,
-                    height: isActive ? 96 : 72,
-                    scale: isActive ? 1.15 : 1,
-                  }}
-                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                  animate={
+                    isActive
+                      ? {
+                          width: [68, 60, 92, 88],
+                          height: [68, 60, 92, 88],
+                          scale: [1, 0.88, 1.18, 1.12],
+                        }
+                      : {
+                          width: 68,
+                          height: 68,
+                          scale: 1,
+                        }
+                  }
+                  transition={
+                    isActive
+                      ? {
+                          duration: 0.45,
+                          times: [0, 0.25, 0.75, 1],
+                          ease: "easeInOut",
+                        }
+                      : { duration: 0.3 }
+                  }
                 >
                   <img
                     src={item.bubbleIcon}
                     alt={item.title}
-                    className={`object-contain transition-all duration-300 select-none ${isActive ? "w-10 h-10 md:w-12 md:h-12" : "w-7 h-7 md:w-8 md:h-8"
+                    className={`object-contain transition-all duration-300 select-none ${isActive ? "w-9 h-9 md:w-11 md:h-11" : "w-7 h-7 md:w-8 md:h-8"
                       }`}
                     style={{
                       filter: isActive
@@ -222,37 +244,44 @@ function WhyAspireSection() {
                   />
                 </motion.div>
 
-                {/* Text Title Pushed Outside */}
-                <span
-                  className="hidden md:block text-xs md:text-base font-semibold select-none transition-all duration-300 absolute top-1/2 -translate-y-1/2 whitespace-nowrap"
+                {/* Text Title Pushed Safely Outside Bubble Border - EXACTLY 2 Lines */}
+                <motion.span
+                  className={`hidden md:block text-xs md:text-sm font-semibold select-none absolute top-1/2 -translate-y-1/2 pointer-events-none leading-snug ${
+                    isLeftSide ? "text-right" : "text-left"
+                  }`}
                   style={{
-                    color: isActive ? "#2C6035" : "#383838",
-                    fontWeight: isActive ? 700 : 600,
-                    opacity: isActive ? 1 : 0.85,
-                    [isLeftSide ? "right" : "left"]: isActive ? "115px" : "90px",
+                    [isLeftSide ? "right" : "left"]: "100%",
                   }}
+                  animate={{
+                    [isLeftSide ? "marginRight" : "marginLeft"]: isActive ? "22px" : "16px",
+                    opacity: isActive ? 1 : 0.85,
+                    scale: isActive ? 1.05 : 1,
+                    color: isActive ? "#2C6035" : "#4A4A4A",
+                  }}
+                  transition={{ duration: 0.45, ease: "easeInOut" }}
                 >
-                  {item.title}
-                </span>
+                  <span className="block whitespace-nowrap">{item.labelLine1}</span>
+                  <span className="block whitespace-nowrap">{item.labelLine2}</span>
+                </motion.span>
               </div>
             );
           })}
 
-          {/* Active Floating Compact Video Card */}
-          <div className="relative flex items-center justify-center z-10 -translate-y-4 md:-translate-y-6">
+          {/* Active Floating Video & Content Card (Slightly Reduced Size & No Float-in y Animation) */}
+          <div className="relative flex items-center justify-center z-10">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}
-                initial={{ opacity: 0, y: 100, scale: 0.85 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -50, scale: 0.9 }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className="rounded-2xl overflow-hidden w-[190px] sm:w-[220px] md:w-[240px] shadow-2xl border border-white/20"
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="rounded-2xl overflow-hidden w-[210px] sm:w-[240px] md:w-[270px] lg:w-[285px] shadow-2xl border border-white/20"
                 style={{ backgroundColor: "#2C6035" }}
               >
-                {/* Compact Video Viewport */}
+                {/* Reduced Video Viewport */}
                 <div className="p-2 pb-0">
-                  <div className="rounded-xl overflow-hidden w-full h-[230px] sm:h-[270px] md:h-[290px] bg-black flex items-center justify-center">
+                  <div className="rounded-xl overflow-hidden w-full h-[210px] sm:h-[240px] md:h-[265px] lg:h-[280px] bg-black flex items-center justify-center">
                     <video
                       key={whyAspireItems[activeIndex].video}
                       autoPlay
@@ -270,21 +299,19 @@ function WhyAspireSection() {
                 </div>
 
                 {/* Text Description */}
-                <div className="p-3.5 pt-2 text-left">
+                <div className="p-3 pt-2 text-left">
                   <h3 className="text-white font-bold text-xs md:text-sm leading-snug mb-0.5">
                     {whyAspireItems[activeIndex].title}
                   </h3>
-                  <p className="text-white/90 text-[10px] md:text-[11px] leading-relaxed font-light">
+                  <p className="text-white/90 text-[10px] md:text-xs leading-relaxed font-light">
                     {whyAspireItems[activeIndex].desc}
                   </p>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
-
         </div>
-      </div>
-    </section>
+      </section>
   );
 }
 
@@ -337,7 +364,7 @@ export default function Home() {
           >
             <source src="/videos/hero-video.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
         </div>
         <motion.div
           className="relative grid md:grid-cols-2 gap-10 lg:gap-16 items-center max-w-7xl w-full mx-auto z-10"
@@ -507,8 +534,8 @@ export default function Home() {
       {/* OUR VISION */}
       <motion.section
         id="our-vision"
-        className="w-full h-screen min-h-[100dvh] min-h-[550px] px-8 md:px-16 text-center relative overflow-hidden flex flex-col justify-center items-center"
-        style={{ backgroundImage: 'url(/images/white_background.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+        className="w-full h-screen min-h-[100dvh] min-h-[550px] px-8 md:px-16 text-center relative overflow-hidden flex flex-col justify-center items-center vector-on-light"
+        style={{ backgroundColor: '#FFFFFF' }}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}

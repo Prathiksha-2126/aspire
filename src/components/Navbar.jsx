@@ -246,7 +246,7 @@ export default function Navbar() {
                   >
                     <Link
                       to="/engineering"
-                      className={`px-3.5 py-1.5 rounded-xl transition-all duration-200 font-medium text-left whitespace-nowrap block hover:bg-white/20 ${
+                      className={`px-3.5 py-1.5 rounded-xl transition-all duration-200 font-bold text-left whitespace-nowrap block hover:bg-white/20 ${
                         isActive("/engineering")
                           ? isLightBg
                             ? "text-gray-900 font-bold bg-white/40"
@@ -264,7 +264,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                       to="/sales"
-                      className={`px-3.5 py-1.5 rounded-xl transition-all duration-200 font-medium text-left whitespace-nowrap block hover:bg-white/20 ${
+                      className={`px-3.5 py-1.5 rounded-xl transition-all duration-200 font-bold text-left whitespace-nowrap block hover:bg-white/20 ${
                         isActive("/sales")
                           ? isLightBg
                             ? "text-gray-900 font-bold bg-white/40"
@@ -333,7 +333,7 @@ export default function Navbar() {
                   >
                     <a
                       href="/#package-plans?tab=engineering"
-                      className={`px-3.5 py-1.5 rounded-xl transition-all duration-200 font-medium text-left whitespace-nowrap block cursor-pointer hover:bg-white/20 ${
+                      className={`px-3.5 py-1.5 rounded-xl transition-all duration-200 font-bold text-left whitespace-nowrap block cursor-pointer hover:bg-white/20 ${
                         isLightBg
                           ? "text-[#2C6035] hover:text-gray-900"
                           : "text-white/90 hover:text-white"
@@ -344,7 +344,7 @@ export default function Navbar() {
                     </a>
                     <a
                       href="/#package-plans?tab=sales"
-                      className={`px-3.5 py-1.5 rounded-xl transition-all duration-200 font-medium text-left whitespace-nowrap block cursor-pointer hover:bg-white/20 ${
+                      className={`px-3.5 py-1.5 rounded-xl transition-all duration-200 font-bold text-left whitespace-nowrap block cursor-pointer hover:bg-white/20 ${
                         isLightBg
                           ? "text-[#2C6035] hover:text-gray-900"
                           : "text-white/90 hover:text-white"

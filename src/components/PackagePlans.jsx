@@ -90,59 +90,44 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
     };
 
     window.addEventListener('setPackagePlanTab', handleTabChange);
-
     return () => {
       window.removeEventListener('setPackagePlanTab', handleTabChange);
     };
   }, []);
 
-  const cardVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.25 } }
-  };
-
   return (
     <motion.section
       id="package-plans"
-      className="px-6 md:px-10 lg:px-16 relative overflow-hidden scroll-mt-24"
+      className="px-6 md:px-10 lg:px-16 relative overflow-hidden scroll-mt-24 py-12 md:py-16 vector-on-light blend-to-light"
       style={{
-        backgroundImage: 'url(/images/white_background.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundColor: '#FFFFFF',
         minHeight: '100svh',
-        paddingTop: 'clamp(16px, 2vh, 24px)',
-        paddingBottom: 'clamp(12px, 1.5vh, 18px)',
       }}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <SectionHeading
-          title="Package Plans"
-          subtitle="Pick a plan that works best for you and get the most out of AspiRE for your construction projects."
-        />
-      </motion.div>
+      <SectionHeading
+        // eyebrow="Package Plans"
+        title="Package Plans"
+        subtitle="Pick a plan that works best for you and get the most out of AspiRE for your 
+construction projects."
+      />
 
-      {/* Toggle */}
-      <div className="flex justify-center mb-6">
-        <div className="bg-white/90 backdrop-blur-md rounded-full p-1.5 flex shadow-md border border-gray-200/60 relative">
+      {/* Tab Switcher - Exactly as in Screenshot */}
+      <div className="flex justify-center mb-10 md:mb-12">
+        <div className="bg-[#EAF7F0] rounded-2xl p-1.5 flex shadow-sm border border-[#055938]/10 relative">
           <button
             onClick={() => setTab("engineering")}
-            className={`relative z-10 px-7 py-2.5 rounded-full text-sm font-bold transition-colors duration-300 cursor-pointer ${
-              tab === "engineering" ? "text-white" : "text-[#2C6035]"
+            className={`relative z-10 px-8 py-3 rounded-xl text-sm md:text-base font-semibold transition-colors duration-300 cursor-pointer ${
+              tab === "engineering" ? "text-white" : "text-[#055938]"
             }`}
           >
             {tab === "engineering" && (
               <motion.div
                 layoutId="activePlanTabPill"
-                className="absolute inset-0 bg-[#2C6035] rounded-full z-[-1]"
+                className="absolute inset-0 bg-[#055938] rounded-xl z-[-1]"
                 transition={{ type: "spring", stiffness: 350, damping: 30 }}
               />
             )}
@@ -150,14 +135,14 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
           </button>
           <button
             onClick={() => setTab("sales")}
-            className={`relative z-10 px-7 py-2.5 rounded-full text-sm font-bold transition-colors duration-300 cursor-pointer ${
-              tab === "sales" ? "text-white" : "text-[#2C6035]"
+            className={`relative z-10 px-8 py-3 rounded-xl text-sm md:text-base font-semibold transition-colors duration-300 cursor-pointer ${
+              tab === "sales" ? "text-white" : "text-[#055938]"
             }`}
           >
             {tab === "sales" && (
               <motion.div
                 layoutId="activePlanTabPill"
-                className="absolute inset-0 bg-[#2C6035] rounded-full z-[-1]"
+                className="absolute inset-0 bg-[#055938] rounded-xl z-[-1]"
                 transition={{ type: "spring", stiffness: 350, damping: 30 }}
               />
             )}
@@ -166,11 +151,11 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
         </div>
       </div>
 
-      {/* Plan cards */}
+      {/* Plan Cards */}
       <AnimatePresence mode="wait">
         <motion.div
           key={tab}
-          className="mx-auto grid w-full max-w-[1180px] gap-6 lg:gap-8 md:grid-cols-3 md:items-stretch justify-items-center"
+          className="mx-auto grid w-full max-w-[1240px] gap-6 lg:gap-8 md:grid-cols-3 md:items-stretch justify-items-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
@@ -181,113 +166,101 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
               key={plan.name}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              whileHover={{ y: -8, scale: plan.featured ? 1.03 : 1.02 }}
+              whileHover={{ y: -6 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.08, duration: 0.45, ease: [0.25, 1, 0.5, 1] }}
-              className={`rounded-[28px] p-7 sm:p-8 md:p-9 flex flex-col justify-between w-full h-full transition-shadow duration-300 ${
+              transition={{ delay: index * 0.08, duration: 0.45 }}
+              className={`rounded-3xl p-7 sm:p-8 md:p-9 flex flex-col justify-between w-full h-full transition-all duration-300 box-border ${
                 plan.featured
-                  ? "text-white shadow-2xl ring-2 ring-[#2C6035]/30"
-                  : "bg-white text-gray-900 border border-gray-100 shadow-md hover:shadow-xl"
+                  ? "bg-[#055938] text-white shadow-2xl"
+                  : "bg-white text-gray-800 border border-gray-100 shadow-md hover:shadow-xl"
               }`}
               style={{
-                backgroundColor: plan.featured ? '#2C6035' : '#FFFFFF',
-                width: '100%',
-                maxWidth: '370px',
-                minHeight: '480px',
+                maxWidth: '380px',
+                minHeight: '490px',
               }}
             >
-              {/* TOP CONTENT SECTION */}
-              <div className="flex flex-col shrink-0">
+              {/* CARD CONTENT */}
+              <div className="flex flex-col flex-1">
+
+                {/* CARD 3: ENTERPRISE CARD SPECIAL LAYOUT */}
                 {plan.heading ? (
-                  <h4
-                    className="text-2xl sm:text-3xl font-bold mb-1"
-                    style={{ color: plan.featured ? 'white' : '#2C6035' }}
-                  >
-                    {plan.heading}
-                  </h4>
+                  <>
+                    <h3 className="text-base sm:text-lg font-medium text-[#055938] mb-1">
+                      {plan.name === "ENTERPRISE" ? "Enterprise" : plan.name}
+                    </h3>
+                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                      {plan.heading}
+                    </h2>
+
+                    {/* Divider below heading */}
+                    <div className="h-px w-full bg-gray-200/80 mb-6" />
+
+                    {/* Description Paragraph */}
+                    <p className="text-sm sm:text-base leading-relaxed text-gray-500 font-normal">
+                      {plan.description}
+                    </p>
+                  </>
                 ) : (
-                  <h3
-                    className="text-2xl sm:text-3xl font-bold tracking-wider uppercase mb-3"
-                    style={{ color: plan.featured ? 'white' : '#2C6035' }}
-                  >
-                    {plan.name}
-                  </h3>
+                  /* CARD 1 & CARD 2: STANDARD BASIC & PREMIUM LAYOUT */
+                  <>
+                    <h3
+                      className={`text-xl sm:text-2xl font-semibold tracking-wide uppercase mb-4 ${
+                        plan.featured ? "text-white" : "text-[#055938]"
+                      }`}
+                    >
+                      {plan.name}
+                    </h3>
+
+                    <p
+                      className={`text-sm sm:text-base leading-relaxed font-normal mb-6 ${
+                        plan.featured ? "text-white/85" : "text-gray-500"
+                      }`}
+                    >
+                      {plan.description}
+                    </p>
+
+                    {/* Divider below description */}
+                    <div
+                      className={`h-px w-full mb-6 ${
+                        plan.featured ? "bg-white/20" : "bg-gray-200/80"
+                      }`}
+                    />
+
+                    {/* Feature Bullets (Unbolded Regular Text) */}
+                    <ul className="space-y-4 sm:space-y-5 mt-2">
+                      {plan.features.map((f, idx) => (
+                        <li key={f} className="flex items-center gap-3.5">
+                          <span
+                            className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
+                              plan.featured ? "bg-white" : "bg-[#055938]"
+                            }`}
+                          >
+                            <Check
+                              size={14}
+                              strokeWidth={2.5}
+                              className={plan.featured ? "text-[#055938]" : "text-white"}
+                            />
+                          </span>
+                          <span
+                            className={`text-sm sm:text-base font-normal leading-snug ${
+                              plan.featured ? "text-white/95" : "text-gray-600"
+                            }`}
+                          >
+                            {f}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
                 )}
 
-                {plan.heading ? (
-                  <h3
-                    className="text-xs sm:text-sm font-semibold tracking-wider uppercase mb-1"
-                    style={{ color: plan.featured ? 'white' : '#2C6035' }}
-                  >
-                    {plan.name}
-                  </h3>
-                ) : (
-                  <p
-                    className="text-sm leading-relaxed font-normal"
-                    style={{ color: plan.featured ? 'rgba(255, 255, 255, 0.92)' : '#5A6E75' }}
-                  >
-                    {plan.description}
-                  </p>
-                )}
-              </div>
-
-              {/* UNIFORM DIVIDER LINE ACROSS ALL CARDS */}
-              <div
-                className="h-px w-full my-6 shrink-0"
-                style={{
-                  backgroundColor: plan.featured
-                    ? 'rgba(255, 255, 255, 0.25)'
-                    : 'rgba(44, 96, 53, 0.18)',
-                }}
-              />
-
-              {/* LOWER CONTENT SECTION - SPACIOUS & FREELY FITTING */}
-              <div className="flex-1 flex flex-col justify-center min-h-0">
-                {plan.features.length > 0 ? (
-                  <ul className="space-y-4 sm:space-y-5">
-                    {plan.features.map((f, idx) => (
-                      <motion.li
-                        key={f}
-                        className="flex items-center gap-3.5 sm:gap-4"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: idx * 0.05 }}
-                      >
-                        <span
-                          className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-                            plan.featured ? 'bg-white' : 'bg-[#2C6035]'
-                          }`}
-                        >
-                          <Check
-                            size={14}
-                            className={plan.featured ? "text-[#2C6035]" : "text-white"}
-                          />
-                        </span>
-                        <span
-                          style={{ color: plan.featured ? 'white' : '#2D3748' }}
-                          className="text-sm font-medium leading-relaxed"
-                        >
-                          {f}
-                        </span>
-                      </motion.li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p
-                    className="text-sm leading-relaxed font-normal"
-                    style={{ color: plan.featured ? 'rgba(255, 255, 255, 0.92)' : '#5A6E75' }}
-                  >
-                    {plan.description}
-                  </p>
-                )}
               </div>
             </motion.div>
           ))}
         </motion.div>
       </AnimatePresence>
 
-      <p className="mt-8 text-center font-poppins text-xl font-semibold text-[#4B4A4A] md:text-2xl">
+      <p className="mt-12 text-center font-poppins text-lg sm:text-xl md:text-2xl font-semibold text-[#4B4A4A]">
         For Costing Get In Touch with us
       </p>
     </motion.section>

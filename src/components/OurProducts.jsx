@@ -100,8 +100,8 @@ function ProductCard({ data, index }) {
         />
       )}
 
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 transition-opacity duration-300 group-hover:opacity-90 pointer-events-none" />
+      {/* Light subtle overlay for text legibility while keeping background image fully visible */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent pointer-events-none" />
 
       {/* Content overlay - vertically centered as one group, left-aligned */}
       <div className="absolute inset-0 flex flex-col justify-center p-6 md:p-10 z-10">
@@ -141,18 +141,15 @@ export default function OurProducts() {
   return (
     <section
       id="our-products"
-      className="w-full py-16 md:py-20 lg:py-24 px-6 md:px-12 lg:px-20 overflow-hidden"
+      className="w-full pt-8 md:pt-12 pb-16 md:pb-20 lg:pb-24 px-6 md:px-12 lg:px-20 overflow-hidden vector-on-green blend-to-green"
       style={{
-        backgroundImage: "url(/images/green_background.jpg)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
+        backgroundColor: "#2C6035",
       }}
     >
       <div className="max-w-[1600px] mx-auto">
         {/* HEADING BLOCK */}
         <motion.div
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-8 md:mb-10"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

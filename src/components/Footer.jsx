@@ -47,8 +47,14 @@ export default function Footer() {
             Simplifying construction management, empowering businesses, and
             driving success with innovative solutions.
           </p>
-          <p className="text-sm mt-4 font-semibold" style={textColor}>
-            Email : Aspire@gmail.com
+          <p className="text-sm mt-4 font-semibold whitespace-nowrap" style={textColor}>
+            Email :{" "}
+            <a
+              href="mailto:inquiry@coppercodes.com"
+              className="hover:underline cursor-pointer"
+            >
+              inquiry@coppercodes.com
+            </a>
           </p>
         </div>
 

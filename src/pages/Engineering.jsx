@@ -83,9 +83,9 @@ export default function Engineering() {
         <img
           src="/images/Engineering Hero Section Image.png"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
+          className="absolute inset-0 w-full h-full object-cover opacity-100"
         />
-        <div className="absolute inset-0 bg-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
 
         <div className="relative z-10 max-w-4xl text-left pl-2 md:pl-6">
           <h1 className="text-4xl md:text-5xl lg:text-[64px] font-bold text-white leading-[1.2] tracking-normal mb-8 whitespace-pre-line">
@@ -98,7 +98,7 @@ export default function Engineering() {
           >
             <button
               onClick={handleGetInTouch}
-              className="inline-flex items-center gap-2.5 transition-all duration-200 rounded-xl px-6 py-3 font-medium text-lg text-white cursor-pointer hover:bg-[#234D2B]"
+              className="inline-flex items-center gap-2.5 transition-all duration-200 rounded-xl px-6 py-3 font-medium text-lg text-white cursor-pointer hover:bg-[#2C6035]"
               style={{ backgroundColor: '#2C6035' }}
             >
               Get in Touch <ArrowRight size={20} className="stroke-[2.5]" />
@@ -111,8 +111,8 @@ export default function Engineering() {
       <FeatureTabs tabs={tabs} />
 
       {/* WAREHOUSE MANAGEMENT */}
-      <section className="py-20 px-8 md:px-16 relative overflow-hidden"
-        style={{ backgroundImage: 'url(/images/white_background.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section className="py-20 px-8 md:px-16 relative overflow-hidden vector-on-offwhite blend-to-green"
+        style={{ backgroundColor: '#F9F8F5' }}>
         <div className="max-w-6xl mx-auto">
           {/* Centered Heading */}
           <motion.div
@@ -192,21 +192,21 @@ export default function Engineering() {
       </section>
 
       {/* WHAT WE AIM */}
-      <section className="h-screen max-h-screen py-4 md:py-8 px-6 md:px-16 relative overflow-hidden text-white flex flex-col justify-center"
-        style={{ backgroundImage: 'url("/images/green_background.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+      <section className="min-h-[85vh] py-16 md:py-24 px-6 md:px-16 relative overflow-hidden text-white flex flex-col justify-center vector-on-green"
+        style={{ backgroundColor: '#2C6035' }}>
 
-        {/* Centered Section Heading */}
-        <div className="max-w-6xl mx-auto mb-4 md:mb-6 relative z-10 text-center shrink-0">
-          <p className="text-[11px] md:text-xs font-semibold tracking-wider uppercase text-white/80 mb-1">
-            - Our Aim
+        {/* Centered Section Heading - Pushed Upward with Breathing Room */}
+        <div className="max-w-6xl mx-auto mb-10 md:mb-16 relative z-10 text-center shrink-0">
+          <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-white/90 mb-2.5">
+            — OUR AIM
           </p>
-          <h2 className="text-2xl md:text-4xl font-bold leading-tight text-center text-white">
+          <h2 className="text-3xl md:text-5xl font-bold leading-tight text-center text-white font-poppins">
             What We Aim From AspiRE Engineering
           </h2>
         </div>
 
-        {/* Two-column layout - stacks on mobile */}
-        <div className="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10 shrink-0">
+        {/* Two-column layout with ample breathing room */}
+        <div className="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-10 md:gap-16 items-center relative z-10 shrink-0">
           {/* LEFT: Image Slider */}
           <motion.div
             className="flex justify-center md:justify-start order-2 md:order-1"
@@ -215,7 +215,7 @@ export default function Engineering() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div className="w-full max-w-[300px] sm:max-w-[350px] md:max-w-[400px] mx-auto">
+            <div className="w-full max-w-[340px] sm:max-w-[380px] md:max-w-[440px] mx-auto shadow-2xl rounded-2xl overflow-hidden">
               <ImageRevealSlider
                 beforeSrc="/images/AIM Section of AspiRE Engineering Before.jpg"
                 afterSrc="/images/AIM Section of AspiRE Engineering After.jpg"
@@ -223,9 +223,9 @@ export default function Engineering() {
             </div>
           </motion.div>
 
-          {/* RIGHT: Feature Content */}
+          {/* RIGHT: Feature Content with Generous Spacing */}
           <motion.div
-            className="space-y-6 md:space-y-8 order-1 md:order-2"
+            className="space-y-8 md:space-y-10 order-1 md:order-2"
             initial={{ x: "100%", opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true }}
@@ -233,51 +233,51 @@ export default function Engineering() {
           >
             {/* Feature 1 */}
             <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">
+              <h3 className="text-xl md:text-2xl font-bold mb-2.5 text-white font-poppins">
                 Structured Workflows
               </h3>
-              <div className="flex items-start gap-3">
-                <svg className="w-6 h-6 flex-shrink-0 mt-0.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <div className="flex items-start gap-3.5">
+                <svg className="w-6 h-6 flex-shrink-0 mt-1 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="6" cy="12" r="3" />
                   <line x1="9" y1="12" x2="18" y2="12" />
                 </svg>
-                <div className="text-white/85 text-sm md:text-base leading-relaxed">
+                <div className="text-white/90 text-sm md:text-base leading-relaxed">
                   <p>Digitize tasks, approvals and material & payouts tracking</p>
-                  <p className="font-bold text-white mt-1">Eliminate delays from manual coordination</p>
+                  <p className="font-bold text-white mt-1.5">Eliminate delays from manual coordination</p>
                 </div>
               </div>
             </div>
 
             {/* Feature 2 */}
             <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">
+              <h3 className="text-xl md:text-2xl font-bold mb-2.5 text-white font-poppins">
                 Reduced Material Loss
               </h3>
-              <div className="flex items-start gap-3">
-                <svg className="w-6 h-6 flex-shrink-0 mt-0.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <div className="flex items-start gap-3.5">
+                <svg className="w-6 h-6 flex-shrink-0 mt-1 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="6" cy="12" r="3" />
                   <line x1="9" y1="12" x2="18" y2="12" />
                 </svg>
-                <div className="text-white/85 text-sm md:text-base leading-relaxed">
+                <div className="text-white/90 text-sm md:text-base leading-relaxed">
                   <p>Minimize pilferage with smart controls</p>
-                  <p className="font-bold text-white mt-1">Save up to 7–10% project cost</p>
+                  <p className="font-bold text-white mt-1.5">Save up to 7–10% project cost</p>
                 </div>
               </div>
             </div>
 
             {/* Feature 3 */}
             <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">
+              <h3 className="text-xl md:text-2xl font-bold mb-2.5 text-white font-poppins">
                 Real-Time Insights
               </h3>
-              <div className="flex items-start gap-3">
-                <svg className="w-6 h-6 flex-shrink-0 mt-0.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <div className="flex items-start gap-3.5">
+                <svg className="w-6 h-6 flex-shrink-0 mt-1 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="6" cy="12" r="3" />
                   <line x1="9" y1="12" x2="18" y2="12" />
                 </svg>
-                <div className="text-white/85 text-sm md:text-base leading-relaxed">
+                <div className="text-white/90 text-sm md:text-base leading-relaxed">
                   <p>Centralized dashboards for instant decisions</p>
-                  <p className="font-bold text-white mt-1">Reduce 15-20% delays from scattered data</p>
+                  <p className="font-bold text-white mt-1.5">Reduce 15-20% delays from scattered data</p>
                 </div>
               </div>
             </div>
