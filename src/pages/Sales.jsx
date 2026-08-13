@@ -1,6 +1,12 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Users, CalendarClock, FileText, BarChart3, CheckCircle, Target, FileCheck, PieChart } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarClock,
+  Target,
+  FileCheck,
+  PieChart,
+} from "lucide-react";
 import SalesFeatureTabs from "../components/SalesFeatureTabs";
 import ImageRevealSlider from "../components/animations/ImageRevealSlider";
 
@@ -45,16 +51,19 @@ export default function Sales() {
 
   const handleGetInTouch = (e) => {
     e.preventDefault();
-    const targetElement = document.getElementById('contact');
+    const targetElement = document.getElementById("contact");
     if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
   return (
     <>
-      {/* HERO */}
-      <section id="hero" className="relative h-screen flex items-center justify-start bg-gray-900 text-white px-8 md:px-20 lg:px-28 pt-24 pb-16 overflow-hidden">
+      {/* HERO SECTION */}
+      <section
+        id="hero"
+        className="relative h-screen flex items-center justify-start bg-gray-900 text-white px-8 md:px-20 lg:px-28 pt-24 pb-16 overflow-hidden"
+      >
         <img
           src="/images/Hero Section of AspiRe Sales.png"
           alt=""
@@ -76,7 +85,7 @@ export default function Sales() {
             <button
               onClick={handleGetInTouch}
               className="inline-flex items-center gap-2.5 transition-all duration-200 rounded-xl px-6 py-3 font-medium text-lg text-white cursor-pointer hover:bg-[#2C6035]"
-              style={{ backgroundColor: '#2C6035' }}
+              style={{ backgroundColor: "#2C6035" }}
             >
               Get in Touch <ArrowRight size={20} className="stroke-[2.5]" />
             </button>
@@ -84,14 +93,15 @@ export default function Sales() {
         </div>
       </section>
 
-      {/* FEATURE TABS */}
+      {/* FEATURE TABS (Clean & Independent) */}
       <SalesFeatureTabs tabs={tabs} />
 
-      {/* WHAT WE AIM */}
-      <section className="min-h-[85vh] py-16 md:py-24 px-6 md:px-16 relative overflow-hidden text-white flex flex-col justify-center vector-on-green"
-        style={{ backgroundColor: '#2C6035' }}>
-
-        {/* Centered Section Heading - Pushed Upward with Breathing Room */}
+      {/* WHAT WE AIM SECTION */}
+      <section
+        className="min-h-[85vh] py-16 md:py-24 px-6 md:px-16 relative overflow-hidden text-white flex flex-col justify-center vector-on-green"
+        style={{ backgroundColor: "#2C6035" }}
+      >
+        {/* Centered Section Heading */}
         <div className="max-w-6xl mx-auto mb-10 md:mb-16 relative z-10 text-center shrink-0">
           <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-white/90 mb-2.5">
             — OUR AIM
@@ -101,7 +111,7 @@ export default function Sales() {
           </h2>
         </div>
 
-        {/* Two-column layout with ample breathing room */}
+        {/* Two-column layout */}
         <div className="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-10 md:gap-16 items-center relative z-10 shrink-0">
           {/* LEFT: Image Slider */}
           <motion.div
@@ -119,7 +129,7 @@ export default function Sales() {
             </div>
           </motion.div>
 
-          {/* RIGHT: Feature Content with Generous Spacing */}
+          {/* RIGHT: Feature Content */}
           <motion.div
             className="space-y-8 md:space-y-10 order-1 md:order-2"
             initial={{ x: "100%", opacity: 0 }}
@@ -133,14 +143,24 @@ export default function Sales() {
                 Centralized Sales Management
               </h3>
               <div className="flex items-start gap-3.5">
-                <svg className="w-6 h-6 flex-shrink-0 mt-1 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <circle cx="6" cy="12" r="3" />
                   <line x1="9" y1="12" x2="18" y2="12" />
                 </svg>
                 <div className="text-white/90 text-sm md:text-base leading-relaxed">
                   <p>– Manage leads, follow-ups & bookings in one place</p>
                   <p>– Never miss an opportunity</p>
-                  <p className="font-bold text-white mt-1.5">Improve conversions & sales efficiency</p>
+                  <p className="font-bold text-white mt-1.5">
+                    Improve conversions & sales efficiency
+                  </p>
                 </div>
               </div>
             </div>
@@ -151,14 +171,24 @@ export default function Sales() {
                 Instant Document Automation
               </h3>
               <div className="flex items-start gap-3.5">
-                <svg className="w-6 h-6 flex-shrink-0 mt-1 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <circle cx="6" cy="12" r="3" />
                   <line x1="9" y1="12" x2="18" y2="12" />
                 </svg>
                 <div className="text-white/90 text-sm md:text-base leading-relaxed">
                   <p>– Auto-generate offer letters, invoices & agreements</p>
                   <p>– Reduce manual work & errors</p>
-                  <p className="font-bold text-white mt-1.5">Save up to 90% time</p>
+                  <p className="font-bold text-white mt-1.5">
+                    Save up to 90% time
+                  </p>
                 </div>
               </div>
             </div>
@@ -169,14 +199,24 @@ export default function Sales() {
                 Real-Time Sales Insights
               </h3>
               <div className="flex items-start gap-3.5">
-                <svg className="w-6 h-6 flex-shrink-0 mt-1 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <circle cx="6" cy="12" r="3" />
                   <line x1="9" y1="12" x2="18" y2="12" />
                 </svg>
                 <div className="text-white/90 text-sm md:text-base leading-relaxed">
                   <p>– Live dashboards for sales & revenue tracking</p>
                   <p>– Make faster, data-driven decisions</p>
-                  <p className="font-bold text-white mt-1.5">Boost productivity by 15–20%</p>
+                  <p className="font-bold text-white mt-1.5">
+                    Boost productivity by 15–20%
+                  </p>
                 </div>
               </div>
             </div>

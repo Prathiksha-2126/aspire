@@ -96,7 +96,7 @@ export default function SalesFeatureTabs({ tabs }) {
   };
 
   return (
-    <section id="features" className="relative h-[700px] overflow-hidden bg-[#F9F8F5] flex flex-col justify-between vector-on-offwhite blend-to-green">
+    <section id="features" className="relative h-[700px] overflow-hidden bg-[#F9F8F5] flex flex-col justify-between vector-on-offwhite">
       
       {/* MAIN FEATURE CONTENT AREA */}
       <div className="relative z-10 max-w-7xl mx-auto px-8 md:px-16 w-full h-[580px] flex items-center">

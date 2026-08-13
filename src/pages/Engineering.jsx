@@ -8,7 +8,6 @@ import {
   Receipt,
   GitBranch,
   Cpu,
-  CheckCircle,
 } from "lucide-react";
 import FeatureTabs from "../components/FeatureTabs";
 import ImageRevealSlider from "../components/animations/ImageRevealSlider";
@@ -70,16 +69,19 @@ export default function Engineering() {
 
   const handleGetInTouch = (e) => {
     e.preventDefault();
-    const targetElement = document.getElementById('contact');
+    const targetElement = document.getElementById("contact");
     if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
   return (
     <>
       {/* HERO */}
-      <section id="hero" className="relative h-screen flex items-center justify-start bg-gray-900 text-white px-8 md:px-20 lg:px-28 pt-24 pb-16 overflow-hidden">
+      <section
+        id="hero"
+        className="relative h-screen flex items-center justify-start bg-gray-900 text-white px-8 md:px-20 lg:px-28 pt-24 pb-16 overflow-hidden"
+      >
         <img
           src="/images/Engineering Hero Section Image.png"
           alt=""
@@ -99,7 +101,7 @@ export default function Engineering() {
             <button
               onClick={handleGetInTouch}
               className="inline-flex items-center gap-2.5 transition-all duration-200 rounded-xl px-6 py-3 font-medium text-lg text-white cursor-pointer hover:bg-[#2C6035]"
-              style={{ backgroundColor: '#2C6035' }}
+              style={{ backgroundColor: "#2C6035" }}
             >
               Get in Touch <ArrowRight size={20} className="stroke-[2.5]" />
             </button>
@@ -110,9 +112,11 @@ export default function Engineering() {
       {/* FEATURE TABS */}
       <FeatureTabs tabs={tabs} />
 
-      {/* WAREHOUSE MANAGEMENT */}
-      <section className="py-20 px-8 md:px-16 relative overflow-hidden vector-on-offwhite blend-to-green"
-        style={{ backgroundColor: '#F9F8F5' }}>
+      {/* WAREHOUSE MANAGEMENT (Clean Off-White Background) */}
+      <section
+        className="py-20 px-8 md:px-16 relative overflow-hidden vector-on-offwhite"
+        style={{ backgroundColor: "#F9F8F5" }}
+      >
         <div className="max-w-6xl mx-auto">
           {/* Centered Heading */}
           <motion.div
@@ -175,10 +179,18 @@ export default function Engineering() {
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.2 + (index * 0.1) }}
+                    transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
                     className="flex items-start gap-3"
                   >
-                    <svg className="w-5 h-5 flex-shrink-0 mt-0.5 text-gray-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      className="w-5 h-5 flex-shrink-0 mt-0.5 text-gray-900"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <circle cx="6" cy="12" r="3" />
                       <line x1="9" y1="12" x2="18" y2="12" />
                     </svg>
@@ -191,11 +203,22 @@ export default function Engineering() {
         </div>
       </section>
 
-      {/* WHAT WE AIM */}
-      <section className="min-h-[85vh] py-16 md:py-24 px-6 md:px-16 relative overflow-hidden text-white flex flex-col justify-center vector-on-green"
-        style={{ backgroundColor: '#2C6035' }}>
+      {/* SEAMLESS GRADIENT BRIDGE (Off-White to Green Transition) */}
+      <div
+        aria-hidden="true"
+        className="w-full h-[140px] -my-[70px] relative z-20 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(180deg, #F9F8F5 0%, #E3EAE5 25%, #A0C0A9 55%, #2C6035 100%)",
+        }}
+      />
 
-        {/* Centered Section Heading - Pushed Upward with Breathing Room */}
+      {/* WHAT WE AIM (Dark Green Section) */}
+      <section
+        className="min-h-[85vh] py-16 md:py-24 px-6 md:px-16 relative overflow-hidden text-white flex flex-col justify-center vector-on-green z-10"
+        style={{ backgroundColor: "#2C6035" }}
+      >
+        {/* Centered Section Heading */}
         <div className="max-w-6xl mx-auto mb-10 md:mb-16 relative z-10 text-center shrink-0">
           <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-white/90 mb-2.5">
             — OUR AIM
@@ -205,7 +228,7 @@ export default function Engineering() {
           </h2>
         </div>
 
-        {/* Two-column layout with ample breathing room */}
+        {/* Two-column layout */}
         <div className="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-10 md:gap-16 items-center relative z-10 shrink-0">
           {/* LEFT: Image Slider */}
           <motion.div
@@ -223,7 +246,7 @@ export default function Engineering() {
             </div>
           </motion.div>
 
-          {/* RIGHT: Feature Content with Generous Spacing */}
+          {/* RIGHT: Feature Content */}
           <motion.div
             className="space-y-8 md:space-y-10 order-1 md:order-2"
             initial={{ x: "100%", opacity: 0 }}
@@ -237,13 +260,23 @@ export default function Engineering() {
                 Structured Workflows
               </h3>
               <div className="flex items-start gap-3.5">
-                <svg className="w-6 h-6 flex-shrink-0 mt-1 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <circle cx="6" cy="12" r="3" />
                   <line x1="9" y1="12" x2="18" y2="12" />
                 </svg>
                 <div className="text-white/90 text-sm md:text-base leading-relaxed">
                   <p>Digitize tasks, approvals and material & payouts tracking</p>
-                  <p className="font-bold text-white mt-1.5">Eliminate delays from manual coordination</p>
+                  <p className="font-bold text-white mt-1.5">
+                    Eliminate delays from manual coordination
+                  </p>
                 </div>
               </div>
             </div>
@@ -254,13 +287,23 @@ export default function Engineering() {
                 Reduced Material Loss
               </h3>
               <div className="flex items-start gap-3.5">
-                <svg className="w-6 h-6 flex-shrink-0 mt-1 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <circle cx="6" cy="12" r="3" />
                   <line x1="9" y1="12" x2="18" y2="12" />
                 </svg>
                 <div className="text-white/90 text-sm md:text-base leading-relaxed">
                   <p>Minimize pilferage with smart controls</p>
-                  <p className="font-bold text-white mt-1.5">Save up to 7–10% project cost</p>
+                  <p className="font-bold text-white mt-1.5">
+                    Save up to 7–10% project cost
+                  </p>
                 </div>
               </div>
             </div>
@@ -271,13 +314,23 @@ export default function Engineering() {
                 Real-Time Insights
               </h3>
               <div className="flex items-start gap-3.5">
-                <svg className="w-6 h-6 flex-shrink-0 mt-1 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <circle cx="6" cy="12" r="3" />
                   <line x1="9" y1="12" x2="18" y2="12" />
                 </svg>
                 <div className="text-white/90 text-sm md:text-base leading-relaxed">
                   <p>Centralized dashboards for instant decisions</p>
-                  <p className="font-bold text-white mt-1.5">Reduce 15-20% delays from scattered data</p>
+                  <p className="font-bold text-white mt-1.5">
+                    Reduce 15-20% delays from scattered data
+                  </p>
                 </div>
               </div>
             </div>
