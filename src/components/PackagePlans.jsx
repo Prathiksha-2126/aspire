@@ -98,7 +98,7 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
   return (
     <motion.section
       id="package-plans"
-      className="px-6 md:px-10 lg:px-16 relative overflow-hidden scroll-mt-24 py-12 md:py-16 vector-on-light blend-to-light"
+      className="px-6 md:px-10 lg:px-16 pt-20 md:pt-28 relative overflow-hidden scroll-mt-24 pb-12 md:pb-16 vector-on-light blend-to-light fade-clear-top"
       style={{
         backgroundColor: '#FFFFFF',
         minHeight: '100svh',

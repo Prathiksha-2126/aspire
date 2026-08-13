@@ -99,14 +99,14 @@ function CommentsQuestionIcon({ isSolid, className, style }) {
 // ---- WHY ASPIRE AUTO-SCROLLING & INTERACTIVE CIRCULAR VIDEO CAROUSEL ----
 function WhyAspireSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [radius, setRadius] = useState(320);
+  const [radius, setRadius] = useState(310);
 
   // Calculate enlarged circle radius dynamically based on screen size
   useEffect(() => {
     const updateRadius = () => {
       const vh = window.innerHeight;
       const vw = window.innerWidth;
-      const calculatedRadius = Math.max(250, Math.min(vh * 0.42, vw * 0.42, 400));
+      const calculatedRadius = Math.max(242, Math.min(vh * 0.4075, vw * 0.4075, 388));
       setRadius(calculatedRadius);
     };
 
@@ -128,13 +128,13 @@ function WhyAspireSection() {
   return (
     <section
       id="why-aspire"
-      className="relative w-full h-screen min-h-[100dvh] min-h-[600px] flex flex-col items-center justify-between pt-10 md:pt-14 pb-8 overflow-hidden box-border vector-on-light blend-to-light"
+      className="relative w-full h-screen min-h-[100dvh] min-h-[600px] flex flex-col items-center justify-between pt-20 md:pt-24 pb-8 overflow-hidden box-border vector-on-light blend-to-light"
       style={{
         backgroundColor: "#FFFFFF",
       }}
     >
       {/* Header Section */}
-      <div className="text-center px-4 z-20 max-w-4xl mx-auto shrink-0 mt-1 mb-2">
+      <div className="text-center px-4 z-20 max-w-4xl mx-auto shrink-0 -mt-6 md:-mt-8 mb-2">
         <h2 className="text-3xl md:text-5xl font-bold leading-tight text-primary opacity-90 mb-1.5">
           Why AspiRE?
         </h2>
@@ -146,8 +146,8 @@ function WhyAspireSection() {
         </p>
       </div>
 
-      {/* Circular Stage Arena - Shifted lower down with mt-6 md:mt-8 translate-y-4 md:translate-y-6 */}
-      <div className="relative w-full max-w-7xl flex-1 flex items-center justify-center min-h-0 mt-6 md:mt-8 translate-y-4 md:translate-y-6">
+      {/* Circular Stage Arena */}
+      <div className="relative w-full max-w-7xl flex-1 flex items-end justify-center min-h-0 mt-10 md:mt-14">
 
           {/* Fully Lined Solid Circle Ring fading towards the bottom end */}
           <svg
@@ -268,7 +268,7 @@ function WhyAspireSection() {
           })}
 
           {/* Active Floating Video & Content Card (Slightly Reduced Size & No Float-in y Animation) */}
-          <div className="relative flex items-center justify-center z-10">
+          <div className="relative flex items-center justify-center z-10 -translate-y-8 md:-translate-y-12">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}
@@ -534,7 +534,7 @@ export default function Home() {
       {/* OUR VISION */}
       <motion.section
         id="our-vision"
-        className="w-full h-screen min-h-[100dvh] min-h-[550px] px-8 md:px-16 text-center relative overflow-hidden flex flex-col justify-center items-center vector-on-light"
+        className="w-full h-screen min-h-[100dvh] min-h-[550px] px-8 md:px-16 pt-20 md:pt-28 text-center relative overflow-hidden flex flex-col justify-center items-center vector-on-light"
         style={{ backgroundColor: '#FFFFFF' }}
         initial="hidden"
         whileInView="visible"

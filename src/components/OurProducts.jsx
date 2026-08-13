@@ -141,7 +141,7 @@ export default function OurProducts() {
   return (
     <section
       id="our-products"
-      className="w-full pt-8 md:pt-12 pb-16 md:pb-20 lg:pb-24 px-6 md:px-12 lg:px-20 overflow-hidden vector-on-green blend-to-green"
+      className="w-full pb-16 md:pb-20 lg:pb-24 px-6 md:px-12 lg:px-20 overflow-hidden vector-on-green blend-to-green fade-clear-top"
       style={{
         backgroundColor: "#2C6035",
       }}

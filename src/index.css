@@ -100,42 +100,49 @@ html, body, #root, * {
 
 /* Background-only hand-offs between sections (applied at section TOP fading DOWNWARDS) */
 
+:root {
+  --fade-h: clamp(60px, 6vw, 88px);
+  --fade-clear: clamp(72px, 7vw, 100px);
+}
+
+/* White → Green: sits at the top of a green section that follows a white one.
+   Starts a few px into solid white so there is zero hard edge at the top,
+   ends a few px into solid green so there is zero hard edge at the bottom. */
 .blend-to-green::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
-  height: clamp(110px, 11vw, 175px);
+  height: var(--fade-h);
   pointer-events: none;
   z-index: 2;
   background: linear-gradient(
     to bottom,
-    #FFFFFF 0%,
-    #F4F8F5 12%,
-    #D5E5D8 28%,
-    #A3C4AA 48%,
-    #6B9A74 68%,
-    #42784C 85%,
-    #2C6035 100%
+    #FFFFFF    0%,
+    #FFFFFF    8%,
+    #C8DECC   40%,
+    #6B9A74   72%,
+    #2C6035   92%,
+    #2C6035  100%
   );
 }
 
+/* Green → White: sits at the top of a white section that follows a green one. */
 .blend-to-light::before,
 .testimonial-to-plans::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
-  height: clamp(110px, 11vw, 175px);
+  height: var(--fade-h);
   pointer-events: none;
   z-index: 2;
   background: linear-gradient(
     to bottom,
-    #2C6035 0%,
-    #42784C 12%,
-    #6B9A74 28%,
-    #A3C4AA 48%,
-    #D5E5D8 68%,
-    #F4F8F5 85%,
-    #FFFFFF 100%
+    #2C6035    0%,
+    #2C6035    8%,
+    #6B9A74   30%,
+    #C8DECC   62%,
+    #FFFFFF   92%,
+    #FFFFFF  100%
   );
 }
 
@@ -144,4 +151,8 @@ html, body, #root, * {
 .testimonial-to-plans > * {
   position: relative;
   z-index: 3;
+}
+
+.fade-clear-top {
+  padding-top: var(--fade-clear) !important;
 }
