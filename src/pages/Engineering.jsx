@@ -204,19 +204,9 @@ export default function Engineering() {
         </div>
       </section>
 
-      {/* SEAMLESS GRADIENT BRIDGE (Off-White to Green Transition) */}
-      <div
-        aria-hidden="true"
-        className="w-full h-[140px] -my-[70px] relative z-20 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(180deg, #F9F8F5 0%, #E3EAE5 25%, #A0C0A9 55%, #2C6035 100%)",
-        }}
-      />
-
       {/* WHAT WE AIM (Dark Green Section) */}
       <section
-        className="min-h-[85vh] py-16 md:py-24 px-6 md:px-16 relative overflow-hidden text-white flex flex-col justify-center vector-on-green z-10"
+        className="min-h-[85vh] pb-16 md:pb-24 px-6 md:px-16 relative overflow-hidden text-white flex flex-col justify-center vector-on-green blend-to-green fade-clear-top"
         style={{ backgroundColor: "#2C6035" }}
       >
         {/* Centered Section Heading */}
