@@ -67,34 +67,40 @@ function WhyAspireSection() {
   useEffect(() => {
     const update = () => {
       const vw = window.innerWidth;
-      const minR = vw < 480 ? 130 : vw < 768 ? 165 : 215;
-      const maxR = vw < 480 ? 155 : vw < 768 ? 195 : 240;
-      const calc = Math.max(minR, Math.min(vw * 0.28, maxR));
+
+      // Larger circle while keeping the section compact
+      const minR = vw < 480 ? 145 : vw < 768 ? 190 : 250;
+      const maxR = vw < 480 ? 175 : vw < 768 ? 225 : 290;
+
+      const calc = Math.max(minR, Math.min(vw * 0.32, maxR));
       setRadius(calc);
     };
+
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
 
   // Auto-advance on video end
-  const handleVideoEnd = () => setActiveIndex((prev) => (prev + 1) % whyAspireItems.length);
+  const handleVideoEnd = () =>
+    setActiveIndex((prev) => (prev + 1) % whyAspireItems.length);
+
   const handleBubbleClick = (index) => setActiveIndex(index);
 
   const svgSize = (radius + 40) * 2;
 
-  // ── Single layout: circle works on all screen sizes ─────────────────────
   return (
     <section
       id="why-aspire"
-      className="relative w-full py-16 md:py-24 px-4 overflow-hidden box-border vector-on-light blend-to-light fade-clear-top flex flex-col items-center justify-start min-h-[720px] sm:min-h-[780px] md:min-h-[850px]"
+      className="relative w-full py-12 md:py-16 px-4 overflow-hidden box-border vector-on-light blend-to-light fade-clear-top flex flex-col items-center justify-start min-h-[760px] sm:min-h-[820px] md:min-h-[900px]"
       style={{ backgroundColor: "#FFFFFF" }}
     >
       {/* Header */}
-      <div className="text-center px-4 z-20 max-w-4xl mx-auto shrink-0 mb-8 md:mb-12">
+      <div className="text-center px-4 z-20 max-w-4xl mx-auto shrink-0 mb-7 md:mb-10">
         <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold leading-tight text-primary opacity-90 mb-2 md:mb-3 font-poppins">
           Why AspiRE?
         </h2>
+
         <p
           className="text-xs sm:text-sm md:text-base lg:text-lg leading-snug font-medium"
           style={{ color: "#383838" }}
@@ -104,16 +110,26 @@ function WhyAspireSection() {
       </div>
 
       {/* Circular Stage Arena */}
-      <div className="relative w-full max-w-6xl flex items-center justify-center min-h-[380px] sm:min-h-[440px] md:min-h-[500px] my-auto z-10">
+      <div className="relative w-full max-w-6xl flex items-center justify-center min-h-[430px] sm:min-h-[500px] md:min-h-[580px] my-auto z-10">
         <svg
           className="absolute pointer-events-none transition-all duration-300 z-1"
           width={svgSize}
           height={svgSize}
           viewBox={`0 0 ${svgSize} ${svgSize}`}
-          style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+          style={{
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
         >
           <defs>
-            <linearGradient id="solidRingFadeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <linearGradient
+              id="solidRingFadeGradient"
+              x1="0%"
+              y1="0%"
+              x2="0%"
+              y2="100%"
+            >
               <stop offset="0%" stopColor="#2C6035" stopOpacity="1" />
               <stop offset="40%" stopColor="#2C6035" stopOpacity="0.9" />
               <stop offset="70%" stopColor="#2C6035" stopOpacity="0.45" />
@@ -121,7 +137,15 @@ function WhyAspireSection() {
               <stop offset="100%" stopColor="#2C6035" stopOpacity="0" />
             </linearGradient>
           </defs>
-          <circle cx={svgSize / 2} cy={svgSize / 2} r={radius} fill="none" stroke="url(#solidRingFadeGradient)" strokeWidth="2.5" />
+
+          <circle
+            cx={svgSize / 2}
+            cy={svgSize / 2}
+            r={radius}
+            fill="none"
+            stroke="url(#solidRingFadeGradient)"
+            strokeWidth="2.5"
+          />
         </svg>
 
         {whyAspireItems.map((item, index) => {
@@ -144,18 +168,33 @@ function WhyAspireSection() {
               }}
             >
               <motion.div
-                className={`rounded-full flex items-center justify-center shadow-lg border-2 select-none transition-colors duration-300 ${
-                  isActive ? "bg-[#2C6035] border-[#2C6035]" : "bg-white border-[#2C6035]"
-                }`}
+                className={`rounded-full flex items-center justify-center shadow-lg border-2 select-none transition-colors duration-300 ${isActive
+                    ? "bg-[#2C6035] border-[#2C6035]"
+                    : "bg-white border-[#2C6035]"
+                  }`}
                 animate={
                   isActive
-                    ? { width: [48, 42, 64, 60], height: [48, 42, 64, 60], scale: [1, 0.88, 1.18, 1.12] }
-                    : { width: 48, height: 48, scale: 1 }
+                    ? {
+                      width: [48, 42, 64, 60],
+                      height: [48, 42, 64, 60],
+                      scale: [1, 0.88, 1.18, 1.12],
+                    }
+                    : {
+                      width: 48,
+                      height: 48,
+                      scale: 1,
+                    }
                 }
                 transition={
                   isActive
-                    ? { duration: 0.45, times: [0, 0.25, 0.75, 1], ease: "easeInOut" }
-                    : { duration: 0.3 }
+                    ? {
+                      duration: 0.45,
+                      times: [0, 0.25, 0.75, 1],
+                      ease: "easeInOut",
+                    }
+                    : {
+                      duration: 0.3,
+                    }
                 }
               >
                 <img
@@ -170,22 +209,32 @@ function WhyAspireSection() {
                 />
               </motion.div>
 
-              {/* Labels — shown on sm+ only to avoid cramping on tiny screens */}
+              {/* Labels */}
               <motion.span
-                className={`hidden sm:block text-[9px] md:text-sm font-semibold select-none absolute top-1/2 -translate-y-1/2 pointer-events-none leading-snug ${
-                  isLeftSide ? "text-right" : "text-left"
-                }`}
-                style={{ [isLeftSide ? "right" : "left"]: "100%" }}
+                className={`hidden sm:block text-[9px] md:text-sm font-semibold select-none absolute top-1/2 -translate-y-1/2 pointer-events-none leading-snug ${isLeftSide ? "text-right" : "text-left"
+                  }`}
+                style={{
+                  [isLeftSide ? "right" : "left"]: "100%",
+                }}
                 animate={{
-                  [isLeftSide ? "marginRight" : "marginLeft"]: isActive ? "14px" : "10px",
+                  [isLeftSide ? "marginRight" : "marginLeft"]: isActive
+                    ? "14px"
+                    : "10px",
                   opacity: isActive ? 1 : 0.85,
                   scale: isActive ? 1.05 : 1,
                   color: isActive ? "#2C6035" : "#4A4A4A",
                 }}
-                transition={{ duration: 0.45, ease: "easeInOut" }}
+                transition={{
+                  duration: 0.45,
+                  ease: "easeInOut",
+                }}
               >
-                <span className="block whitespace-nowrap">{item.labelLine1}</span>
-                <span className="block whitespace-nowrap">{item.labelLine2}</span>
+                <span className="block whitespace-nowrap">
+                  {item.labelLine1}
+                </span>
+                <span className="block whitespace-nowrap">
+                  {item.labelLine2}
+                </span>
               </motion.span>
             </div>
           );
@@ -199,7 +248,10 @@ function WhyAspireSection() {
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
+              transition={{
+                duration: 0.25,
+                ease: "easeInOut",
+              }}
               className="rounded-2xl overflow-hidden w-[150px] sm:w-[200px] md:w-[270px] lg:w-[285px] shadow-2xl border border-white/20"
               style={{ backgroundColor: "#2C6035" }}
             >
@@ -213,14 +265,19 @@ function WhyAspireSection() {
                     onEnded={handleVideoEnd}
                     className="w-full h-full object-cover"
                   >
-                    <source src={whyAspireItems[activeIndex].video} type="video/mp4" />
+                    <source
+                      src={whyAspireItems[activeIndex].video}
+                      type="video/mp4"
+                    />
                   </video>
                 </div>
               </div>
+
               <div className="p-2 md:p-3 pt-1.5 md:pt-2 text-left">
                 <h3 className="text-white font-bold text-[10px] md:text-sm leading-snug mb-0.5">
                   {whyAspireItems[activeIndex].title}
                 </h3>
+
                 <p className="text-white/90 text-[8px] md:text-xs leading-relaxed font-light hidden sm:block">
                   {whyAspireItems[activeIndex].desc}
                 </p>
@@ -238,23 +295,42 @@ export default function Home() {
   const location = useLocation();
   const navigate = useNavigate();
   const { scrollY } = useScroll();
+
   const heroScale = useTransform(scrollY, [0, 500], [1, 0.85]);
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   const handleGetInTouch = (e) => {
     e.preventDefault();
     const targetElement = document.getElementById("contact");
-    if (targetElement) targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   };
 
   const fadeInUpVariants = {
     hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
   };
 
   return (
@@ -266,18 +342,32 @@ export default function Home() {
         className="relative min-h-screen flex items-center justify-center bg-gray-900 text-white px-5 sm:px-8 md:px-16 pt-20 pb-10 md:pt-24 md:pb-16 overflow-hidden"
       >
         <div className="absolute inset-0 w-full h-full">
-          <video autoPlay loop muted playsInline className="w-full h-full object-cover">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
             <source src="/videos/hero-video.mp4" type="video/mp4" />
           </video>
+
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20 md:bg-gradient-to-r md:from-black/50 md:via-black/20 md:to-transparent" />
         </div>
 
         <motion.div
           className="relative w-full max-w-7xl mx-auto z-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 lg:gap-16 items-center"
-          style={{ scale: heroScale, opacity: heroOpacity }}
+          style={{
+            scale: heroScale,
+            opacity: heroOpacity,
+          }}
         >
           {/* Text block */}
-          <motion.div initial="hidden" animate="visible" variants={staggerContainer}>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+          >
             <motion.h1
               className="text-3xl sm:text-4xl md:text-[56px] font-bold leading-tight md:leading-[68px] mb-4 md:mb-6 text-white"
               variants={fadeInUpVariants}
@@ -291,12 +381,15 @@ export default function Home() {
                 Projects.
               </span>
             </motion.h1>
+
             <motion.p
               className="text-white/90 mb-6 md:mb-8 max-w-md text-sm md:text-base leading-relaxed"
               variants={fadeInUpVariants}
             >
-              Seamlessly manage operations, boost efficiency, and grow with our AI-Powered platform.
+              Seamlessly manage operations, boost efficiency, and grow with our
+              AI-Powered platform.
             </motion.p>
+
             <motion.div variants={fadeInUpVariants}>
               <div className="inline-block transition-transform hover:scale-105 active:scale-95">
                 <button
@@ -310,12 +403,15 @@ export default function Home() {
             </motion.div>
           </motion.div>
 
-          {/* Right image — md+: floating beside text; mobile: shown below text, smaller */}
+          {/* Right image */}
           <motion.div
             className="relative flex justify-center md:justify-end md:translate-x-8 lg:translate-x-16"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.3,
+            }}
           >
             <div className="relative inline-block max-w-[420px] lg:max-w-[460px] w-full">
               <motion.img
@@ -325,48 +421,160 @@ export default function Home() {
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               />
+
               {/* Floating badge — left */}
               <motion.div
                 className="absolute -left-10 md:-left-12 lg:-left-16 top-1/2 -translate-y-1/2"
-                initial={{ opacity: 0, scale: 0.8, rotateY: -20 }}
-                animate={{ opacity: 1, scale: 1, rotateY: 0, y: [0, -10, 0] }}
-                transition={{ duration: 0.6, delay: 0.6, y: { duration: 3, repeat: Infinity, ease: "easeInOut" } }}
+                initial={{
+                  opacity: 0,
+                  scale: 0.8,
+                  rotateY: -20,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  rotateY: 0,
+                  y: [0, -10, 0],
+                }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.6,
+                  y: {
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  },
+                }}
                 style={{
-                  width: "220px", height: "85px",
-                  backgroundColor: "rgba(0,0,0,0.4)", borderRadius: "12px",
-                  boxShadow: "0 12px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)",
-                  padding: "16px", display: "flex", alignItems: "center", gap: "12px",
-                  backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.1)",
+                  width: "220px",
+                  height: "85px",
+                  backgroundColor: "rgba(0,0,0,0.4)",
+                  borderRadius: "12px",
+                  boxShadow:
+                    "0 12px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)",
+                  padding: "16px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  backdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255,255,255,0.1)",
                 }}
               >
-                <div style={{ width: "44px", height: "44px", backgroundColor: "rgba(0,0,0,0.6)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 4px 12px rgba(0,0,0,0.3)", border: "1px solid rgba(76,175,80,0.3)" }}>
+                <div
+                  style={{
+                    width: "44px",
+                    height: "44px",
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                    border: "1px solid rgba(76,175,80,0.3)",
+                  }}
+                >
                   <Check size={24} style={{ color: "#4CAF50" }} />
                 </div>
+
                 <div className="flex flex-col">
-                  <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", fontWeight: "normal" }}>Block 1</span>
-                  <span style={{ fontSize: "16px", color: "white", fontWeight: "bold" }}>Completed</span>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      color: "rgba(255,255,255,0.6)",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    Block 1
+                  </span>
+
+                  <span
+                    style={{
+                      fontSize: "16px",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Completed
+                  </span>
                 </div>
               </motion.div>
+
               {/* Floating badge — right */}
               <motion.div
                 className="absolute -right-6 md:-right-8 lg:-right-10 bottom-4 translate-y-4"
-                initial={{ opacity: 0, scale: 0.8, rotateY: 20 }}
-                animate={{ opacity: 1, scale: 1, rotateY: 0, y: [0, -10, 0] }}
-                transition={{ duration: 0.6, delay: 0.7, y: { duration: 3, repeat: Infinity, ease: "easeInOut" } }}
+                initial={{
+                  opacity: 0,
+                  scale: 0.8,
+                  rotateY: 20,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  rotateY: 0,
+                  y: [0, -10, 0],
+                }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.7,
+                  y: {
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  },
+                }}
                 style={{
-                  width: "220px", height: "85px",
-                  backgroundColor: "rgba(0,0,0,0.4)", borderRadius: "12px",
-                  boxShadow: "0 12px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)",
-                  padding: "16px", display: "flex", alignItems: "center", gap: "12px",
-                  backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.1)",
+                  width: "220px",
+                  height: "85px",
+                  backgroundColor: "rgba(0,0,0,0.4)",
+                  borderRadius: "12px",
+                  boxShadow:
+                    "0 12px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)",
+                  padding: "16px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  backdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255,255,255,0.1)",
                 }}
               >
-                <div style={{ width: "44px", height: "44px", backgroundColor: "rgba(0,0,0,0.6)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 4px 12px rgba(0,0,0,0.3)", border: "1px solid rgba(76,175,80,0.3)" }}>
+                <div
+                  style={{
+                    width: "44px",
+                    height: "44px",
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                    border: "1px solid rgba(76,175,80,0.3)",
+                  }}
+                >
                   <Check size={24} style={{ color: "#4CAF50" }} />
                 </div>
+
                 <div className="flex flex-col">
-                  <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", fontWeight: "normal" }}>Block 2</span>
-                  <span style={{ fontSize: "16px", color: "white", fontWeight: "bold" }}>Completed</span>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      color: "rgba(255,255,255,0.6)",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    Block 2
+                  </span>
+
+                  <span
+                    style={{
+                      fontSize: "16px",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Completed
+                  </span>
                 </div>
               </motion.div>
             </div>
@@ -381,15 +589,28 @@ export default function Home() {
         style={{ backgroundColor: "#FFFFFF" }}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{
+          once: true,
+          margin: "-100px",
+        }}
         variants={staggerContainer}
       >
         <div className="max-w-4xl lg:max-w-5xl mx-auto flex flex-col items-center justify-center px-2 font-poppins w-full">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial={{
+              opacity: 0,
+              y: 20,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.6,
+            }}
           >
             <p
               className="text-xs sm:text-sm font-semibold tracking-widest uppercase mb-3 md:mb-6"
@@ -398,6 +619,7 @@ export default function Home() {
               — OUR VISION
             </p>
           </motion.div>
+
           <motion.h2
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 md:mb-8 tracking-tight"
             style={{ color: "#2C6035" }}
@@ -407,15 +629,17 @@ export default function Home() {
             <br className="hidden sm:block" />
             {" "}Through AI
           </motion.h2>
+
           <motion.p
             className="w-full max-w-3xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-normal text-center"
             style={{ color: "#5d9767ff" }}
             variants={fadeInUpVariants}
           >
-            Our vision is to become the trusted technology partner for real estate developers by
-            creating innovative solutions that simplify complex workflows. We aim to help
-            businesses make faster decisions, improve productivity, and deliver exceptional
-            projects through AI driven digital platforms.
+            Our vision is to become the trusted technology partner for real
+            estate developers by creating innovative solutions that simplify
+            complex workflows. We aim to help businesses make faster
+            decisions, improve productivity, and deliver exceptional projects
+            through AI driven digital platforms.
           </motion.p>
         </div>
       </motion.section>
