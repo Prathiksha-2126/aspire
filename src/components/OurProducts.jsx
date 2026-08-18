@@ -89,37 +89,32 @@ function ProductCard({ data, index }) {
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isHovered ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         />
       )}
-      {/* Subtle top gradient so image stays visible */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-transparent pointer-events-none" />
-
-      {/* Glassy content overlay */}
-      <div
-        className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-6 md:p-8"
-        style={{
-          background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 60%, transparent 100%)",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
-        }}
-      >
-        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 text-left font-poppins tracking-tight">
-          {data.heading}
-        </h3>
-        <ul className="space-y-2 mb-5">
-          {data.features.map((item) => (
-            <li key={item} className="flex items-center gap-2 text-xs sm:text-sm md:text-base text-white/90 font-medium">
-              <Circle size={7} fill="white" className="text-white shrink-0" />
-              {item}
-            </li>
-          ))}
-        </ul>
-        <button
-          onClick={handleExplore}
-          className="inline-flex items-center gap-2 text-white rounded-full px-5 py-2.5 font-semibold text-xs sm:text-sm cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg w-fit group/btn"
-          style={{ backgroundColor: "#2C6035" }}
+      {/* Content vertically centered with black opacity panel */}
+      <div className="absolute inset-0 z-10 flex items-center p-5 sm:p-6 md:p-8">
+        <div
+          className="w-fit max-w-full rounded-2xl p-5 sm:p-6 md:p-8 backdrop-blur-sm"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
         >
-          {data.cta}
-          <ArrowRight size={16} className="transition-transform duration-300 group-hover/btn:translate-x-1" />
-        </button>
+          <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 text-left font-poppins tracking-tight">
+            {data.heading}
+          </h3>
+          <ul className="space-y-2 mb-5">
+            {data.features.map((item) => (
+              <li key={item} className="flex items-center gap-2 text-xs sm:text-sm md:text-base text-white/90 font-medium">
+                <Circle size={7} fill="white" className="text-white shrink-0" />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <button
+            onClick={handleExplore}
+            className="inline-flex items-center gap-2 text-white rounded-full px-5 py-2.5 font-semibold text-xs sm:text-sm cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg w-fit group/btn"
+            style={{ backgroundColor: "#2C6035" }}
+          >
+            {data.cta}
+            <ArrowRight size={16} className="transition-transform duration-300 group-hover/btn:translate-x-1" />
+          </button>
+        </div>
       </div>
     </motion.div>
   );

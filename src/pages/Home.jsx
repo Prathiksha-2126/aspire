@@ -89,11 +89,11 @@ function WhyAspireSection() {
   return (
     <section
       id="why-aspire"
-      className="relative w-full h-screen min-h-[100dvh] min-h-[500px] flex flex-col items-center justify-between pt-20 md:pt-24 pb-4 md:pb-8 overflow-hidden box-border vector-on-light blend-to-light"
+      className="relative w-full h-screen min-h-[100dvh] min-h-[500px] flex flex-col items-center justify-between pb-4 md:pb-8 overflow-hidden box-border vector-on-light blend-to-light fade-clear-top"
       style={{ backgroundColor: "#FFFFFF" }}
     >
       {/* Header */}
-      <div className="text-center px-4 z-20 max-w-4xl mx-auto shrink-0 -mt-4 md:-mt-8 mb-2">
+      <div className="text-center px-4 z-20 max-w-4xl mx-auto shrink-0 mb-2">
         <h2 className="text-xl sm:text-3xl md:text-5xl font-bold leading-tight text-primary opacity-90 mb-1 md:mb-1.5">
           Why AspiRE?
         </h2>
@@ -425,9 +425,7 @@ export default function Home() {
       <OurProducts />
       <WhyAspireSection />
       <Testimonials />
-      <div id="package-plans">
-        <PackagePlans defaultTab="engineering" />
-      </div>
+      <PackagePlans defaultTab="engineering" />
       <ClientLogos />
     </>
   );

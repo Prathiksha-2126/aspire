@@ -69,81 +69,103 @@ html, body, #root, * {
   z-index: 20;
 }
 
-.vector-on-light {
-  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/images/Black Vector.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.vector-on-offwhite {
-  background-image: linear-gradient(rgba(249, 248, 245, 0.5), rgba(249, 248, 245, 0.5)), url('/images/Black Vector.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
+.vector-on-light,
+.vector-on-offwhite,
 .vector-on-green {
   position: relative;
   isolation: isolate;
-  background-color: #2C6035 !important;
-  background-image: linear-gradient(rgba(44, 96, 53, 0.5), rgba(44, 96, 53, 0.5)), url('/images/White Vector.png');
-  background-position: center;
   background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
 }
 
-.vector-on-green > * {
+.vector-on-light {
+  background-color: #FFFFFF;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/images/Black Vector.png');
+}
+
+.vector-on-offwhite {
+  background-color: #F9F8F5;
+  background-image: linear-gradient(rgba(249, 248, 245, 0.5), rgba(249, 248, 245, 0.5)), url('/images/Black Vector.png');
+}
+
+.vector-on-green {
+  background-color: #2C6035 !important;
+  background-image: linear-gradient(rgba(44, 96, 53, 0.5), rgba(44, 96, 53, 0.5)), url('/images/White Vector.png');
+}
+
+.vector-on-green > *,
+.vector-on-light > *,
+.vector-on-offwhite > * {
   position: relative;
   z-index: 1;
 }
 
-/* Background-only hand-offs between sections (applied at section TOP fading DOWNWARDS) */
-
+/* Incoming section overlaps the one above. Its own fill is painted on
+   ::before and masked from transparent → opaque, so the previous section
+   shows through and there is no hard box edge. */
 :root {
-  --fade-h: clamp(60px, 6vw, 88px);
-  --fade-clear: clamp(72px, 7vw, 100px);
+  --fade-h: clamp(80px, 9vh, 110px);
+  --fade-clear: clamp(75px, 8vh, 100px);
 }
 
-/* White → Green: sits at the top of a green section that follows a white one.
-   Starts a few px into solid white so there is zero hard edge at the top,
-   ends a few px into solid green so there is zero hard edge at the bottom. */
-.blend-to-green::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: var(--fade-h);
-  pointer-events: none;
+.vector-on-green.blend-to-green {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.vector-on-light.blend-to-light,
+.vector-on-offwhite.blend-to-light,
+.vector-on-light.testimonial-to-plans {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.blend-to-green,
+.blend-to-light,
+.testimonial-to-plans {
+  margin-top: calc(var(--fade-h) * -1);
   z-index: 2;
-  background: linear-gradient(
-    to bottom,
-    #FFFFFF    0%,
-    #FFFFFF    8%,
-    #C8DECC   40%,
-    #6B9A74   72%,
-    #2C6035   92%,
-    #2C6035  100%
-  );
 }
 
-/* Green → White: sits at the top of a white section that follows a green one. */
+.blend-to-green::before,
 .blend-to-light::before,
 .testimonial-to-plans::before {
   content: "";
   position: absolute;
-  inset: 0 0 auto;
-  height: var(--fade-h);
+  inset: 0;
   pointer-events: none;
-  z-index: 2;
-  background: linear-gradient(
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(
     to bottom,
-    #2C6035    0%,
-    #2C6035    8%,
-    #6B9A74   30%,
-    #C8DECC   62%,
-    #FFFFFF   92%,
-    #FFFFFF  100%
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) calc(var(--fade-h) * 0.35),
+    rgba(0, 0, 0, 0.6) calc(var(--fade-h) * 0.7),
+    #000 var(--fade-h),
+    #000 100%
   );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) calc(var(--fade-h) * 0.35),
+    rgba(0, 0, 0, 0.6) calc(var(--fade-h) * 0.7),
+    #000 var(--fade-h),
+    #000 100%
+  );
+}
+
+.blend-to-green::before {
+  background-color: #2C6035;
+  background-image: linear-gradient(rgba(44, 96, 53, 0.5), rgba(44, 96, 53, 0.5)), url('/images/White Vector.png');
+}
+
+.blend-to-light::before,
+.testimonial-to-plans::before {
+  background-color: #FFFFFF;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/images/Black Vector.png');
 }
 
 .blend-to-green > *,

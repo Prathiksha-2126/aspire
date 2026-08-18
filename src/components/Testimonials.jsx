@@ -32,7 +32,7 @@ const testimonials = [
     image: null,
   },
   {
-    name: "Sunil Morajkar",
+    name: "Kabir Morajkar",
     role: "Partner – Vaastu Estate Developers",
     rating: 5,
     quote: "Simplified how we manage construction projects—keeps everything organised, improves coordination, and boosts team efficiency!",
