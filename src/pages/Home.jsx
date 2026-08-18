@@ -66,12 +66,10 @@ function WhyAspireSection() {
 
   useEffect(() => {
     const update = () => {
-      const vh = window.innerHeight;
       const vw = window.innerWidth;
-      // Smaller floor on mobile so the ring fits the screen
-      const minR = vw < 480 ? 140 : vw < 768 ? 180 : 242;
-      const maxR = vw < 480 ? 170 : vw < 768 ? 220 : 388;
-      const calc = Math.max(minR, Math.min(vh * 0.38, vw * 0.38, maxR));
+      const minR = vw < 480 ? 130 : vw < 768 ? 165 : 215;
+      const maxR = vw < 480 ? 155 : vw < 768 ? 195 : 240;
+      const calc = Math.max(minR, Math.min(vw * 0.28, maxR));
       setRadius(calc);
     };
     update();
@@ -89,16 +87,16 @@ function WhyAspireSection() {
   return (
     <section
       id="why-aspire"
-      className="relative w-full h-screen min-h-[100dvh] min-h-[500px] flex flex-col items-center justify-between pb-4 md:pb-8 overflow-hidden box-border vector-on-light blend-to-light fade-clear-top"
+      className="relative w-full py-16 md:py-24 px-4 overflow-hidden box-border vector-on-light blend-to-light fade-clear-top flex flex-col items-center justify-start min-h-[720px] sm:min-h-[780px] md:min-h-[850px]"
       style={{ backgroundColor: "#FFFFFF" }}
     >
       {/* Header */}
-      <div className="text-center px-4 z-20 max-w-4xl mx-auto shrink-0 mb-2">
-        <h2 className="text-xl sm:text-3xl md:text-5xl font-bold leading-tight text-primary opacity-90 mb-1 md:mb-1.5">
+      <div className="text-center px-4 z-20 max-w-4xl mx-auto shrink-0 mb-8 md:mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold leading-tight text-primary opacity-90 mb-2 md:mb-3 font-poppins">
           Why AspiRE?
         </h2>
         <p
-          className="text-[10px] sm:text-xs md:text-base lg:text-lg leading-snug font-medium"
+          className="text-xs sm:text-sm md:text-base lg:text-lg leading-snug font-medium"
           style={{ color: "#383838" }}
         >
           Built by industry experts to solve the real bottlenecks in construction and development
@@ -106,7 +104,7 @@ function WhyAspireSection() {
       </div>
 
       {/* Circular Stage Arena */}
-      <div className="relative w-full max-w-7xl flex-1 flex items-end justify-center min-h-0 mt-4 md:mt-14">
+      <div className="relative w-full max-w-6xl flex items-center justify-center min-h-[380px] sm:min-h-[440px] md:min-h-[500px] my-auto z-10">
         <svg
           className="absolute pointer-events-none transition-all duration-300 z-1"
           width={svgSize}
@@ -194,7 +192,7 @@ function WhyAspireSection() {
         })}
 
         {/* Center card */}
-        <div className="relative flex items-center justify-center z-10 -translate-y-6 md:-translate-y-12">
+        <div className="relative flex items-center justify-center z-10">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
