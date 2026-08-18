@@ -80,7 +80,7 @@ export default function Engineering() {
       {/* HERO */}
       <section
         id="hero"
-        className="relative h-screen flex items-center justify-start bg-gray-900 text-white px-8 md:px-20 lg:px-28 pt-24 pb-16 overflow-hidden"
+        className="relative h-screen flex items-start justify-start bg-gray-900 text-white px-8 md:px-20 lg:px-28 pt-36 md:pt-44 pb-16 overflow-hidden"
       >
         <img
           src="/images/Engineering Hero Section Image.png"
@@ -90,8 +90,9 @@ export default function Engineering() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
 
         <div className="relative z-10 max-w-4xl text-left pl-2 md:pl-6">
-          <h1 className="text-4xl md:text-5xl lg:text-[64px] font-bold text-white leading-[1.2] tracking-normal mb-8 whitespace-pre-line">
-            Let's Digitize Your Sites{"\n"}with AspiRE
+          <h1 className="text-4xl md:text-5xl lg:text-[64px] font-bold text-white tracking-normal mb-8">
+            <span className="block mb-4">Let's Digitize Your Sites</span>
+            <span className="block">with AspiRE</span>
           </h1>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
