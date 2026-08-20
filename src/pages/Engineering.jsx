@@ -80,7 +80,7 @@ export default function Engineering() {
       {/* HERO */}
       <section
         id="hero"
-        className="relative h-screen flex items-start justify-start bg-gray-900 text-white px-8 md:px-20 lg:px-28 pt-36 md:pt-44 pb-16 overflow-hidden"
+        className="relative h-screen flex items-start justify-start bg-gray-900 text-white pt-24 md:pt-44 pb-12 md:pb-16 overflow-hidden"
       >
         <img
           src="/images/Engineering Hero Section Image.png"
@@ -89,11 +89,14 @@ export default function Engineering() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
 
-        <div className="relative z-10 max-w-4xl text-left pl-2 md:pl-6">
-          <h1 className="text-4xl md:text-5xl lg:text-[64px] font-bold text-white tracking-normal mb-8">
-            <span className="block mb-4">Let's Digitize Your Sites</span>
-            <span className="block">with AspiRE</span>
+        <div className="relative z-10 max-w-5xl text-left px-6 sm:px-8 md:px-20 lg:px-28">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-bold text-white tracking-normal mb-3">
+            <span className="block">Do You Know What's Happening</span>
+            <span className="block mt-1 sm:mt-2 md:mt-3">on Your Site?</span>
           </h1>
+          <p className="text-white/90 text-base md:text-lg max-w-2xl mb-8 leading-relaxed">
+            Every update. Every activity. Every site in one place.
+          </p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

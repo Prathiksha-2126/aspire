@@ -89,12 +89,11 @@ function ProductCard({ data, index }) {
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isHovered ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         />
       )}
-      {/* Content vertically centered with black opacity panel */}
+      {/* Black film overlay over background media */}
+      <div className="absolute inset-0 z-[5] bg-black/55" />
+      {/* Content */}
       <div className="absolute inset-0 z-10 flex items-center p-5 sm:p-6 md:p-8">
-        <div
-          className="w-fit max-w-full rounded-2xl p-5 sm:p-6 md:p-8 backdrop-blur-sm"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
-        >
+        <div className="w-fit max-w-full rounded-2xl p-5 sm:p-6 md:p-8">
           <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 text-left font-poppins tracking-tight">
             {data.heading}
           </h3>

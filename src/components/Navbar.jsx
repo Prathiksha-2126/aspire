@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
 
 export default function Navbar() {
   const [productsOpen, setProductsOpen] = useState(false);
   const [plansOpen, setPlansOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLightBg, setIsLightBg] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -136,8 +137,13 @@ export default function Navbar() {
         </Link>
       </div>
 
-      {/* Nav pill — always visible, fixed top center */}
-      <nav ref={navRef} className="fixed top-3 md:top-5 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-lg block">
+      {/* Mobile hamburger — top right on small screens */}
+      <button className="md:hidden fixed top-4 right-4 z-50 flex items-center justify-center text-white p-1" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menu">
+        <Menu size={22} strokeWidth={2.5} />
+      </button>
+
+      {/* Nav pill — hidden on mobile, visible on desktop */}
+      <nav ref={navRef} className="hidden md:block fixed top-3 md:top-5 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-lg">
         <div
           className="flex items-center justify-between px-3 py-1.5 rounded-full border border-white/40 transition-all duration-300"
           style={{
@@ -169,12 +175,11 @@ export default function Navbar() {
               }`}>
                 Our Products <ChevronDown size={13} className={`transition-transform duration-200 ${productsOpen ? "rotate-180" : ""}`} />
               </button>
-              {productsOpen && (
-                <div
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-3.5 z-50 w-max before:absolute before:-top-5 before:left-0 before:right-0 before:h-5 before:content-['']"
-                  onMouseEnter={handleProductsEnter}
-                  onMouseLeave={handleProductsLeave}
-                >
+              <div
+                className={`absolute top-full left-1/2 -translate-x-1/2 mt-3.5 z-50 w-max before:absolute before:-top-5 before:left-0 before:right-0 before:h-5 before:content-[''] transition-all duration-200 ${productsOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none"}`}
+                onMouseEnter={handleProductsEnter}
+                onMouseLeave={handleProductsLeave}
+              >
                   <div className="rounded-2xl p-1.5 flex flex-col gap-0.5 text-xs border shadow-2xl min-w-[160px]"
                     style={{
                       backgroundColor: isLightBg ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.25)",
@@ -192,13 +197,12 @@ export default function Navbar() {
                     <Link to="/sales" className={`px-3.5 py-1.5 rounded-xl font-bold text-left whitespace-nowrap block hover:bg-white/20 transition-all duration-200 ${
                       isActive("/sales") ? isLightBg ? "text-gray-900 bg-white/40" : "text-white bg-white/15"
                       : isLightBg ? "text-[#2C6035] hover:text-gray-900" : "text-white/90 hover:text-white"
-                    }`} onClick={() => { setProductsOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+                     }`} onClick={() => { setProductsOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
                       AspiRE Sales
                     </Link>
                   </div>
-                </div>
-              )}
-            </div>
+               </div>
+             </div>
 
             {/* Package Plan Dropdown */}
             <div className="relative" onMouseEnter={handlePlansEnter} onMouseLeave={handlePlansLeave}>
@@ -242,6 +246,20 @@ export default function Navbar() {
           </a>
         </div>
       </nav>
+
+      {/* Mobile menu drawer */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-black/50 md:hidden" onClick={() => setMobileMenuOpen(false)}>
+          <div className="absolute top-20 left-4 right-4 max-w-sm mx-auto rounded-xl p-3 flex flex-col gap-1.5 backdrop-blur-md bg-white/10 border border-white/20">
+            <Link to="/" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors" onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Home</Link>
+            <Link to="/engineering" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors" onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>AspiRE Engineering</Link>
+            <Link to="/sales" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors" onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>AspiRE Sales</Link>
+            <a href="/#package-plans?tab=engineering" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); handlePackagePlanClick("engineering")(e); }}>Package Plan — Engineering</a>
+            <a href="/#package-plans?tab=sales" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); handlePackagePlanClick("sales")(e); }}>Package Plan — Sales</a>
+            <a href="#contact" className="px-3 py-2 rounded-lg text-sm font-bold text-white bg-[#2C6035] hover:bg-[#245029] transition-colors text-center" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); handleContactClick(e); }}>Contact Us</a>
+          </div>
+        </div>
+      )}
 
     </>
   );

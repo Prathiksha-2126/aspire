@@ -14,7 +14,7 @@ const plansData = {
     },
     {
       name: "PREMIUM PLAN",
-      description: "Designed for growing businesses. The Premium Package offers advanced features, unlimited collaboration, and comprehensive tools to take your construction management to the next level.",
+      description: "Designed for growing businesses. The Premium Package offers advanced features and comprehensive tools to take your construction management to the next level.",
       features: ["Upto 15 Users", "Customizable dashboard reports", "AI Project Planner"],
       featured: true,
     },

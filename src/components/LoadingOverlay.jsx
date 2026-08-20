@@ -101,7 +101,7 @@ export default function LoadingOverlay() {
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           >
-            Loading experience...
+            Simplifying your Sites
           </motion.p>
 
           {/* Decorative Elements */}

@@ -25,8 +25,8 @@ const whyAspireItems = [
     labelSide: "left",
   },
   {
-    title: "Quick & Informed Decision Making",
-    labelLine1: "Quick & Informed",
+    title: "Smarter Decision Making",
+    labelLine1: "Smarter",
     labelLine2: "Decision Making",
     desc: "Access real-time reports, analytics, and data to make faster and more confident business decisions.",
     icon: "/images/Booking Management Icon.png",
@@ -36,9 +36,9 @@ const whyAspireItems = [
     labelSide: "left",
   },
   {
-    title: "Stay on Top of Your Deadlines",
-    labelLine1: "Stay on Top of",
-    labelLine2: "Your Deadlines",
+    title: "Never Miss a Deadline",
+    labelLine1: "Never Miss",
+    labelLine2: "a Deadline",
     desc: "Track tasks, milestones, and progress with smart reminders and automated notifications.",
     icon: "/images/Attendance Management ICon.png",
     bubbleIcon: "/images/top-of-deadlines.png",
@@ -47,9 +47,9 @@ const whyAspireItems = [
     labelSide: "right",
   },
   {
-    title: "Automated Workflows",
-    labelLine1: "Automated",
-    labelLine2: "Workflows",
+    title: "Streamlined Processes",
+    labelLine1: "Streamlined",
+    labelLine2: "Processes",
     desc: "Automate approvals, reminders, notifications, and routine tasks to save time and improve efficiency.",
     icon: "/images/Reports Analytics ICon.png",
     bubbleIcon: "/images/automated-workflow.png",
@@ -68,11 +68,11 @@ function WhyAspireSection() {
     const update = () => {
       const vw = window.innerWidth;
 
-      // Larger circle while keeping the section compact
-      const minR = vw < 480 ? 145 : vw < 768 ? 190 : 250;
-      const maxR = vw < 480 ? 175 : vw < 768 ? 225 : 290;
+      // Increased circle for mobile so card/content stays fully visible
+      const minR = vw < 480 ? 190 : vw < 768 ? 230 : 220;
+      const maxR = vw < 480 ? 230 : vw < 768 ? 280 : 270;
 
-      const calc = Math.max(minR, Math.min(vw * 0.32, maxR));
+      const calc = Math.max(minR, Math.min(vw * 0.42, maxR));
       setRadius(calc);
     };
 
@@ -92,7 +92,7 @@ function WhyAspireSection() {
   return (
     <section
       id="why-aspire"
-      className="relative w-full py-12 md:py-16 px-4 overflow-hidden box-border vector-on-light blend-to-light fade-clear-top flex flex-col items-center justify-start min-h-[760px] sm:min-h-[820px] md:min-h-[900px]"
+      className="relative w-full py-10 md:py-14 px-4 overflow-hidden box-border vector-on-light blend-to-light fade-clear-top flex flex-col items-center justify-start min-h-[720px] sm:min-h-[800px] md:min-h-[820px]"
       style={{ backgroundColor: "#FFFFFF" }}
     >
       {/* Header */}
@@ -110,7 +110,7 @@ function WhyAspireSection() {
       </div>
 
       {/* Circular Stage Arena */}
-      <div className="relative w-full max-w-6xl flex items-center justify-center min-h-[430px] sm:min-h-[500px] md:min-h-[580px] my-auto z-10">
+      <div className="relative w-full max-w-6xl flex items-center justify-center min-h-[420px] sm:min-h-[500px] md:min-h-[520px] my-auto z-10">
         <svg
           className="absolute pointer-events-none transition-all duration-300 z-1"
           width={svgSize}
@@ -175,13 +175,13 @@ function WhyAspireSection() {
                 animate={
                   isActive
                     ? {
-                      width: [48, 42, 64, 60],
-                      height: [48, 42, 64, 60],
+                      width: [56, 50, 72, 68],
+                      height: [56, 50, 72, 68],
                       scale: [1, 0.88, 1.18, 1.12],
                     }
                     : {
-                      width: 48,
-                      height: 48,
+                      width: 56,
+                      height: 56,
                       scale: 1,
                     }
                 }
@@ -200,7 +200,7 @@ function WhyAspireSection() {
                 <img
                   src={item.bubbleIcon}
                   alt={item.title}
-                  className="w-5 h-5 md:w-7 md:h-7 object-contain transition-all duration-300 select-none"
+                  className="w-6 h-6 md:w-7 md:h-7 object-contain transition-all duration-300 select-none"
                   style={{
                     filter: isActive
                       ? "brightness(0) invert(1)"
@@ -219,7 +219,7 @@ function WhyAspireSection() {
                 animate={{
                   [isLeftSide ? "marginRight" : "marginLeft"]: isActive
                     ? "14px"
-                    : "10px",
+                    : "12px",
                   opacity: isActive ? 1 : 0.85,
                   scale: isActive ? 1.05 : 1,
                   color: isActive ? "#2C6035" : "#4A4A4A",
@@ -252,11 +252,11 @@ function WhyAspireSection() {
                 duration: 0.25,
                 ease: "easeInOut",
               }}
-              className="rounded-2xl overflow-hidden w-[150px] sm:w-[200px] md:w-[270px] lg:w-[285px] shadow-2xl border border-white/20"
+              className="rounded-2xl overflow-hidden w-[180px] sm:w-[200px] md:w-[270px] lg:w-[285px] shadow-2xl border border-white/20"
               style={{ backgroundColor: "#2C6035" }}
             >
               <div className="p-1.5 md:p-2 pb-0">
-                <div className="rounded-xl overflow-hidden w-full h-[150px] sm:h-[190px] md:h-[265px] lg:h-[280px] bg-black flex items-center justify-center">
+                <div className="rounded-xl overflow-hidden w-full h-[180px] sm:h-[190px] md:h-[265px] lg:h-[280px] bg-black flex items-center justify-center">
                   <video
                     key={whyAspireItems[activeIndex].video}
                     autoPlay
@@ -339,7 +339,7 @@ export default function Home() {
       <motion.section
         ref={heroRef}
         id="hero"
-        className="relative min-h-screen flex items-center justify-center bg-gray-900 text-white px-5 sm:px-8 md:px-16 pt-20 pb-10 md:pt-24 md:pb-16 overflow-hidden"
+        className="relative min-h-screen flex items-center justify-center bg-gray-900 text-white pt-20 pb-10 md:pt-24 md:pb-16 overflow-hidden"
       >
         <div className="absolute inset-0 w-full h-full">
           <video
@@ -356,7 +356,7 @@ export default function Home() {
         </div>
 
         <motion.div
-          className="relative w-full max-w-7xl mx-auto z-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 lg:gap-16 items-center"
+          className="relative w-full max-w-7xl mx-auto z-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 lg:gap-16 items-center px-5 sm:px-8 md:px-16"
           style={{
             scale: heroScale,
             opacity: heroOpacity,
@@ -621,7 +621,7 @@ export default function Home() {
           </motion.div>
 
           <motion.h2
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 md:mb-8 tracking-tight"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl font-bold leading-tight mb-5 md:mb-10 tracking-tight"
             style={{ color: "#2C6035" }}
             variants={fadeInUpVariants}
           >
@@ -631,7 +631,7 @@ export default function Home() {
           </motion.h2>
 
           <motion.p
-            className="w-full max-w-3xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-normal text-center"
+            className="w-full max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl lg:text-2xl leading-relaxed font-normal text-center"
             style={{ color: "#5d9767ff" }}
             variants={fadeInUpVariants}
           >

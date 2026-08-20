@@ -52,57 +52,55 @@ export default function FeatureTabs({ tabs }) {
     <section id="features" className="relative overflow-hidden bg-[#F9F8F5] flex flex-col vector-on-offwhite">
 
       {/* ── MOBILE layout ─────────────────────────────────────────────────── */}
-      <div className="md:hidden flex flex-col">
-        {/* Feature image */}
-        <div className="relative w-full bg-[#2C6035] overflow-hidden" style={{ minHeight: "240px" }}>
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={active}
-              custom={direction}
-              initial={{ opacity: 0, x: direction * 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -direction * 40 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="w-full flex items-center justify-center p-4"
-              style={{ minHeight: "240px" }}
-            >
-              {tabImg ? (
-                <img src={tabImg} alt={current.label} className="w-full max-w-sm h-auto object-contain drop-shadow-xl" />
-              ) : (
-                <div className="bg-gray-900/60 rounded-2xl p-6 w-full max-w-sm flex items-center justify-center text-white text-sm text-center" style={{ minHeight: "180px" }}>
-                  {current.label}
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
+      <div className="md:hidden px-4">
+        {/* Unified card: text left, image right */}
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden" style={{ minHeight: "260px" }}>
+          <div className="flex flex-row items-stretch">
+            {/* Text content — left */}
+            <div className="w-3/5 p-4 flex flex-col justify-center">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-5 h-0.5 bg-[#2C6035]" />
+                <p className="text-[9px] font-bold tracking-widest uppercase text-[#2C6035]">OUR FEATURES</p>
+              </div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={active}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <h3 className="text-lg font-bold uppercase leading-tight mb-2 text-[#2C6035]">{current.title}</h3>
+                  <p className="text-xs leading-relaxed text-[#4B4A4A]">{current.description}</p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
-          {/* Prev/Next overlays */}
-          <button onClick={handlePrev} className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/30 flex items-center justify-center text-white" aria-label="Previous">
-            <ChevronLeft size={20} strokeWidth={2.5} />
-          </button>
-          <button onClick={handleNext} className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/30 flex items-center justify-center text-white" aria-label="Next">
-            <ChevronRight size={20} strokeWidth={2.5} />
-          </button>
-        </div>
-
-        {/* Text content */}
-        <div className="px-5 py-6 bg-[#F9F8F5]">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-6 h-0.5 bg-[#2C6035]" />
-            <p className="text-[10px] font-bold tracking-widest uppercase text-[#2C6035]">OUR FEATURES</p>
+            {/* Image — right */}
+            <div className="w-2/5 bg-[#2C6035] overflow-hidden relative flex items-center justify-center" style={{ minHeight: "220px" }}>
+              {/* Green semicircle behind */}
+              <div className="absolute -right-16 top-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full pointer-events-none z-0" style={{ backgroundColor: "#2C6035" }} />
+              
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={active}
+                  custom={direction}
+                  variants={wheelVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  style={{ transformOrigin: "calc(100% + 120px) 50%" }}
+                  className="relative z-10 w-full h-full flex items-center justify-center p-4"
+                >
+                  {tabImg ? (
+                    <img src={tabImg} alt={current.label} className="w-full h-auto object-contain drop-shadow-2xl" />
+                  ) : (
+                    <div className="flex items-center justify-center text-white text-xs text-center font-medium">{current.label}</div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-            >
-              <h3 className="text-xl font-bold uppercase leading-tight mb-3 text-[#2C6035]">{current.title}</h3>
-              <p className="text-sm leading-relaxed text-[#4B4A4A]">{current.description}</p>
-            </motion.div>
-          </AnimatePresence>
         </div>
 
         {/* Mobile thumb nav — horizontally scrollable */}
@@ -127,7 +125,7 @@ export default function FeatureTabs({ tabs }) {
                   </div>
                   <span
                     className="mt-1 text-center leading-tight"
-                    style={{ fontSize: isAct ? "9px" : "8px", fontWeight: isAct ? 900 : 500, color: isAct ? "#2C6035" : "#5A5A5A", maxWidth: "56px" }}
+                    style={{ fontSize: isAct ? "9px" : "8px", fontWeight: isAct ? 900 : 500, color: isAct ? "#2C6035" : "#5A5A5A", maxWidth: "56px", whiteSpace: "pre-line" }}
                   >
                     {tab.label === "Gantt Chart" ? "Gantt\nChart" : tab.label}
                   </span>
@@ -139,7 +137,7 @@ export default function FeatureTabs({ tabs }) {
       </div>
 
       {/* ── DESKTOP layout ────────────────────────────────────────────────── */}
-      <div className="hidden md:flex flex-col" style={{ height: "700px" }}>
+      <div className="hidden md:flex flex-col" style={{ minHeight: "700px" }}>
         <div className="relative z-10 max-w-7xl mx-auto px-8 md:px-16 w-full flex-1 flex items-center">
           <div className="grid md:grid-cols-5 gap-8 items-center w-full">
             {/* Left: text */}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, User } from "lucide-react";
 
@@ -64,6 +64,8 @@ export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardDimensions, setCardDimensions] = useState({ width: 310, height: 430, gap: 315 });
   const [isMobile, setIsMobile] = useState(false);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   useEffect(() => {
     const update = () => {
@@ -111,8 +113,18 @@ export default function Testimonials() {
         </div>
 
         {/* Card */}
-        <div className="px-4 pb-6 w-full flex justify-center z-10">
-          <AnimatePresence mode="wait">
+        <div 
+          className="px-4 pb-6 w-full flex justify-center z-10"
+          onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+          onTouchEnd={(e) => { 
+            touchEndX.current = e.changedTouches[0].clientX; 
+            const diff = touchStartX.current - touchEndX.current;
+            if (Math.abs(diff) > 50) {
+              if (diff > 0) handleNext(); else handlePrev();
+            }
+          }}
+        >
+          <AnimatePresence>
             <motion.div
               key={currentIndex}
               initial={{ opacity: 0, x: 40, scale: 0.96 }}
@@ -140,21 +152,15 @@ export default function Testimonials() {
           </AnimatePresence>
         </div>
 
-        {/* Dots + nav row */}
-        <div className="flex items-center gap-4 pb-8 z-10">
-          <button onClick={handlePrev} className="w-9 h-9 rounded-full border-2 border-white bg-black/20 flex items-center justify-center text-white" aria-label="Previous">
-            <ChevronLeft size={20} strokeWidth={2.5} />
-          </button>
+        {/* Dots only — no arrows on mobile */}
+        <div className="flex items-center justify-center gap-4 pb-8 z-10">
           <div className="flex gap-1.5">
             {testimonials.map((_, i) => (
-              <button key={i} onClick={() => setCurrentIndex(i)}
-                className={`rounded-full transition-all duration-300 ${i === currentIndex ? "w-5 h-2 bg-white" : "w-2 h-2 bg-white/40"}`}
+              <button key={i} type="button" onClick={() => setCurrentIndex(i)}
+                className={`rounded-full transition-all duration-300 cursor-pointer ${i === currentIndex ? "w-5 h-2 bg-white" : "w-2 h-2 bg-white/40"}`}
               />
             ))}
           </div>
-          <button onClick={handleNext} className="w-9 h-9 rounded-full border-2 border-white bg-black/20 flex items-center justify-center text-white" aria-label="Next">
-            <ChevronRight size={20} strokeWidth={2.5} />
-          </button>
         </div>
       </motion.section>
     );
@@ -180,10 +186,10 @@ export default function Testimonials() {
 
       {/* Carousel */}
       <div className="relative w-full max-w-[1400px] mx-auto flex items-center justify-center flex-1 my-auto overflow-hidden min-h-0 z-10">
-        <button onClick={handlePrev} className="absolute left-4 sm:left-12 md:left-20 lg:left-28 z-40 w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-white bg-black/20 hover:bg-black/40 backdrop-blur-sm flex items-center justify-center text-white transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-xl" aria-label="Previous">
+        <button onClick={handlePrev} className="absolute left-4 sm:left-12 md:left-20 lg:left-28 z-50 w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-white bg-black/20 hover:bg-black/40 backdrop-blur-sm flex items-center justify-center text-white transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-xl" aria-label="Previous">
           <ChevronLeft size={26} strokeWidth={2.5} stroke="white" />
         </button>
-        <button onClick={handleNext} className="absolute right-4 sm:right-12 md:right-20 lg:right-28 z-40 w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-white bg-black/20 hover:bg-black/40 backdrop-blur-sm flex items-center justify-center text-white transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-xl" aria-label="Next">
+        <button onClick={handleNext} className="absolute right-4 sm:right-12 md:right-20 lg:right-28 z-50 w-11 h-11 sm:w-13 sm:h-13 rounded-full border-2 border-white bg-black/20 hover:bg-black/40 backdrop-blur-sm flex items-center justify-center text-white transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-xl" aria-label="Next">
           <ChevronRight size={26} strokeWidth={2.5} stroke="white" />
         </button>
 
