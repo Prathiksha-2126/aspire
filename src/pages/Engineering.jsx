@@ -86,6 +86,7 @@ export default function Engineering() {
           src="/images/Engineering Hero Section Image.png"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-100"
+          style={{ objectPosition: '75% center' }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
 
