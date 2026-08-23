@@ -49,11 +49,11 @@ export default function OurAimSection(props) {
                 ))}
               </h2>
 
-              {/* Numbered items */}
+              {/* Aim cards — numbers removed, icon emphasized */}
               <div className="flex flex-col gap-4 md:gap-5">
                 {items.map((item, i) => (
                   <motion.div
-                    key={item.number}
+                    key={item.title || i}
                     custom={i}
                     initial="hidden"
                     whileInView="visible"
@@ -66,37 +66,35 @@ export default function OurAimSection(props) {
                         transition: { delay: 0.1 * i, duration: 0.5, ease: "easeOut" },
                       }),
                     }}
-                    className="flex items-center gap-4 p-4 md:p-5 rounded-[16px]"
+                    className="flex items-center gap-4 md:gap-5 p-4 md:p-5 rounded-[16px]"
                     style={{ backgroundColor: cardBg }}
                   >
-                    {/* Icon + Text */}
-                    <div className="flex items-center gap-4 flex-1 min-w-0">
-                      <div
-                        className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shrink-0"
-                        style={{ backgroundColor: "#EDF2ED" }}
-                      >
-                        {item.icon && (
-                          <img
-                            src={item.icon}
-                            alt={item.title}
-                            className="w-8 h-8 md:w-9 md:h-9 object-contain"
-                          />
-                        )}
+                    {/* Icon — enlarged and centered */}
+                    <div
+                      className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shrink-0"
+                      style={{ backgroundColor: "#EDF2ED" }}
+                    >
+                      {item.icon && (
+                        <img
+                          src={item.icon}
+                          alt={item.title}
+                          className="w-10 h-10 md:w-12 md:h-12 object-contain"
+                        />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base md:text-lg font-bold text-gray-900 mb-1.5 leading-tight">{item.title}</h3>
+                      <div className="text-xs md:text-sm text-gray-600 leading-relaxed space-y-1">
+                        {item.bullets?.map((b, bi) => (
+                          <p key={bi} className="flex items-start gap-2">
+                            <span className="mt-[7px] w-1.5 h-1.5 rounded-full bg-[#2C6035] shrink-0" />
+                            <span>{b}</span>
+                          </p>
+                        ))}
                       </div>
-                      <div className="min-w-0">
-                        <h3 className="text-base md:text-lg font-bold text-gray-900 mb-1">{item.title}</h3>
-                        <div className="text-xs md:text-sm text-gray-600 leading-relaxed space-y-0.5">
-                          {item.bullets?.map((b, bi) => (
-                            <p key={bi} className="flex items-start gap-2">
-                              <span className="mt-1.5 w-2 h-2 rounded-full bg-[#2C6035] shrink-0" />
-                              <span>{b}</span>
-                            </p>
-                          ))}
-                        </div>
-                        {item.highlight && (
-                          <p className="text-xs md:text-sm font-bold text-gray-600">{item.highlight}</p>
-                        )}
-                      </div>
+                      {item.highlight && (
+                        <p className="text-xs md:text-sm font-bold text-gray-700 mt-1 pl-3.5">{item.highlight}</p>
+                      )}
                     </div>
                   </motion.div>
                 ))}

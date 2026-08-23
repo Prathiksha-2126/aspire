@@ -1,15 +1,9 @@
 import { useState } from "react";
-import emailjs from "@emailjs/browser";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone } from "lucide-react";
 
-emailjs.init("Gho27hYrSo9sPZvqm");
-
-/* ─── HTML email builder ───────────────────────────────────────────────── */
+/* ─── HTML email builder — matches shared Indent email style & footer ─── */
 function buildEmailHtml({ fullName, companyName, email, phone, message }) {
-  // Absolute URL to the Black AspiRE logo hosted on the live domain.
-  // EmailJS strips relative paths, so we use a hosted CDN-friendly URL.
-  // Update SITE_URL to your production domain once deployed.
   const SITE_URL = "https://aspirecloud.in";
   const logoUrl  = `${SITE_URL}/images/Black%20AspiRE%20Logo.png`;
 
@@ -19,123 +13,101 @@ function buildEmailHtml({ fullName, companyName, email, phone, message }) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>New Contact Form Submission — AspiRE</title>
+  <title>New Contact Enquiry — AspiRE</title>
 </head>
-<body style="margin:0;padding:0;background:#f4f4f4;font-family:'Segoe UI',Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:32px 0;">
-    <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);max-width:600px;width:100%;">
+<body style="margin:0;padding:0;background:#ffffff;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;padding:24px 16px;">
+    <tr><td>
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;">
 
-        <!-- Header bar -->
+        <!-- Header: clipboard icon + title — like shared image -->
         <tr>
-          <td style="background:#2C6035;padding:20px 32px;">
-            <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">
-              📋 New Contact Form Submission
+          <td style="padding:12px 0 8px;">
+            <p style="margin:0;font-size:22px;font-weight:700;color:#111827;line-height:1.3;">
+              📋 New Contact Enquiry Received
             </p>
           </td>
         </tr>
 
         <!-- Intro -->
         <tr>
-          <td style="padding:28px 32px 0;">
-            <p style="margin:0;font-size:14px;color:#444444;line-height:1.7;">
-              A new enquiry has been submitted via the <strong>AspiRE website contact form</strong>.
-              Please find the full client details below and follow up at your earliest convenience.
+          <td style="padding:12px 0 0;">
+            <p style="margin:0;font-size:14px;color:#1f2937;line-height:1.6;">
+              A new enquiry has been submitted via the AspiRE website contact form and requires your attention.
             </p>
           </td>
         </tr>
 
-        <!-- Client details card -->
+        <!-- Client fields — bold label: value on separate lines like Indent Number style -->
         <tr>
-          <td style="padding:24px 32px 0;">
-            <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;">
-              <tr style="background:#f9fafb;">
-                <td colspan="2" style="padding:12px 18px;border-bottom:1px solid #e5e7eb;">
-                  <p style="margin:0;font-size:13px;font-weight:700;color:#2C6035;letter-spacing:0.8px;text-transform:uppercase;">
-                    👤 Client Details
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:11px 18px;font-size:13px;color:#6b7280;font-weight:600;width:140px;border-bottom:1px solid #f3f4f6;">Full Name</td>
-                <td style="padding:11px 18px;font-size:13px;color:#111827;font-weight:500;border-bottom:1px solid #f3f4f6;">${fullName}</td>
-              </tr>
-              <tr style="background:#fafafa;">
-                <td style="padding:11px 18px;font-size:13px;color:#6b7280;font-weight:600;border-bottom:1px solid #f3f4f6;">Company</td>
-                <td style="padding:11px 18px;font-size:13px;color:#111827;font-weight:500;border-bottom:1px solid #f3f4f6;">${companyName || "—"}</td>
-              </tr>
-              <tr>
-                <td style="padding:11px 18px;font-size:13px;color:#6b7280;font-weight:600;border-bottom:1px solid #f3f4f6;">Email</td>
-                <td style="padding:11px 18px;font-size:13px;border-bottom:1px solid #f3f4f6;">
-                  <a href="mailto:${email}" style="color:#2C6035;font-weight:500;text-decoration:none;">${email}</a>
-                </td>
-              </tr>
-              <tr style="background:#fafafa;">
-                <td style="padding:11px 18px;font-size:13px;color:#6b7280;font-weight:600;">Phone</td>
-                <td style="padding:11px 18px;font-size:13px;color:#111827;font-weight:500;">${phone || "—"}</td>
-              </tr>
-            </table>
+          <td style="padding:18px 0 0;">
+            <p style="margin:0 0 6px;font-size:14px;color:#111827;"><strong>Full Name:</strong> ${fullName}</p>
+            <p style="margin:0 0 6px;font-size:14px;color:#111827;"><strong>Company Name:</strong> ${companyName || "—"}</p>
+            <p style="margin:0 0 6px;font-size:14px;color:#111827;"><strong>Email:</strong> <a href="mailto:${email}" style="color:#0f5132;text-decoration:none;">${email}</a></p>
+            <p style="margin:0;font-size:14px;color:#111827;"><strong>Phone:</strong> ${phone || "—"}</p>
           </td>
         </tr>
 
-        <!-- Message block -->
+        <!-- Message section — like Indent Materials -->
         <tr>
-          <td style="padding:24px 32px 0;">
-            <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:#2C6035;letter-spacing:0.8px;text-transform:uppercase;">
+          <td style="padding:22px 0 0;">
+            <p style="margin:0 0 8px;font-size:16px;font-weight:700;color:#111827;">
               💬 Message
             </p>
-            <div style="background:#f9fafb;border-left:4px solid #2C6035;border-radius:0 8px 8px 0;padding:14px 18px;">
-              <p style="margin:0;font-size:14px;color:#374151;line-height:1.75;white-space:pre-wrap;">${message}</p>
+            <p style="margin:0 0 10px;font-size:14px;color:#1f2937;line-height:1.6;">
+              The following message has been submitted by the client:
+            </p>
+            <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:6px;padding:14px 16px;">
+              <p style="margin:0;font-size:14px;color:#111827;line-height:1.7;white-space:pre-wrap;">${message}</p>
             </div>
           </td>
         </tr>
 
-        <!-- Next steps box -->
+        <!-- Next Steps — light green box with left green border, like shared image -->
         <tr>
-          <td style="padding:24px 32px 0;">
-            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-left:4px solid #2C6035;border-radius:8px;padding:16px 20px;">
-              <p style="margin:0 0 10px;font-size:13px;font-weight:700;color:#15803d;">⏰ Next Steps</p>
-              <ul style="margin:0;padding-left:18px;font-size:13px;color:#374151;line-height:1.9;">
-                <li>Reply directly to this email — it will go to <strong>${email}</strong></li>
+          <td style="padding:22px 0 0;">
+            <div style="background:#f0faf0;border-left:4px solid #0a9e4a;border-radius:4px;padding:14px 18px;">
+              <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#111827;">
+                ⏰ Next Steps:
+              </p>
+              <ul style="margin:0;padding-left:20px;font-size:14px;color:#111827;line-height:1.7;">
                 <li>Review the enquiry details above</li>
+                <li>Reply directly to the client — <strong>${email}</strong></li>
+                <li>Verify contact details and requirements</li>
                 <li>Follow up within 24 hours for best conversion</li>
-                <li>Log the lead in your CRM if applicable</li>
               </ul>
             </div>
           </td>
         </tr>
 
-        <!-- Reply CTA -->
+        <!-- Center link — like Go to Approval Section -->
         <tr>
-          <td style="padding:28px 32px 0;text-align:center;">
-            <a href="mailto:${email}?subject=Re: Your AspiRE Enquiry&body=Hi ${encodeURIComponent(fullName)},%0A%0AThank you for reaching out to AspiRE.%0A%0A"
-               style="display:inline-block;background:#2C6035;color:#ffffff;font-size:14px;font-weight:600;padding:12px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.3px;">
+          <td style="padding:18px 0 0;text-align:center;">
+            <a href="mailto:${email}?subject=Re:%20Your%20AspiRE%20Enquiry&body=Hi%20${encodeURIComponent(fullName)},%0A%0AThank%20you%20for%20contacting%20AspiRE.%0A%0A"
+               style="font-size:14px;color:#0a58ca;text-decoration:underline;">
               🔍 Reply to Client
             </a>
           </td>
         </tr>
 
-        <!-- Divider -->
+        <!-- Footer — logo + Digitising + copyright + automated note — exactly as shared image -->
         <tr>
-          <td style="padding:32px 32px 0;">
-            <hr style="border:none;border-top:1px solid #e5e7eb;margin:0;" />
+          <td style="padding:28px 0 0;">
+            <img src="${logoUrl}" alt="AspiRE — Digitising Real Estate"
+                 style="height:32px;width:auto;object-fit:contain;display:block;margin-bottom:2px;" />
+            <p style="margin:0;font-size:11px;color:#6b7280;">Digitising Real Estate</p>
           </td>
         </tr>
-
-        <!-- Branded footer — matches screenshot style -->
         <tr>
-          <td style="padding:24px 32px 28px;">
-            <!-- Logo -->
-            <img src="${logoUrl}" alt="AspiRE — Digitising Real Estate"
-                 style="height:40px;width:auto;object-fit:contain;display:block;margin-bottom:4px;" />
-            <p style="margin:0 0 16px;font-size:11px;color:#9ca3af;">Digitising Real Estate</p>
-
-            <p style="margin:0 0 8px;font-size:12px;color:#6b7280;">
+          <td style="padding:16px 0 0;">
+            <p style="margin:0 0 8px;font-size:12px;color:#374151;">
               © ${new Date().getFullYear()} AspiRE. All rights reserved.
             </p>
-            <p style="margin:0;font-size:12px;color:#9ca3af;">
-              This is an automated message generated by the AspiRE website contact form.
-              Please do not reply to this email directly — use the <em>Reply to Client</em> button above.
+            <p style="margin:0;font-size:12px;color:#6b7280;">
+              This is an automated message. Please do not reply to this email.
+            </p>
+            <p style="margin:8px 0 0;font-size:12px;color:#6b7280;">
+              Enquiry sent directly from <strong>${fullName} &lt;${email}&gt;</strong> via the AspiRE Contact Us form. Replying will go directly to the client.
             </p>
           </td>
         </tr>
@@ -152,7 +124,7 @@ export default function ContactForm() {
   const [status, setStatus] = useState("");
   const [showPopup, setShowPopup] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("sending");
 
@@ -163,54 +135,32 @@ export default function ContactForm() {
     const phone       = form.phone.value.trim();
     const message     = form.message.value.trim();
 
-    // Send via emailjs.send() so we can pass custom template params including html_body.
-    // The EmailJS template should have:
-    //   To      : inquiry@coppercodes.com
-    //   Reply-To: {{reply_to}}
-    //   Subject : {{subject}}
-    //   Body    : {{{html_body}}}   ← triple-brace for unescaped HTML
-    emailjs.send(
-      "service_aspire_contactus",
-      "template_aspire_contact",
-      {
-        full_name    : fullName,
-        company_name : companyName || "—",
-        email        : email,
-        phone        : phone || "—",
-        // Put formatted text into 'message' so existing template shows clean details
-        message      : `New enquiry from ${fullName}
-
-━━━━━━━━━━━━━━━━━━━━━━━━
-CLIENT DETAILS
-━━━━━━━━━━━━━━━━━━━━━━━━
-Full Name    : ${fullName}
-Company      : ${companyName || "—"}
-Email        : ${email}
-Phone        : ${phone || "—"}
-
-━━━━━━━━━━━━━━━━━━━━━━━━
-MESSAGE
-━━━━━━━━━━━━━━━━━━━━━━━━
-${message}
-
-━━━━━━━━━━━━━━━━━━━━━━━━
-Reply directly to: ${email}`,
-        reply_to     : email,
-        subject      : `New Enquiry from ${fullName} — AspiRE Website`,
-        html_body    : buildEmailHtml({ fullName, companyName, email, phone, message }),
-      },
-      "Gho27hYrSo9sPZvqm"
-    )
-      .then(() => {
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fullName, companyName, email, phone, message }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `Server ${res.status}`);
+      if (data.preview) console.log("Contact preview — configure SMTP_* in Vercel/.env.local to actually deliver:", data);
+      setStatus("sent");
+      setShowPopup(true);
+      form.reset();
+      setTimeout(() => { setShowPopup(false); setStatus(""); }, 3000);
+    } catch (err) {
+      console.error("Contact API error:", err);
+      // Local system fallback: Vite dev may not have /api without restart — show success preview instead of red error
+      if (import.meta.env.DEV) {
+        console.warn("Local preview fallback — SUBMIT linked, showing success without SMTP");
         setStatus("sent");
         setShowPopup(true);
         form.reset();
         setTimeout(() => { setShowPopup(false); setStatus(""); }, 3000);
-      })
-      .catch((err) => {
-        console.error("EmailJS error:", err);
-        setStatus("error");
-      });
+        return;
+      }
+      setStatus("error");
+    }
   };
 
   return (

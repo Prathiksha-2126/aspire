@@ -65,6 +65,8 @@ export default function Footer() {
           <Link to="/#our-vision" onClick={(e) => handleHomeNavigation(e, "our-vision")} className={linkClass} style={textColor}>Our Vision</Link>
           <Link to="/#our-products" onClick={(e) => handleHomeNavigation(e, "our-products")} className={linkClass} style={textColor}>Our Products</Link>
           <Link to="/#package-plans" onClick={(e) => handleHomeNavigation(e, "package-plans")} className={linkClass} style={textColor}>Package Plans</Link>
+          <Link to="/privacy-policy" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className={linkClass} style={textColor}>Privacy Policy</Link>
+          <Link to="/terms-of-service" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className={linkClass} style={textColor}>Terms of Service</Link>
         </div>
 
         {/* India */}
@@ -84,7 +86,7 @@ export default function Footer() {
 
       <hr className="my-4 sm:my-5 md:my-7 max-w-6xl mx-auto" style={{ borderColor: "#775151", opacity: 0.6 }} />
       <p className="text-center text-xs sm:text-sm font-semibold" style={{ color: "#906262" }}>
-        © 2026 All Rights Reserved by CopperCodes
+        © 2026 CopperCodes Consulting LLP. All rights reserved.
       </p>
     </footer>
   );

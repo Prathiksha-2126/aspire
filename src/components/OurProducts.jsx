@@ -123,8 +123,8 @@ export default function OurProducts() {
   return (
     <section
       id="our-products"
-      className="w-full pb-12 sm:pb-16 md:pb-20 lg:pb-24 px-4 sm:px-6 md:px-12 lg:px-20 overflow-hidden vector-on-green blend-to-green fade-clear-top"
-      style={{ backgroundColor: "#2C6035" }}
+      className="w-full pb-20 sm:pb-28 md:pb-32 lg:pb-36 px-4 sm:px-6 md:px-12 lg:px-20 overflow-hidden vector-on-green blend-to-green fade-clear-top"
+      style={{ backgroundColor: "#2C6035", paddingBottom: "calc(var(--fade-clear) + 24px)" }}
     >
       <div className="max-w-[1600px] mx-auto">
         {/* Heading */}
@@ -148,7 +148,7 @@ export default function OurProducts() {
         </motion.div>
 
         {/* Cards — 1 col mobile, 2 col md+ */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 lg:gap-10 pb-4 sm:pb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 lg:gap-10 pb-6 sm:pb-8 relative z-10">
           <ProductCard data={moduleData.engineering} index={0} />
           <ProductCard data={moduleData.sales} index={1} />
         </div>

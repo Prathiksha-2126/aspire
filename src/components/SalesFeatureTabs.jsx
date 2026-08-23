@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -16,6 +16,8 @@ export default function SalesFeatureTabs({ tabs }) {
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const current = tabs[active];
+  const scrollRef = useRef(null);
+  const itemRefs = useRef([]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -26,6 +28,17 @@ export default function SalesFeatureTabs({ tabs }) {
     }, 6000);
     return () => clearInterval(timer);
   }, [tabs.length, isPaused]);
+
+  useEffect(() => {
+    const el = itemRefs.current[active];
+    const container = scrollRef.current;
+    if (!el || !container) return;
+    const rect = container.getBoundingClientRect();
+    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+    if (!isInView) return;
+    const left = el.offsetLeft - container.clientWidth / 2 + el.clientWidth / 2;
+    container.scrollTo({ left, behavior: "smooth" });
+  }, [active]);
 
   const go = (index) => {
     if (index === active) return;
@@ -52,83 +65,106 @@ export default function SalesFeatureTabs({ tabs }) {
   const tabImg = getImageForTab(current.label);
 
   return (
-    <section id="features" className="relative overflow-hidden bg-[#F9F8F5] flex flex-col vector-on-offwhite">
+    <section id="features" className="relative overflow-hidden bg-[#F9F8F5] flex flex-col vector-on-offwhite pt-8 sm:pt-10 md:pt-12">
 
-      {/* ── MOBILE layout ─────────────────────────────────────────────────── */}
-      <div className="md:hidden px-4">
-        {/* Unified card: text left, image right */}
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden" style={{ minHeight: "260px" }}>
-          <div className="flex flex-row items-stretch">
-            {/* Text content — left */}
-            <div className="w-3/5 p-4 flex flex-col justify-center">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-5 h-0.5 bg-[#2C6035]" />
-                <p className="text-[9px] font-bold tracking-widest uppercase text-[#2C6035]">OUR FEATURES</p>
-              </div>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={active}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <h3 className="text-lg font-bold uppercase leading-tight mb-2 text-[#2C6035]">{current.title}</h3>
-                  <p className="text-xs leading-relaxed text-[#4B4A4A]">{current.description}</p>
-                </motion.div>
-              </AnimatePresence>
+      {/* ── MOBILE layout — no white background for content & image, slide-in ── */}
+      <div className="md:hidden px-4 pt-6 sm:pt-8 pb-6">
+        <div className="rounded-2xl overflow-hidden">
+          <div className="p-5 pb-4">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-5 h-0.5 bg-[#2C6035]" />
+              <p className="text-[9px] font-bold tracking-widest uppercase text-[#2C6035]">OUR FEATURES</p>
             </div>
-
-            {/* Image — right */}
-            <div className="w-2/5 bg-[#2C6035] overflow-hidden relative flex items-center justify-center" style={{ minHeight: "220px" }}>
-              {/* Green semicircle behind */}
-              <div className="absolute -right-16 top-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full pointer-events-none z-0" style={{ backgroundColor: "#2C6035" }} />
-              
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={active}
-                  custom={direction}
-                  variants={wheelVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  style={{ transformOrigin: "calc(100% + 120px) 50%" }}
-                  className="relative z-10 w-full h-full flex items-center justify-center p-4"
-                >
-                  {tabImg ? (
-                    <img src={tabImg} alt={current.label} className="w-full h-auto object-contain drop-shadow-2xl" />
-                  ) : (
-                    <div className="flex items-center justify-center text-white text-xs text-center font-medium">{current.label}</div>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <h3 className="text-[20px] font-bold uppercase leading-tight mb-2 text-[#2C6035]">{current.title}</h3>
+                <p className="text-[13px] leading-relaxed text-[#4B4A4A]">{current.description}</p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          <div className="relative flex items-center justify-center p-6 overflow-hidden" style={{ minHeight: "380px" }}>
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={active}
+                custom={direction}
+                variants={wheelVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="relative z-10 w-full max-w-[360px] flex items-center justify-center"
+              >
+                {tabImg ? (
+                  <img src={tabImg} alt={current.label} className="w-full h-auto object-contain drop-shadow-2xl" />
+                ) : (
+                  <div className="flex items-center justify-center text-[#2C6035] text-xs text-center font-medium">{current.label}</div>
+                )}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
-        {/* Mobile thumb nav */}
-        <div className="bg-[#EDEDED] px-4 py-4" style={{ boxShadow: "0 -4px 20px rgba(0,0,0,0.08)" }}>
-          <div className="flex items-end gap-3 overflow-x-auto scrollbar-hide pb-1 justify-center">
-            {tabs.map((tab, i) => {
-              const isAct = active === i;
-              const thumb = tab.iconImage || getImageForTab(tab.label);
-              return (
-                <button key={tab.label} onClick={() => go(i)} className="flex flex-col items-center flex-shrink-0">
-                  <div
-                    className="rounded-full overflow-hidden flex items-center justify-center transition-all duration-300"
-                    style={{ width: isAct ? 52 : 40, height: isAct ? 52 : 40, backgroundColor: isAct ? "#FFFFFF" : "transparent" }}
+        <div className="mt-4 flex items-center gap-2">
+          <button
+            onClick={handlePrev}
+            aria-label="Previous feature"
+            className="flex-shrink-0 w-7 h-7 rounded-full bg-white border border-[#2C6035]/20 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
+          >
+            <ChevronLeft size={14} className="text-[#2C6035]" strokeWidth={2.5} />
+          </button>
+          <div className="flex-1 min-w-0 rounded-xl px-2 py-3 bg-white/90 backdrop-blur border border-white/60 shadow-sm overflow-hidden">
+            <div ref={scrollRef} className="flex items-end gap-3 overflow-x-auto scrollbar-hide pb-1 snap-x snap-mandatory scroll-smooth px-1">
+              {tabs.map((tab, i) => {
+                const isAct = active === i;
+                const thumb = tab.iconImage || getImageForTab(tab.label);
+                return (
+                  <button
+                    key={tab.label}
+                    ref={(el) => (itemRefs.current[i] = el)}
+                    onClick={() => go(i)}
+                    className="flex flex-col items-center flex-shrink-0 snap-center"
                   >
-                    {thumb ? <img src={thumb} alt={tab.label} className="w-full h-full object-cover" /> : (
-                      <div className="w-full h-full flex items-center justify-center text-[8px] font-bold text-[#2C6035] text-center p-1">{tab.label}</div>
-                    )}
-                  </div>
-                  <span className="mt-1 text-center leading-tight" style={{ fontSize: isAct ? "9px" : "8px", fontWeight: isAct ? 900 : 500, color: isAct ? "#2C6035" : "#5A5A5A", maxWidth: "60px" }}>
-                    {tab.label}
-                  </span>
-                </button>
-              );
-            })}
+                    <div
+                      className="rounded-full overflow-hidden flex items-center justify-center transition-all duration-300 border"
+                      style={{
+                        width: isAct ? 56 : 44,
+                        height: isAct ? 56 : 44,
+                        backgroundColor: "#FFFFFF",
+                        borderColor: "#2C6035",
+                        boxShadow: isAct ? "0 4px 12px rgba(44,96,53,0.25)" : "0 1px 4px rgba(0,0,0,0.08)",
+                      }}
+                    >
+                      {thumb ? (
+                        <img src={thumb} alt={tab.label} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[8px] font-bold text-center p-1" style={{ color: "#2C6035" }}>
+                          {tab.label}
+                        </div>
+                      )}
+                    </div>
+                    <span
+                      className="mt-1.5 text-center leading-tight"
+                      style={{ fontSize: isAct ? "9px" : "8px", fontWeight: isAct ? 800 : 500, color: isAct ? "#2C6035" : "#5A5A5A", maxWidth: "64px" }}
+                    >
+                      {tab.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
+          <button
+            onClick={handleNext}
+            aria-label="Next feature"
+            className="flex-shrink-0 w-7 h-7 rounded-full bg-white border border-[#2C6035]/20 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
+          >
+            <ChevronRight size={14} className="text-[#2C6035]" strokeWidth={2.5} />
+          </button>
         </div>
       </div>
 
@@ -149,7 +185,7 @@ export default function SalesFeatureTabs({ tabs }) {
               </AnimatePresence>
             </div>
 
-            <div className="md:col-span-3 relative h-[520px] flex items-center justify-end overflow-visible">
+            <div className="md:col-span-3 relative h-[560px] flex items-center justify-end overflow-visible">
               <AnimatePresence mode="wait" custom={direction} initial={false}>
                 <motion.div
                   key={active}
@@ -162,7 +198,7 @@ export default function SalesFeatureTabs({ tabs }) {
                   className="relative w-full h-full flex items-center justify-end pointer-events-none z-10 translate-x-12 md:translate-x-20"
                 >
                   <div className="absolute right-[-640px] top-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full shadow-2xl pointer-events-none z-0" style={{ backgroundColor: "#2C6035" }} />
-                  <div className="relative z-10 w-[580px] h-[480px] md:w-[680px] md:h-[520px] flex items-center justify-center">
+                  <div className="relative z-10 w-[660px] h-[540px] md:w-[760px] md:h-[580px] flex items-center justify-center">
                     {getImageForTab(current.label) ? (
                       <img src={getImageForTab(current.label)} alt={current.label} className="w-full h-full object-contain drop-shadow-2xl" />
                     ) : (

@@ -77,10 +77,10 @@ export default function Engineering() {
 
   return (
     <>
-      {/* HERO */}
+      {/* HERO — mobile content 10% upper (just above device, no Get in Touch overlap) */}
       <section
         id="hero"
-        className="relative h-screen flex items-start justify-start bg-gray-900 text-white pt-28 md:pt-44 pb-12 md:pb-16 overflow-hidden"
+        className="relative h-screen flex items-start justify-start bg-gray-900 text-white pt-[clamp(190px,37vh,282px)] sm:pt-[clamp(210px,39vh,302px)] md:pt-44 pb-12 md:pb-16 overflow-hidden"
       >
         <img
           src="/images/Engineering Hero Section Image.png"
@@ -88,14 +88,18 @@ export default function Engineering() {
           className="absolute inset-0 w-full h-full object-cover opacity-100"
           style={{ objectPosition: '75% center' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
+        {/* Dark film — nearly transparent */}
+        <div className="absolute inset-0 bg-black/15 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent md:from-black/50 md:via-black/20" />
+        {/* Mobile: slightly stronger bottom fade to keep text just above device */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent md:hidden pointer-events-none" />
 
-        <div className="relative z-10 max-w-6xl text-left px-6 sm:px-8 md:px-20 lg:px-28">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-bold text-white tracking-normal mb-3">
-            <span className="block">Do You Know What's</span>
-            <span className="block mt-1 sm:mt-2 md:mt-3">Happening on Your Site?</span>
+        <div className="relative z-10 w-full max-w-6xl text-left px-4 sm:px-6 md:px-20 lg:px-28">
+          <h1 className="text-[26px] sm:text-[30px] md:text-[48px] lg:text-[58px] font-bold text-white tracking-tight leading-[1.08] md:leading-[1.1] mb-3 max-w-[340px] sm:max-w-[540px] md:max-w-[620px] lg:max-w-[700px]">
+            <span className="block whitespace-nowrap">Do You Know What's</span>
+            <span className="block whitespace-nowrap mt-2 sm:mt-2.5 md:mt-3">Happening on Your Site?</span>
           </h1>
-          <p className="text-white/90 text-lg md:text-2xl max-w-2xl mb-8 leading-relaxed">
+          <p className="text-white text-[17px] sm:text-[18px] md:text-[21px] lg:text-[22px] leading-[1.45] md:leading-[1.5] mb-6 sm:mb-8 max-w-[252px] sm:max-w-[320px] md:max-w-2xl drop-shadow-[0_1px_6px_rgba(0,0,0,0.7)]">
             Every update. Every activity. Every site in one place.
           </p>
           <motion.div

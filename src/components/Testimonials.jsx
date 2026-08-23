@@ -66,6 +66,7 @@ export default function Testimonials() {
   const [isMobile, setIsMobile] = useState(false);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const autoplayTimeoutRef = useRef(null);
 
   useEffect(() => {
     const update = () => {
@@ -84,9 +85,15 @@ export default function Testimonials() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
+  // Autoplay: smooth 5s interval, resets on manual navigation, cleans up on unmount
   useEffect(() => {
-    const timer = setInterval(handleNext, 5000);
-    return () => clearInterval(timer);
+    if (autoplayTimeoutRef.current) clearTimeout(autoplayTimeoutRef.current);
+    autoplayTimeoutRef.current = setTimeout(() => {
+      setCurrentIndex((p) => (p === testimonials.length - 1 ? 0 : p + 1));
+    }, 5000);
+    return () => {
+      if (autoplayTimeoutRef.current) clearTimeout(autoplayTimeoutRef.current);
+    };
   }, [currentIndex]);
 
   const handlePrev = () => setCurrentIndex((p) => (p === 0 ? testimonials.length - 1 : p - 1));
@@ -127,10 +134,10 @@ export default function Testimonials() {
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.97 }}
-              transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+              initial={{ opacity: 0, x: 28, scale: 0.97 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: -28, scale: 0.97 }}
+              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
               className="w-full max-w-[300px] rounded-2xl p-5 bg-white flex flex-col justify-between shadow-2xl"
               style={{ minHeight: "280px" }}
             >

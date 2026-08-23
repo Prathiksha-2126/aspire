@@ -7,6 +7,8 @@ import PackagePlans from "./components/PackagePlans";
 import Home from "./pages/Home";
 import Engineering from "./pages/Engineering";
 import Sales from "./pages/Sales";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 
 export default function App() {
   return (
@@ -22,6 +24,11 @@ export default function App() {
           path="/package-plans"
           element={<PackagePlans defaultTab="engineering" />}
         />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
+        {/* Legacy short routes */}
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfService />} />
       </Routes>
 
       {/* Shared on every page */}

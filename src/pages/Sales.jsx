@@ -59,25 +59,27 @@ export default function Sales() {
 
   return (
     <>
-      {/* HERO SECTION */}
+      {/* HERO SECTION — sales content taken up */}
       <section
         id="hero"
-        className="relative h-screen flex items-start justify-start bg-gray-900 text-white pt-28 md:pt-44 pb-12 md:pb-16 overflow-hidden"
+        className="relative h-screen flex items-start justify-start bg-gray-900 text-white pt-[clamp(170px,33vh,250px)] sm:pt-[clamp(190px,35vh,270px)] md:pt-44 pb-12 md:pb-16 overflow-hidden"
       >
         <img
           src="/images/Hero Section of AspiRe Sales.png"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-100"
-          style={{ objectPosition: 'right center' }}
+          className="absolute inset-0 w-full h-full object-cover object-[87%_center] md:object-[32%_center]"
+          style={{ opacity: 0.92 }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
+        {/* Dark film — nearly transparent */}
+        <div className="absolute inset-0 bg-black/15 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent md:from-black/45 md:via-black/12" />
 
-        <div className="relative z-10 max-w-6xl text-left px-6 sm:px-8 md:px-20 lg:px-28">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-normal mb-3">
-            <span className="block">Are Booking Delays</span>
-            <span className="block mt-1 sm:mt-2 md:mt-3">Costing You Revenue?</span>
+        <div className="relative z-10 w-full max-w-6xl text-left px-4 sm:px-6 md:px-20 lg:px-28">
+          <h1 className="text-[26px] sm:text-[30px] md:text-[48px] lg:text-[58px] font-bold text-white tracking-tight leading-[1.08] md:leading-[1.1] mb-3 max-w-[340px] sm:max-w-[540px] md:max-w-[600px] lg:max-w-[680px]">
+            <span className="block whitespace-nowrap">Are Booking Delays</span>
+            <span className="block whitespace-nowrap mt-2 sm:mt-2.5 md:mt-3">Costing You Revenue?</span>
           </h1>
-          <p className="text-white/90 text-lg md:text-2xl max-w-2xl mb-8 leading-relaxed">
+          <p className="text-white text-[17px] sm:text-[18px] md:text-[21px] lg:text-[22px] leading-[1.45] md:leading-[1.5] mb-6 sm:mb-8 max-w-[252px] sm:max-w-[320px] md:max-w-2xl drop-shadow-[0_1px_6px_rgba(0,0,0,0.7)]">
             Every unit. Every customer. Every transaction in real time.
           </p>
           <motion.div

@@ -6,6 +6,8 @@ export default function Navbar() {
   const [productsOpen, setProductsOpen] = useState(false);
   const [plansOpen, setPlansOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [mobilePlansOpen, setMobilePlansOpen] = useState(false);
   const [isLightBg, setIsLightBg] = useState(false);
   const [headerOpacity, setHeaderOpacity] = useState(1);
   const location = useLocation();
@@ -14,6 +16,8 @@ export default function Navbar() {
   const productsTimeoutRef = useRef(null);
   const plansTimeoutRef = useRef(null);
   const navRef = useRef(null);
+  const logoRef = useRef(null);
+  const hamburgerRef = useRef(null);
 
   const isActive = (path) => location.pathname === path;
 
@@ -21,39 +25,82 @@ export default function Navbar() {
   useEffect(() => {
     setProductsOpen(false);
     setPlansOpen(false);
+    setMobileProductsOpen(false);
+    setMobilePlansOpen(false);
+    setMobileMenuOpen(false);
   }, [location]);
 
-  // Background luminance sampling
+  // Reset mobile submenus when main mobile menu closes
   useEffect(() => {
-    const checkBackgroundLuminance = () => {
-      if (!navRef.current) return;
-      const rect = navRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+    if (!mobileMenuOpen) {
+      setMobileProductsOpen(false);
+      setMobilePlansOpen(false);
+    }
+  }, [mobileMenuOpen]);
 
-      const elements = document.elementsFromPoint(centerX, centerY);
-      const underlyingEl = elements.find(
-        (el) => !navRef.current.contains(el) && el !== document.documentElement && el !== document.body
+  // Background luminance sampling — desktop nav pill + mobile fixed logo/hamburger auto color
+  useEffect(() => {
+    const sampleLuminanceAt = (x, y, excludeRefs) => {
+      const els = document.elementsFromPoint(x, y);
+      const underlyingEl = els.find(
+        (el) => !excludeRefs.some((r) => r.current && r.current.contains(el)) && el !== document.documentElement && el !== document.body
       );
-
-      if (underlyingEl) {
-        let currentEl = underlyingEl;
-        while (currentEl && currentEl !== document.body) {
-          const style = window.getComputedStyle(currentEl);
-          const bgColor = style.backgroundColor;
-
-          if (bgColor && bgColor !== "rgba(0, 0, 0, 0)" && bgColor !== "transparent") {
-            const rgb = bgColor.match(/\d+/g);
-            if (rgb && rgb.length >= 3) {
-              const r = parseInt(rgb[0], 10);
-              const g = parseInt(rgb[1], 10);
-              const b = parseInt(rgb[2], 10);
-              const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-              setIsLightBg(brightness > 145);
-              return;
-            }
+      if (!underlyingEl) return null;
+      let currentEl = underlyingEl;
+      while (currentEl && currentEl !== document.body) {
+        const style = window.getComputedStyle(currentEl);
+        const bgColor = style.backgroundColor;
+        if (bgColor && bgColor !== "rgba(0, 0, 0, 0)" && bgColor !== "transparent") {
+          const rgb = bgColor.match(/\d+/g);
+          if (rgb && rgb.length >= 3) {
+            const r = parseInt(rgb[0], 10);
+            const g = parseInt(rgb[1], 10);
+            const b = parseInt(rgb[2], 10);
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            return brightness > 145;
           }
-          currentEl = currentEl.parentElement;
+        }
+        currentEl = currentEl.parentElement;
+      }
+      return null;
+    };
+
+    const checkBackgroundLuminance = () => {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        // Sample at fixed mobile logo/hamburger position for accurate auto switching
+        const sampleRef = logoRef.current || hamburgerRef.current;
+        if (sampleRef) {
+          const rect = sampleRef.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const result = sampleLuminanceAt(centerX, centerY, [logoRef, hamburgerRef, navRef]);
+          if (result !== null) {
+            setIsLightBg(result);
+            return;
+          }
+        }
+        // Fallback: hero-height heuristic on home
+        if (location.pathname === "/") {
+          const scrollY = window.scrollY;
+          const heroHeight = window.innerHeight;
+          setIsLightBg(scrollY >= heroHeight * 0.35);
+        } else {
+          setIsLightBg(true);
+        }
+        return;
+      }
+
+      // Desktop: sample at nav pill center
+      if (navRef.current) {
+        const rect = navRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const result = sampleLuminanceAt(centerX, centerY, [navRef, logoRef, hamburgerRef]);
+        if (result !== null) {
+          setIsLightBg(result);
+          return;
         }
       }
 
@@ -75,25 +122,10 @@ export default function Navbar() {
     };
   }, [location]);
 
-  // Header fade on scroll
+  // Mobile + desktop header: fixed throughout flow (no hide on scroll), keep opacity 1
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const heroHeight = window.innerHeight;
-      const fadeStart = heroHeight * 0.3;
-      const fadeEnd = heroHeight * 0.7;
-      let opacity = 1;
-      if (scrollY >= fadeEnd) {
-        opacity = 0;
-      } else if (scrollY > fadeStart) {
-        opacity = 1 - (scrollY - fadeStart) / (fadeEnd - fadeStart);
-      }
-      setHeaderOpacity(Math.max(0, Math.min(1, opacity)));
-    };
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    setHeaderOpacity(1);
+  }, [mobileMenuOpen]);
 
   const handleProductsEnter = () => {
     if (productsTimeoutRef.current) clearTimeout(productsTimeoutRef.current);
@@ -147,45 +179,123 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Logo — fixed on mobile, absolute on desktop */}
-      <div className="fixed top-4 left-4 md:absolute md:top-5 md:left-12 z-40 transition-opacity duration-300" style={{ opacity: headerOpacity }}>
+      {/* Logo — fixed only on mobile, absolute on desktop, auto switches Main ↔ Black */}
+      <div
+        ref={logoRef}
+        className="fixed top-4 left-4 md:absolute md:top-5 md:left-12 z-40 transition-colors duration-300 will-change-transform"
+      >
         <Link to="/#hero" onClick={handleLogoClick}>
           <img
-            src="/images/AspiRE Main Logo.png"
+            src={isLightBg ? "/images/Black AspiRE Logo.png" : "/images/AspiRE Main Logo.png"}
             alt="AspiRE - Digitising Real Estate"
-            className="h-12 md:h-20 w-auto object-contain drop-shadow-md"
+            className="h-12 md:h-20 w-auto object-contain drop-shadow-md transition-all duration-300"
           />
         </Link>
       </div>
 
-      {/* Mobile hamburger — fixed top right, opens dropdown on click */}
-      <div className="md:hidden fixed top-4 right-4 z-50 transition-opacity duration-300" style={{ opacity: headerOpacity }}>
-        <button className="flex items-center justify-center text-white p-1" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menu">
+      {/* Mobile hamburger — fixed to screen even before expansion, throughout flow, auto color matches desktop navbar luminance */}
+      <div
+        ref={hamburgerRef}
+        className="md:hidden fixed top-4 right-4 z-50 transition-colors duration-300"
+      >
+        <button
+          className={`flex items-center justify-center p-1.5 rounded-full transition-all duration-300 ${isLightBg ? "text-[#2C6035] bg-white/90 backdrop-blur-md shadow-md border border-white/60" : "text-white bg-black/20 backdrop-blur-md border border-white/25 shadow-md"}`}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menu">
           <Menu size={22} strokeWidth={2.5} />
         </button>
 
-        {/* Mobile dropdown — click activated */}
+        {/* Mobile dropdown — 3 main tabs: Home, Our Products (click), Package Plan (click) — content color auto switches white↔green */}
         <div
           className={`absolute top-full right-0 mt-3 w-56 rounded-xl border shadow-2xl transition-all duration-200 ${mobileMenuOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none"}`}
+          style={{
+            backgroundColor: isLightBg ? "rgba(255,255,255,0.96)" : "rgba(255,255,255,0.12)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            borderColor: isLightBg ? "rgba(44,96,53,0.14)" : "rgba(255,255,255,0.25)",
+          }}
         >
-          <div className="p-2 flex flex-col gap-1 rounded-xl" style={{ backgroundColor: "rgba(255,255,255,0.12)", backdropFilter: "blur(16px)", borderColor: "rgba(255,255,255,0.25)" }}>
-            <Link to="/" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors" onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Home</Link>
+          <div className="p-2 flex flex-col gap-1 rounded-xl">
+            <Link
+              to="/"
+              className={`px-3 py-2 rounded-lg text-sm font-bold transition-colors ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/20"}`}
+              onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+            >
+              Home
+            </Link>
 
-            {/* Our Products dropdown */}
-            <div className="relative" onMouseEnter={() => { if (productsTimeoutRef.current) clearTimeout(productsTimeoutRef.current); setProductsOpen(true); }} onMouseLeave={() => { productsTimeoutRef.current = setTimeout(() => setProductsOpen(false), 200); }}>
-              <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors">Our Products <ChevronDown size={14} className={`transition-transform duration-200 ${productsOpen ? "rotate-180" : ""}`} /></button>
-              <div className={`mt-1 rounded-lg overflow-hidden transition-all duration-200 ${productsOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none"}`} style={{ backgroundColor: "rgba(0,0,0,0.25)", backdropFilter: "blur(12px)" }}>
-                <Link to="/engineering" className="block px-4 py-2 text-xs font-bold text-white hover:bg-white/15 transition-colors" onClick={() => { setProductsOpen(false); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>AspiRE Engineering</Link>
-                <Link to="/sales" className="block px-4 py-2 text-xs font-bold text-white hover:bg-white/15 transition-colors" onClick={() => { setProductsOpen(false); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>AspiRE Sales</Link>
+            {/* Our Products — click to expand only, no auto hover */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold transition-colors ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/20"}`}
+              >
+                Our Products <ChevronDown size={14} className={`transition-transform duration-200 ${mobileProductsOpen ? "rotate-180" : ""}`} />
+              </button>
+              <div className={`grid transition-all duration-200 ease-in-out ${mobileProductsOpen ? "grid-rows-[1fr] opacity-100 mt-1" : "grid-rows-[0fr] opacity-0"}`}>
+                <div className="overflow-hidden">
+                  <div
+                    className="rounded-lg overflow-hidden"
+                    style={{
+                      backgroundColor: isLightBg ? "rgba(44,96,53,0.08)" : "rgba(0,0,0,0.25)",
+                      backdropFilter: "blur(12px)",
+                      border: isLightBg ? "1px solid rgba(44,96,53,0.1)" : "none",
+                    }}
+                  >
+                    <Link
+                      to="/engineering"
+                      className={`block px-4 py-2 text-xs font-bold transition-colors ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/15"}`}
+                      onClick={() => { setMobileProductsOpen(false); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    >
+                      AspiRE Engineering
+                    </Link>
+                    <Link
+                      to="/sales"
+                      className={`block px-4 py-2 text-xs font-bold transition-colors ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/15"}`}
+                      onClick={() => { setMobileProductsOpen(false); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    >
+                      AspiRE Sales
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Package Plan dropdown */}
-            <div className="relative" onMouseEnter={() => { if (plansTimeoutRef.current) clearTimeout(plansTimeoutRef.current); setPlansOpen(true); }} onMouseLeave={() => { plansTimeoutRef.current = setTimeout(() => setPlansOpen(false), 200); }}>
-              <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors">Package Plan <ChevronDown size={14} className={`transition-transform duration-200 ${plansOpen ? "rotate-180" : ""}`} /></button>
-              <div className={`mt-1 rounded-lg overflow-hidden transition-all duration-200 ${plansOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none"}`} style={{ backgroundColor: "rgba(0,0,0,0.25)", backdropFilter: "blur(12px)" }}>
-                <a href="/#package-plans?tab=engineering" className="block px-4 py-2 text-xs font-bold text-white hover:bg-white/15 transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); setPlansOpen(false); setMobileMenuOpen(false); handlePackagePlanClick("engineering")(e); }}>Engineering</a>
-                <a href="/#package-plans?tab=sales" className="block px-4 py-2 text-xs font-bold text-white hover:bg-white/15 transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); setPlansOpen(false); setMobileMenuOpen(false); handlePackagePlanClick("sales")(e); }}>Sales</a>
+            {/* Package Plan — click to expand only, no auto hover */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setMobilePlansOpen(!mobilePlansOpen)}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold transition-colors ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/20"}`}
+              >
+                Package Plan <ChevronDown size={14} className={`transition-transform duration-200 ${mobilePlansOpen ? "rotate-180" : ""}`} />
+              </button>
+              <div className={`grid transition-all duration-200 ease-in-out ${mobilePlansOpen ? "grid-rows-[1fr] opacity-100 mt-1" : "grid-rows-[0fr] opacity-0"}`}>
+                <div className="overflow-hidden">
+                  <div
+                    className="rounded-lg overflow-hidden"
+                    style={{
+                      backgroundColor: isLightBg ? "rgba(44,96,53,0.08)" : "rgba(0,0,0,0.25)",
+                      backdropFilter: "blur(12px)",
+                      border: isLightBg ? "1px solid rgba(44,96,53,0.1)" : "none",
+                    }}
+                  >
+                    <a
+                      href="/#package-plans?tab=engineering"
+                      className={`block px-4 py-2 text-xs font-bold transition-colors cursor-pointer ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/15"}`}
+                      onClick={(e) => { e.preventDefault(); setMobilePlansOpen(false); setMobileMenuOpen(false); handlePackagePlanClick("engineering")(e); }}
+                    >
+                      Engineering
+                    </a>
+                    <a
+                      href="/#package-plans?tab=sales"
+                      className={`block px-4 py-2 text-xs font-bold transition-colors cursor-pointer ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/15"}`}
+                      onClick={(e) => { e.preventDefault(); setMobilePlansOpen(false); setMobileMenuOpen(false); handlePackagePlanClick("sales")(e); }}
+                    >
+                      Sales
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
 
