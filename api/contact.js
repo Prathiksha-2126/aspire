@@ -1,5 +1,10 @@
 function buildEmailHtml({ fullName, companyName, email, phone, message }) {
-  const SITE_URL = "https://aspirecloud.in";
+  // Uses Vercel's auto-provided production URL, which is always live the moment
+  // you deploy — no dependency on aspirecloud.in being connected/verified yet.
+  // Falls back to the custom domain once that's confirmed working.
+  const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://aspirecloud.in";
   const logoUrl  = `${SITE_URL}/images/Black%20AspiRE%20Logo.png`;
   const year = new Date().getFullYear();
   return `
