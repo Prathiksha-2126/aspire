@@ -1,5 +1,3 @@
-import nodemailer from "nodemailer";
-
 function buildEmailHtml({ fullName, companyName, email, phone, message }) {
   const SITE_URL = "https://aspirecloud.in";
   const logoUrl  = `${SITE_URL}/images/Black%20AspiRE%20Logo.png`;
@@ -101,48 +99,53 @@ AspiRE — Digitising Real Estate
 This is an automated message. Please do not reply to this email.
 Enquiry sent directly from ${fullName} <${email}> via AspiRE Contact Us form.`;
 
-    // SMTP config — set these in Vercel Environment Variables
-    // For Gmail: SMTP_HOST=smtp.gmail.com, SMTP_PORT=465, SMTP_USER=uttara.2904@gmail.com, SMTP_PASS=app_password
-    // For custom domain (recommended to avoid "via gmail.com"): use your domain SMTP
-    const host = process.env.SMTP_HOST || process.env.EMAIL_HOST;
-    const user = process.env.SMTP_USER || process.env.EMAIL_USER;
-    const pass = process.env.SMTP_PASS || process.env.EMAIL_PASS;
+    // ── Resend (HTTPS email API) — replaces SMTP/nodemailer, which Vercel's
+    // serverless functions block on the raw SMTP ports (25/465/587). Resend
+    // sends over plain HTTPS, so it works reliably from serverless functions.
+    //
+    // Setup required in Vercel → Settings → Environment Variables:
+    //   RESEND_API_KEY   — from https://resend.com/api-keys
+    //   RESEND_FROM      — e.g. "AspiRE Website <enquiries@aspirecloud.in>"
+    //                      (must be on a domain verified in Resend; use
+    //                      "onboarding@resend.dev" only for initial testing)
+    //   CONTACT_TO       — inbox that should receive enquiries
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    const RESEND_FROM = process.env.RESEND_FROM || "AspiRE Website <onboarding@resend.dev>";
     const to = process.env.CONTACT_TO || "coppercodesconsulting@gmail.com";
-    // Fallback: if SMTP not configured, log and return success (for preview) — replace with real credentials in production
-    if (!host || !user || !pass) {
-      console.log("CONTACT FORM (no SMTP configured) — would send:", { from: `${fullName} <${email}>`, to, subject: `New Contact Enquiry from ${fullName} — AspiRE Website` });
-      // Still return success so UI doesn't block; configure SMTP in Vercel to actually deliver
+
+    if (!RESEND_API_KEY) {
+      console.log("CONTACT FORM (no RESEND_API_KEY configured) — would send:", {
+        from: RESEND_FROM,
+        to,
+        subject: `New Contact Enquiry from ${fullName} — AspiRE Website`,
+      });
       return res.status(200).json({ ok: true, preview: true, html, text });
     }
 
-    const port = Number(process.env.SMTP_PORT || 465);
-    const secure = port === 465;
-
-    const transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure,
-      auth: { user, pass },
-    });
-
-    // From must be YOUR authenticated Gmail address — Gmail SMTP rejects/rewrites
-    // messages where the From header doesn't match the authenticated account.
-    // The visitor's name still shows as the display name, and Reply-To routes
-    // any reply straight to them.
-    const info = await transporter.sendMail({
-      from: `"${fullName} (via AspiRE website)" <${user}>`,
-      to,
-      replyTo: email,
-      subject: `New Contact Enquiry from ${fullName} — AspiRE Website`,
-      text,
-      html,
+    const resendRes = await fetch("https://api.resend.com/emails", {
+      method: "POST",
       headers: {
-        "X-Mailer": "AspiRE Contact Form",
-        "X-Contact-Email": email,
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        from: RESEND_FROM,
+        to: [to],
+        reply_to: email,
+        subject: `New Contact Enquiry from ${fullName} — AspiRE Website`,
+        html,
+        text,
+      }),
     });
 
-    return res.status(200).json({ ok: true, id: info.messageId });
+    const resendData = await resendRes.json().catch(() => ({}));
+
+    if (!resendRes.ok) {
+      console.error("Resend API error:", resendRes.status, resendData);
+      return res.status(500).json({ error: resendData?.message || "Failed to send email" });
+    }
+
+    return res.status(200).json({ ok: true, id: resendData?.id });
   } catch (err) {
     console.error("contact api error", err);
     return res.status(500).json({ error: err.message || "Failed to send email" });
