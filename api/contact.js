@@ -125,13 +125,14 @@ Enquiry sent directly from ${fullName} <${email}> via AspiRE Contact Us form.`;
       auth: { user, pass },
     });
 
-    // From is the CLIENT directly — this makes inbox show From: "Prathiksha Gajula <PRATHIKSHA.CHITTI@gmail.com>" not via EmailJS
-    // Envelope sender remains your authenticated Gmail to pass SPF, but header From is client
+    // From must be YOUR authenticated Gmail address — Gmail SMTP rejects/rewrites
+    // messages where the From header doesn't match the authenticated account.
+    // The visitor's name still shows as the display name, and Reply-To routes
+    // any reply straight to them.
     const info = await transporter.sendMail({
-      from: `"${fullName}" <${email}>`,
+      from: `"${fullName} (via AspiRE website)" <${user}>`,
       to,
       replyTo: email,
-      envelope: { from: user, to },
       subject: `New Contact Enquiry from ${fullName} — AspiRE Website`,
       text,
       html,
