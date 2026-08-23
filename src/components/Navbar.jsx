@@ -7,6 +7,7 @@ export default function Navbar() {
   const [plansOpen, setPlansOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLightBg, setIsLightBg] = useState(false);
+  const [headerOpacity, setHeaderOpacity] = useState(1);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -74,6 +75,26 @@ export default function Navbar() {
     };
   }, [location]);
 
+  // Header fade on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const heroHeight = window.innerHeight;
+      const fadeStart = heroHeight * 0.3;
+      const fadeEnd = heroHeight * 0.7;
+      let opacity = 1;
+      if (scrollY >= fadeEnd) {
+        opacity = 0;
+      } else if (scrollY > fadeStart) {
+        opacity = 1 - (scrollY - fadeStart) / (fadeEnd - fadeStart);
+      }
+      setHeaderOpacity(Math.max(0, Math.min(1, opacity)));
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const handleProductsEnter = () => {
     if (productsTimeoutRef.current) clearTimeout(productsTimeoutRef.current);
     setProductsOpen(true);
@@ -126,8 +147,8 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Logo — absolute, scrolls with page */}
-      <div className="absolute top-4 left-4 md:top-5 md:left-12 z-40">
+      {/* Logo — fixed on mobile, absolute on desktop */}
+      <div className="fixed top-4 left-4 md:absolute md:top-5 md:left-12 z-40 transition-opacity duration-300" style={{ opacity: headerOpacity }}>
         <Link to="/#hero" onClick={handleLogoClick}>
           <img
             src="/images/AspiRE Main Logo.png"
@@ -137,10 +158,41 @@ export default function Navbar() {
         </Link>
       </div>
 
-      {/* Mobile hamburger — top right on small screens */}
-      <button className="md:hidden fixed top-4 right-4 z-50 flex items-center justify-center text-white p-1" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menu">
-        <Menu size={22} strokeWidth={2.5} />
-      </button>
+      {/* Mobile hamburger — fixed top right, opens dropdown on click */}
+      <div className="md:hidden fixed top-4 right-4 z-50 transition-opacity duration-300" style={{ opacity: headerOpacity }}>
+        <button className="flex items-center justify-center text-white p-1" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menu">
+          <Menu size={22} strokeWidth={2.5} />
+        </button>
+
+        {/* Mobile dropdown — click activated */}
+        <div
+          className={`absolute top-full right-0 mt-3 w-56 rounded-xl border shadow-2xl transition-all duration-200 ${mobileMenuOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none"}`}
+        >
+          <div className="p-2 flex flex-col gap-1 rounded-xl" style={{ backgroundColor: "rgba(255,255,255,0.12)", backdropFilter: "blur(16px)", borderColor: "rgba(255,255,255,0.25)" }}>
+            <Link to="/" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors" onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Home</Link>
+
+            {/* Our Products dropdown */}
+            <div className="relative" onMouseEnter={() => { if (productsTimeoutRef.current) clearTimeout(productsTimeoutRef.current); setProductsOpen(true); }} onMouseLeave={() => { productsTimeoutRef.current = setTimeout(() => setProductsOpen(false), 200); }}>
+              <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors">Our Products <ChevronDown size={14} className={`transition-transform duration-200 ${productsOpen ? "rotate-180" : ""}`} /></button>
+              <div className={`mt-1 rounded-lg overflow-hidden transition-all duration-200 ${productsOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none"}`} style={{ backgroundColor: "rgba(0,0,0,0.25)", backdropFilter: "blur(12px)" }}>
+                <Link to="/engineering" className="block px-4 py-2 text-xs font-bold text-white hover:bg-white/15 transition-colors" onClick={() => { setProductsOpen(false); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>AspiRE Engineering</Link>
+                <Link to="/sales" className="block px-4 py-2 text-xs font-bold text-white hover:bg-white/15 transition-colors" onClick={() => { setProductsOpen(false); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>AspiRE Sales</Link>
+              </div>
+            </div>
+
+            {/* Package Plan dropdown */}
+            <div className="relative" onMouseEnter={() => { if (plansTimeoutRef.current) clearTimeout(plansTimeoutRef.current); setPlansOpen(true); }} onMouseLeave={() => { plansTimeoutRef.current = setTimeout(() => setPlansOpen(false), 200); }}>
+              <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors">Package Plan <ChevronDown size={14} className={`transition-transform duration-200 ${plansOpen ? "rotate-180" : ""}`} /></button>
+              <div className={`mt-1 rounded-lg overflow-hidden transition-all duration-200 ${plansOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none"}`} style={{ backgroundColor: "rgba(0,0,0,0.25)", backdropFilter: "blur(12px)" }}>
+                <a href="/#package-plans?tab=engineering" className="block px-4 py-2 text-xs font-bold text-white hover:bg-white/15 transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); setPlansOpen(false); setMobileMenuOpen(false); handlePackagePlanClick("engineering")(e); }}>Engineering</a>
+                <a href="/#package-plans?tab=sales" className="block px-4 py-2 text-xs font-bold text-white hover:bg-white/15 transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); setPlansOpen(false); setMobileMenuOpen(false); handlePackagePlanClick("sales")(e); }}>Sales</a>
+              </div>
+            </div>
+
+            <a href="#contact" className="px-3 py-2 rounded-lg text-sm font-bold text-white bg-[#2C6035] hover:bg-[#245029] transition-colors text-center" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); handleContactClick(e); }}>Contact Us</a>
+          </div>
+        </div>
+      </div>
 
       {/* Nav pill — hidden on mobile, visible on desktop */}
       <nav ref={navRef} className="hidden md:block fixed top-3 md:top-5 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-lg">
@@ -246,21 +298,6 @@ export default function Navbar() {
           </a>
         </div>
       </nav>
-
-      {/* Mobile menu drawer */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black/50 md:hidden" onClick={() => setMobileMenuOpen(false)}>
-          <div className="absolute top-20 left-4 right-4 max-w-sm mx-auto rounded-xl p-3 flex flex-col gap-1.5 backdrop-blur-md bg-white/10 border border-white/20">
-            <Link to="/" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors" onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Home</Link>
-            <Link to="/engineering" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors" onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>AspiRE Engineering</Link>
-            <Link to="/sales" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors" onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>AspiRE Sales</Link>
-            <a href="/#package-plans?tab=engineering" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); handlePackagePlanClick("engineering")(e); }}>Package Plan — Engineering</a>
-            <a href="/#package-plans?tab=sales" className="px-3 py-2 rounded-lg text-sm font-bold text-white hover:bg-white/20 transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); handlePackagePlanClick("sales")(e); }}>Package Plan — Sales</a>
-            <a href="#contact" className="px-3 py-2 rounded-lg text-sm font-bold text-white bg-[#2C6035] hover:bg-[#245029] transition-colors text-center" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); handleContactClick(e); }}>Contact Us</a>
-          </div>
-        </div>
-      )}
-
     </>
   );
 }

@@ -8,7 +8,7 @@ import {
   PieChart,
 } from "lucide-react";
 import SalesFeatureTabs from "../components/SalesFeatureTabs";
-import ImageRevealSlider from "../components/animations/ImageRevealSlider";
+import OurAimSection from "../components/OurAimSection";
 
 const tabs = [
   {
@@ -62,7 +62,7 @@ export default function Sales() {
       {/* HERO SECTION */}
       <section
         id="hero"
-        className="relative h-screen flex items-start justify-start bg-gray-900 text-white pt-24 md:pt-44 pb-12 md:pb-16 overflow-hidden"
+        className="relative h-screen flex items-start justify-start bg-gray-900 text-white pt-28 md:pt-44 pb-12 md:pb-16 overflow-hidden"
       >
         <img
           src="/images/Hero Section of AspiRe Sales.png"
@@ -72,12 +72,12 @@ export default function Sales() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
 
-        <div className="relative z-10 max-w-5xl text-left px-6 sm:px-8 md:px-20 lg:px-28">
+        <div className="relative z-10 max-w-6xl text-left px-6 sm:px-8 md:px-20 lg:px-28">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-normal mb-3">
-            <span className="block">Are Booking Delays Costing You</span>
-            <span className="block mt-1 sm:mt-2 md:mt-3">Revenue?</span>
+            <span className="block">Are Booking Delays</span>
+            <span className="block mt-1 sm:mt-2 md:mt-3">Costing You Revenue?</span>
           </h1>
-          <p className="text-white/90 text-base md:text-lg max-w-2xl mb-8 leading-relaxed">
+          <p className="text-white/90 text-lg md:text-2xl max-w-2xl mb-8 leading-relaxed">
             Every unit. Every customer. Every transaction in real time.
           </p>
           <motion.div
@@ -99,133 +99,47 @@ export default function Sales() {
       {/* FEATURE TABS (Clean & Independent) */}
       <SalesFeatureTabs tabs={tabs} />
 
-      {/* WHAT WE AIM SECTION */}
-      <section
-        className="min-h-[85vh] py-16 md:py-24 px-6 md:px-16 relative overflow-hidden text-white flex flex-col justify-center vector-on-green"
-        style={{ backgroundColor: "#2C6035" }}
-      >
-        {/* Centered Section Heading */}
-        <div className="max-w-6xl mx-auto mb-10 md:mb-16 relative z-10 text-center shrink-0">
-          <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-white/90 mb-2.5">
-            — OUR AIM
-          </p>
-          <h2 className="text-3xl md:text-5xl font-bold leading-tight text-center text-white font-poppins">
-            Sell Smarter with AspiRE
-          </h2>
-        </div>
-
-        {/* Two-column layout */}
-        <div className="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-10 md:gap-16 items-center relative z-10 shrink-0">
-          {/* LEFT: Image Slider */}
-          <motion.div
-            className="flex justify-center md:justify-start order-2 md:order-1"
-            initial={{ x: "-100%", opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div className="w-full max-w-[340px] sm:max-w-[380px] md:max-w-[440px] mx-auto shadow-2xl rounded-2xl overflow-hidden">
-              <ImageRevealSlider
-                beforeSrc="/images/AIM Section of Sales After.jpg"
-                afterSrc="/images/AIM Section of AspiRE Sales After.jpg"
-              />
-            </div>
-          </motion.div>
-
-          {/* RIGHT: Feature Content */}
-          <motion.div
-            className="space-y-8 md:space-y-10 order-1 md:order-2"
-            initial={{ x: "100%", opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            {/* Feature 1 */}
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2.5 text-white font-poppins">
-                Centralized Sales Management
-              </h3>
-              <div className="flex items-start gap-3.5">
-                <svg
-                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="6" cy="12" r="3" />
-                  <line x1="9" y1="12" x2="18" y2="12" />
-                </svg>
-                <div className="text-white/90 text-sm md:text-base leading-relaxed">
-                  <p>– Manage leads, follow-ups & bookings in one place</p>
-                  <p>– Never miss an opportunity</p>
-                  <p className="font-bold text-white mt-1.5">
-                    Improve conversions & sales efficiency
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Feature 2 */}
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2.5 text-white font-poppins">
-                Instant Document Automation
-              </h3>
-              <div className="flex items-start gap-3.5">
-                <svg
-                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="6" cy="12" r="3" />
-                  <line x1="9" y1="12" x2="18" y2="12" />
-                </svg>
-                <div className="text-white/90 text-sm md:text-base leading-relaxed">
-                  <p>– Auto-generate offer letters, invoices & agreements</p>
-                  <p>– Reduce manual work & errors</p>
-                  <p className="font-bold text-white mt-1.5">
-                    Save up to 90% time
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Feature 3 */}
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2.5 text-white font-poppins">
-                Real-Time Sales Insights
-              </h3>
-              <div className="flex items-start gap-3.5">
-                <svg
-                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="6" cy="12" r="3" />
-                  <line x1="9" y1="12" x2="18" y2="12" />
-                </svg>
-                <div className="text-white/90 text-sm md:text-base leading-relaxed">
-                  <p>– Live dashboards for sales & revenue tracking</p>
-                  <p>– Make faster, data-driven decisions</p>
-                  <p className="font-bold text-white mt-1.5">
-                    Boost productivity by 15–20%
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* WHAT WE AIM */}
+      <OurAimSection
+        photo="/images/Aim of AspiRE Sales.png"
+        eyebrow="OUR AIM"
+        heading={[
+          { text: "Sell Smarter with " },
+          { text: "AspiRE", highlight: true },
+        ]}
+        items={[
+          {
+            number: "01",
+            icon: "/images/Centralized Sales Management.png",
+            title: "Centralized Sales Management",
+            bullets: [
+              "Manage leads, follow-ups & bookings in one place",
+              "Never miss an opportunity",
+            ],
+            highlight: "Improve conversions & sales efficiency",
+          },
+          {
+            number: "02",
+            icon: "/images/Instant Document Automation.png",
+            title: "Instant Document Automation",
+            bullets: [
+              "Auto-generate offer letters, invoices & agreements",
+              "Reduce manual work & errors",
+            ],
+            highlight: "Save up to 90% time",
+          },
+          {
+            number: "03",
+            icon: "/images/Real-Time Sales Insights.png",
+            title: "Real-Time Sales Insights",
+            bullets: [
+              "Live dashboards for sales & revenue tracking",
+              "Make faster, data-driven decisions",
+            ],
+            highlight: "Boost productivity by 15-20%",
+          },
+        ]}
+      />
     </>
   );
 }

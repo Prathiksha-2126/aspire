@@ -14,20 +14,25 @@ const getImageForTab = (label) => imageMap[label] || null;
 export default function SalesFeatureTabs({ tabs }) {
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [isPaused, setIsPaused] = useState(false);
   const current = tabs[active];
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setDirection(1);
-      setActive((prev) => (prev === tabs.length - 1 ? 0 : prev + 1));
+      if (!isPaused) {
+        setDirection(1);
+        setActive((prev) => (prev === tabs.length - 1 ? 0 : prev + 1));
+      }
     }, 6000);
     return () => clearInterval(timer);
-  }, [tabs.length]);
+  }, [tabs.length, isPaused]);
 
   const go = (index) => {
     if (index === active) return;
     setDirection(index > active ? 1 : -1);
     setActive(index);
+    setIsPaused(true);
+    setTimeout(() => setIsPaused(false), 5000);
   };
   const handlePrev = () => go(active === 0 ? tabs.length - 1 : active - 1);
   const handleNext = () => go(active === tabs.length - 1 ? 0 : active + 1);

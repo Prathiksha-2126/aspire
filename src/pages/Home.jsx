@@ -585,7 +585,7 @@ export default function Home() {
       {/* ── OUR VISION ───────────────────────────────────────────────────── */}
       <motion.section
         id="our-vision"
-        className="w-full min-h-screen min-h-[100dvh] px-5 sm:px-8 md:px-16 pt-16 md:pt-28 pb-16 text-center relative overflow-hidden flex flex-col justify-center items-center vector-on-light"
+        className="w-full min-h-screen min-h-[100dvh] px-5 sm:px-8 md:px-16 pt-0 md:pt-2 pb-16 text-center relative overflow-hidden flex flex-col justify-center items-center vector-on-light"
         style={{ backgroundColor: "#FFFFFF" }}
         initial="hidden"
         whileInView="visible"

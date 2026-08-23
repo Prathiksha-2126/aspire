@@ -148,7 +148,7 @@ export default function OurProducts() {
         </motion.div>
 
         {/* Cards — 1 col mobile, 2 col md+ */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 lg:gap-10 pb-4 sm:pb-6">
           <ProductCard data={moduleData.engineering} index={0} />
           <ProductCard data={moduleData.sales} index={1} />
         </div>

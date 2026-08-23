@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 html, body, #root, * {
-  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif !important;
   scroll-behavior: smooth;
 }
 

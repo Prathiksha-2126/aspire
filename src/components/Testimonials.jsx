@@ -124,19 +124,19 @@ export default function Testimonials() {
             }
           }}
         >
-          <AnimatePresence>
+          <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, x: 40, scale: 0.96 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: -40, scale: 0.96 }}
-              transition={{ duration: 0.35, ease: "easeInOut" }}
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
               className="w-full max-w-[300px] rounded-2xl p-5 bg-white flex flex-col justify-between shadow-2xl"
               style={{ minHeight: "280px" }}
             >
               <div className="relative flex-1 flex flex-col justify-center text-center px-1">
                 <span className="text-4xl font-serif leading-none absolute top-0 left-0 text-gray-300/80 select-none">"</span>
-                <p className="font-serif text-sm leading-relaxed px-4 my-auto font-medium text-gray-900 line-clamp-5">{item.quote}</p>
+                <p className="font-serif text-sm leading-relaxed px-4 my-auto font-medium text-gray-900">{item.quote}</p>
                 <span className="text-4xl font-serif leading-none absolute bottom-0 right-0 text-gray-300/80 select-none">"</span>
               </div>
               <div className="flex items-center gap-3 pt-3 border-t border-gray-200/60 mt-3 shrink-0">

@@ -10,7 +10,7 @@ import {
   Cpu,
 } from "lucide-react";
 import FeatureTabs from "../components/FeatureTabs";
-import ImageRevealSlider from "../components/animations/ImageRevealSlider";
+import OurAimSection from "../components/OurAimSection";
 
 const tabs = [
   {
@@ -80,7 +80,7 @@ export default function Engineering() {
       {/* HERO */}
       <section
         id="hero"
-        className="relative h-screen flex items-start justify-start bg-gray-900 text-white pt-24 md:pt-44 pb-12 md:pb-16 overflow-hidden"
+        className="relative h-screen flex items-start justify-start bg-gray-900 text-white pt-28 md:pt-44 pb-12 md:pb-16 overflow-hidden"
       >
         <img
           src="/images/Engineering Hero Section Image.png"
@@ -90,12 +90,12 @@ export default function Engineering() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
 
-        <div className="relative z-10 max-w-5xl text-left px-6 sm:px-8 md:px-20 lg:px-28">
+        <div className="relative z-10 max-w-6xl text-left px-6 sm:px-8 md:px-20 lg:px-28">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-bold text-white tracking-normal mb-3">
-            <span className="block">Do You Know What's Happening</span>
-            <span className="block mt-1 sm:mt-2 md:mt-3">on Your Site?</span>
+            <span className="block">Do You Know What's</span>
+            <span className="block mt-1 sm:mt-2 md:mt-3">Happening on Your Site?</span>
           </h1>
-          <p className="text-white/90 text-base md:text-lg max-w-2xl mb-8 leading-relaxed">
+          <p className="text-white/90 text-lg md:text-2xl max-w-2xl mb-8 leading-relaxed">
             Every update. Every activity. Every site in one place.
           </p>
           <motion.div
@@ -208,130 +208,39 @@ export default function Engineering() {
         </div>
       </section>
 
-      {/* WHAT WE AIM (Dark Green Section) */}
-      <section
-        className="min-h-[85vh] pb-16 md:pb-24 px-6 md:px-16 relative overflow-hidden text-white flex flex-col justify-center vector-on-green blend-to-green fade-clear-top"
-        style={{ backgroundColor: "#2C6035" }}
-      >
-        {/* Centered Section Heading */}
-        <div className="max-w-6xl mx-auto mb-10 md:mb-16 relative z-10 text-center shrink-0">
-          <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-white/90 mb-2.5">
-            — OUR AIM
-          </p>
-          <h2 className="text-3xl md:text-5xl font-bold leading-tight text-center text-white font-poppins">
-            What We Aim From AspiRE Engineering
-          </h2>
-        </div>
-
-        {/* Two-column layout */}
-        <div className="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-10 md:gap-16 items-center relative z-10 shrink-0">
-          {/* LEFT: Image Slider */}
-          <motion.div
-            className="flex justify-center md:justify-start order-2 md:order-1"
-            initial={{ x: "-100%", opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <div className="w-full max-w-[340px] sm:max-w-[380px] md:max-w-[440px] mx-auto shadow-2xl rounded-2xl overflow-hidden">
-              <ImageRevealSlider
-                beforeSrc="/images/AIM Section of AspiRE Engineering Before.jpg"
-                afterSrc="/images/AIM Section of AspiRE Engineering After.jpg"
-              />
-            </div>
-          </motion.div>
-
-          {/* RIGHT: Feature Content */}
-          <motion.div
-            className="space-y-8 md:space-y-10 order-1 md:order-2"
-            initial={{ x: "100%", opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            {/* Feature 1 */}
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2.5 text-white font-poppins">
-                Structured Workflows
-              </h3>
-              <div className="flex items-start gap-3.5">
-                <svg
-                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="6" cy="12" r="3" />
-                  <line x1="9" y1="12" x2="18" y2="12" />
-                </svg>
-                <div className="text-white/90 text-sm md:text-base leading-relaxed">
-                  <p>Digitize tasks, approvals and material & payouts tracking</p>
-                  <p className="font-bold text-white mt-1.5">
-                    Eliminate delays from manual coordination
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Feature 2 */}
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2.5 text-white font-poppins">
-                Reduced Material Loss
-              </h3>
-              <div className="flex items-start gap-3.5">
-                <svg
-                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="6" cy="12" r="3" />
-                  <line x1="9" y1="12" x2="18" y2="12" />
-                </svg>
-                <div className="text-white/90 text-sm md:text-base leading-relaxed">
-                  <p>Minimize pilferage with smart controls</p>
-                  <p className="font-bold text-white mt-1.5">
-                    Save up to 7–10% project cost
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Feature 3 */}
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2.5 text-white font-poppins">
-                Real-Time Insights
-              </h3>
-              <div className="flex items-start gap-3.5">
-                <svg
-                  className="w-6 h-6 flex-shrink-0 mt-1 text-white"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="6" cy="12" r="3" />
-                  <line x1="9" y1="12" x2="18" y2="12" />
-                </svg>
-                <div className="text-white/90 text-sm md:text-base leading-relaxed">
-                  <p>Centralized dashboards for instant decisions</p>
-                  <p className="font-bold text-white mt-1.5">
-                    Reduce 15-20% delays from scattered data
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* WHAT WE AIM */}
+      <OurAimSection
+        photo="/images/Aim of AspiRE Engineering.png"
+        eyebrow="OUR AIM"
+        heading={[
+          { text: "What We Aim From " },
+          { text: "AspiRE", highlight: true },
+          { text: " Engineering" },
+        ]}
+        items={[
+          {
+            number: "01",
+            icon: "/images/Structured Workflows.png",
+            title: "Structured Workflows",
+            bullets: ["Digitize tasks, approvals and material & payouts tracking"],
+            highlight: "Eliminate delays from manual coordination",
+          },
+          {
+            number: "02",
+            icon: "/images/Reduced Material Loss.png",
+            title: "Reduced Material Loss",
+            bullets: ["Minimize pilferage with smart controls"],
+            highlight: "Save up to 7-10% project cost",
+          },
+          {
+            number: "03",
+            icon: "/images/Real-Time Insights.png",
+            title: "Real-Time Insights",
+            bullets: ["Centralized dashboards for instant decisions"],
+            highlight:"Reduce 15-20% delays from scattered data",
+          },
+        ]}
+      />
     </>
   );
 }
