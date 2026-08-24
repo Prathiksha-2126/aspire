@@ -65,8 +65,8 @@ export default function Footer() {
           <Link to="/#our-vision" onClick={(e) => handleHomeNavigation(e, "our-vision")} className={linkClass} style={textColor}>Our Vision</Link>
           <Link to="/#our-products" onClick={(e) => handleHomeNavigation(e, "our-products")} className={linkClass} style={textColor}>Our Products</Link>
           <Link to="/#package-plans" onClick={(e) => handleHomeNavigation(e, "package-plans")} className={linkClass} style={textColor}>Package Plans</Link>
-          <Link to="/privacy-policy" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className={linkClass} style={textColor}>Privacy Policy</Link>
-          <Link to="/terms-of-service" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className={linkClass} style={textColor}>Terms of Service</Link>
+          <Link to="/privacy-policy" className={linkClass} style={textColor}>Privacy Policy</Link>
+          <Link to="/terms-of-service" className={linkClass} style={textColor}>Terms of Service</Link>
         </div>
 
         {/* India */}

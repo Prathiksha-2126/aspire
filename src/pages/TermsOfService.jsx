@@ -41,6 +41,11 @@ export default function TermsOfService() {
   const [activeId, setActiveId] = useState("about");
   const desktopRefs = useRef({});
   const mobileRefs = useRef({});
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    window.scrollTo(0, 0);
+  }, []);
+
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
