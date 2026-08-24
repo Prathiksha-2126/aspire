@@ -64,12 +64,12 @@ export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-[#F9F8F5] font-poppins">
       {/* ── Header ── */}
-      <header className="bg-[#0d120d] text-white pt-28 md:pt-32 pb-10 px-4 text-center border-b border-white/5">
+      <header id="hero" className="bg-[#0d120d] text-white pt-28 md:pt-32 pb-10 px-4 text-center border-b border-white/5">
         <Link to="/" className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-white/70 hover:text-white transition-colors mb-6">
           ← Back to AspiRE
         </Link>
         <div className="flex justify-center mb-4">
-          <img src="/images/AspiRE Main Logo.png" alt="AspiRE" className="h-8 md:h-9 w-auto object-contain" />
+          <img src="/images/AspiRE Main Logo.png" alt="AspiRE" className="h-11 md:h-14 w-auto object-contain" />
         </div>
         <p className="text-[11px] tracking-[0.2em] uppercase text-white/60 mb-3">LEGAL</p>
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Privacy Policy</h1>
