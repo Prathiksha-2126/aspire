@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, Menu } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [productsOpen, setProductsOpen] = useState(false);
@@ -188,119 +188,123 @@ export default function Navbar() {
           <img
             src={isLightBg ? "/images/Black AspiRE Logo.png" : "/images/AspiRE Main Logo.png"}
             alt="AspiRE - Digitising Real Estate"
-            className="h-12 md:h-20 w-auto object-contain drop-shadow-md transition-all duration-300"
+            className="h-16 md:h-20 w-auto object-contain drop-shadow-md transition-all duration-300"
           />
         </Link>
       </div>
 
-      {/* Mobile hamburger — fixed to screen even before expansion, throughout flow, auto color matches desktop navbar luminance */}
+      {/* Mobile hamburger — fixed trigger */}
       <div
         ref={hamburgerRef}
         className="md:hidden fixed top-4 right-4 z-50 transition-colors duration-300"
       >
         <button
-          className={`flex items-center justify-center p-1.5 rounded-full transition-all duration-300 ${isLightBg ? "text-[#2C6035] bg-white/90 backdrop-blur-md shadow-md border border-white/60" : "text-white bg-black/20 backdrop-blur-md border border-white/25 shadow-md"}`}
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menu">
+          className={`flex items-center justify-center p-1.5 rounded-full transition-all duration-300 ${isLightBg ? "text-[#2C6035] bg-white shadow-md border border-gray-200" : "text-white bg-black/20 backdrop-blur-md border border-white/25 shadow-md"} ${mobileMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+          onClick={() => setMobileMenuOpen(true)} aria-label="Menu">
           <Menu size={22} strokeWidth={2.5} />
         </button>
+      </div>
 
-        {/* Mobile dropdown — 3 main tabs: Home, Our Products (click), Package Plan (click) — content color auto switches white↔green */}
-        <div
-          className={`absolute top-full right-0 mt-3 w-56 rounded-xl border shadow-2xl transition-all duration-200 ${mobileMenuOpen ? "opacity-100 visible pointer-events-auto" : "opacity-0 invisible pointer-events-none"}`}
-          style={{
-            backgroundColor: isLightBg ? "rgba(255,255,255,0.96)" : "rgba(255,255,255,0.12)",
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
-            borderColor: isLightBg ? "rgba(44,96,53,0.14)" : "rgba(255,255,255,0.25)",
-          }}
-        >
-          <div className="p-2 flex flex-col gap-1 rounded-xl">
-            <Link
-              to="/"
-              className={`px-3 py-2 rounded-lg text-sm font-bold transition-colors ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/20"}`}
-              onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+      {/* Overlay — full opacity backdrop */}
+      <div
+        className={`md:hidden fixed inset-0 bg-black/40 backdrop-blur-[1px] z-40 transition-opacity duration-300 ${mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}
+        onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* Sidebar from right — full opacity, solid white */}
+      <div
+        className={`md:hidden fixed top-0 right-0 h-[100dvh] w-[78%] max-w-[320px] bg-white z-50 shadow-2xl flex flex-col transition-transform duration-300 ease-out ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+      >
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+          <img src="/images/Black AspiRE Logo.png" alt="AspiRE" className="h-8 w-auto object-contain" />
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+            aria-label="Close menu"
+          >
+            <X size={16} className="text-gray-700" strokeWidth={2.5} />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-3 py-4 flex flex-col gap-1">
+          <Link
+            to="/"
+            className="px-3 py-3 rounded-lg text-sm font-bold text-[#2C6035] hover:bg-[#2C6035]/10 transition-colors"
+            onClick={() => { setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+          >
+            Home
+          </Link>
+
+          {/* Our Products — click to expand */}
+          <div>
+            <button
+              type="button"
+              onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
+              className="w-full flex items-center justify-between px-3 py-3 rounded-lg text-sm font-bold text-[#2C6035] hover:bg-[#2C6035]/10 transition-colors"
             >
-              Home
-            </Link>
-
-            {/* Our Products — click to expand only, no auto hover */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold transition-colors ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/20"}`}
-              >
-                Our Products <ChevronDown size={14} className={`transition-transform duration-200 ${mobileProductsOpen ? "rotate-180" : ""}`} />
-              </button>
-              <div className={`grid transition-all duration-200 ease-in-out ${mobileProductsOpen ? "grid-rows-[1fr] opacity-100 mt-1" : "grid-rows-[0fr] opacity-0"}`}>
-                <div className="overflow-hidden">
-                  <div
-                    className="rounded-lg overflow-hidden"
-                    style={{
-                      backgroundColor: isLightBg ? "rgba(44,96,53,0.08)" : "rgba(0,0,0,0.25)",
-                      backdropFilter: "blur(12px)",
-                      border: isLightBg ? "1px solid rgba(44,96,53,0.1)" : "none",
-                    }}
+              Our Products <ChevronDown size={14} className={`transition-transform duration-200 ${mobileProductsOpen ? "rotate-180" : ""}`} />
+            </button>
+            <div className={`grid transition-all duration-200 ease-in-out ${mobileProductsOpen ? "grid-rows-[1fr] opacity-100 mt-1" : "grid-rows-[0fr] opacity-0"}`}>
+              <div className="overflow-hidden">
+                <div className="mx-2 rounded-lg overflow-hidden bg-[#2C6035]/10 border border-[#2C6035]/10">
+                  <Link
+                    to="/engineering"
+                    className="block px-4 py-3 text-xs font-bold text-[#2C6035] hover:bg-[#2C6035]/10 transition-colors"
+                    onClick={() => { setMobileProductsOpen(false); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
                   >
-                    <Link
-                      to="/engineering"
-                      className={`block px-4 py-2 text-xs font-bold transition-colors ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/15"}`}
-                      onClick={() => { setMobileProductsOpen(false); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                    >
-                      AspiRE Engineering
-                    </Link>
-                    <Link
-                      to="/sales"
-                      className={`block px-4 py-2 text-xs font-bold transition-colors ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/15"}`}
-                      onClick={() => { setMobileProductsOpen(false); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                    >
-                      AspiRE Sales
-                    </Link>
-                  </div>
+                    AspiRE Engineering
+                  </Link>
+                  <Link
+                    to="/sales"
+                    className="block px-4 py-3 text-xs font-bold text-[#2C6035] hover:bg-[#2C6035]/10 transition-colors"
+                    onClick={() => { setMobileProductsOpen(false); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                  >
+                    AspiRE Sales
+                  </Link>
                 </div>
               </div>
             </div>
-
-            {/* Package Plan — click to expand only, no auto hover */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setMobilePlansOpen(!mobilePlansOpen)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold transition-colors ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/20"}`}
-              >
-                Package Plan <ChevronDown size={14} className={`transition-transform duration-200 ${mobilePlansOpen ? "rotate-180" : ""}`} />
-              </button>
-              <div className={`grid transition-all duration-200 ease-in-out ${mobilePlansOpen ? "grid-rows-[1fr] opacity-100 mt-1" : "grid-rows-[0fr] opacity-0"}`}>
-                <div className="overflow-hidden">
-                  <div
-                    className="rounded-lg overflow-hidden"
-                    style={{
-                      backgroundColor: isLightBg ? "rgba(44,96,53,0.08)" : "rgba(0,0,0,0.25)",
-                      backdropFilter: "blur(12px)",
-                      border: isLightBg ? "1px solid rgba(44,96,53,0.1)" : "none",
-                    }}
-                  >
-                    <a
-                      href="/#package-plans?tab=engineering"
-                      className={`block px-4 py-2 text-xs font-bold transition-colors cursor-pointer ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/15"}`}
-                      onClick={(e) => { e.preventDefault(); setMobilePlansOpen(false); setMobileMenuOpen(false); handlePackagePlanClick("engineering")(e); }}
-                    >
-                      Engineering
-                    </a>
-                    <a
-                      href="/#package-plans?tab=sales"
-                      className={`block px-4 py-2 text-xs font-bold transition-colors cursor-pointer ${isLightBg ? "text-[#2C6035] hover:bg-[#2C6035]/10" : "text-white hover:bg-white/15"}`}
-                      onClick={(e) => { e.preventDefault(); setMobilePlansOpen(false); setMobileMenuOpen(false); handlePackagePlanClick("sales")(e); }}
-                    >
-                      Sales
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <a href="#contact" className="px-3 py-2 rounded-lg text-sm font-bold text-white bg-[#2C6035] hover:bg-[#245029] transition-colors text-center" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); handleContactClick(e); }}>Contact Us</a>
           </div>
+
+          {/* Package Plan — click to expand */}
+          <div>
+            <button
+              type="button"
+              onClick={() => setMobilePlansOpen(!mobilePlansOpen)}
+              className="w-full flex items-center justify-between px-3 py-3 rounded-lg text-sm font-bold text-[#2C6035] hover:bg-[#2C6035]/10 transition-colors"
+            >
+              Package Plan <ChevronDown size={14} className={`transition-transform duration-200 ${mobilePlansOpen ? "rotate-180" : ""}`} />
+            </button>
+            <div className={`grid transition-all duration-200 ease-in-out ${mobilePlansOpen ? "grid-rows-[1fr] opacity-100 mt-1" : "grid-rows-[0fr] opacity-0"}`}>
+              <div className="overflow-hidden">
+                <div className="mx-2 rounded-lg overflow-hidden bg-[#2C6035]/10 border border-[#2C6035]/10">
+                  <a
+                    href="/#package-plans?tab=engineering"
+                    className="block px-4 py-3 text-xs font-bold text-[#2C6035] hover:bg-[#2C6035]/10 transition-colors cursor-pointer"
+                    onClick={(e) => { e.preventDefault(); setMobilePlansOpen(false); setMobileMenuOpen(false); handlePackagePlanClick("engineering")(e); }}
+                  >
+                    Engineering
+                  </a>
+                  <a
+                    href="/#package-plans?tab=sales"
+                    className="block px-4 py-3 text-xs font-bold text-[#2C6035] hover:bg-[#2C6035]/10 transition-colors cursor-pointer"
+                    onClick={(e) => { e.preventDefault(); setMobilePlansOpen(false); setMobileMenuOpen(false); handlePackagePlanClick("sales")(e); }}
+                  >
+                    Sales
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a
+            href="#contact"
+            className="mt-3 px-3 py-3 rounded-lg text-sm font-bold text-white bg-[#2C6035] hover:bg-[#245029] transition-colors text-center"
+            onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); handleContactClick(e); }}
+          >
+            Contact Us
+          </a>
         </div>
       </div>
 

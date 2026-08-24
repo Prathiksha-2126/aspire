@@ -95,7 +95,7 @@ export default function Engineering() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent md:hidden pointer-events-none" />
 
         <div className="relative z-10 w-full max-w-6xl text-left px-4 sm:px-6 md:px-20 lg:px-28">
-          <h1 className="text-[26px] sm:text-[30px] md:text-[48px] lg:text-[58px] font-bold text-white tracking-tight leading-[1.08] md:leading-[1.1] mb-3 max-w-[340px] sm:max-w-[540px] md:max-w-[620px] lg:max-w-[700px]">
+          <h1 className="text-[30px] sm:text-[34px] md:text-[48px] lg:text-[58px] font-bold text-white tracking-tight leading-[1.08] md:leading-[1.1] mb-3 max-w-[360px] sm:max-w-[560px] md:max-w-[620px] lg:max-w-[700px]">
             <span className="block whitespace-nowrap">Do You Know What's</span>
             <span className="block whitespace-nowrap mt-2 sm:mt-2.5 md:mt-3">Happening on Your Site?</span>
           </h1>

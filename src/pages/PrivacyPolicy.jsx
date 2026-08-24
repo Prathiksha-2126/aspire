@@ -70,13 +70,7 @@ export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-[#F9F8F5] font-poppins">
       {/* ── Header ── */}
-      <header id="hero" className="bg-[#0d120d] text-white pt-28 md:pt-32 pb-10 px-4 text-center border-b border-white/5">
-        <Link to="/" className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-white/70 hover:text-white transition-colors mb-6">
-          ← Back to AspiRE
-        </Link>
-        <div className="flex justify-center mb-4">
-          <img src="/images/AspiRE Main Logo.png" alt="AspiRE" className="h-11 md:h-14 w-auto object-contain" />
-        </div>
+      <header id="hero" className="relative bg-[#0d120d] text-white pt-28 md:pt-32 pb-14 px-4 text-center border-b border-white/5">
         <p className="text-[11px] tracking-[0.2em] uppercase text-white/60 mb-3">LEGAL</p>
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Privacy Policy</h1>
         <p className="text-sm md:text-base text-white/70 max-w-xl mx-auto">Your Privacy Matters. Here's how we protect your information.</p>
@@ -89,10 +83,13 @@ export default function PrivacyPolicy() {
           <span className="text-white/30">|</span>
           <Link to="/terms-of-service" className="text-white/60 hover:text-white transition-colors">Terms of Service</Link>
         </div>
+        <Link to="/" className="absolute left-4 md:left-6 bottom-4 inline-flex items-center gap-2 text-xs tracking-widest uppercase text-white/70 hover:text-white transition-colors">
+          ← Back to AspiRE
+        </Link>
       </header>
 
-      {/* ── 2-Col Layout ── */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6">
+      {/* ── 2-Col Layout — content a bit upper and fully visible ── */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6">
         {/* Mobile top nav — hamburger toggles, horizontal scroll only (no vertical page jump) */}
         <div className="lg:hidden -mx-4 px-4 sticky top-[60px] z-30 py-2 bg-[#F9F8F5]">
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">

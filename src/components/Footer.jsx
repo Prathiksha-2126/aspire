@@ -30,7 +30,7 @@ export default function Footer() {
         {/* Brand */}
         <div className="sm:col-span-2 md:col-span-1">
           <a href="/#hero" onClick={(e) => handleHomeNavigation(e, "hero")} className="inline-block">
-            <img src="/images/Black AspiRE Logo.png" alt="AspiRE" className="h-12 md:h-16 w-auto object-contain mb-2 hover:opacity-90 transition-opacity cursor-pointer" />
+            <img src="/images/Black AspiRE Logo.png" alt="AspiRE" className="h-14 md:h-16 w-auto object-contain mb-2 hover:opacity-90 transition-opacity cursor-pointer" />
           </a>
           <p className="text-xs sm:text-sm mt-2 leading-relaxed" style={textColor}>
             Simplifying construction management, empowering businesses, and driving success with innovative solutions.

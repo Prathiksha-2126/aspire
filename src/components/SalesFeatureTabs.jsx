@@ -25,7 +25,7 @@ export default function SalesFeatureTabs({ tabs }) {
         setDirection(1);
         setActive((prev) => (prev === tabs.length - 1 ? 0 : prev + 1));
       }
-    }, 6000);
+    }, 3200);
     return () => clearInterval(timer);
   }, [tabs.length, isPaused]);
 
@@ -67,104 +67,113 @@ export default function SalesFeatureTabs({ tabs }) {
   return (
     <section id="features" className="relative overflow-hidden bg-[#F9F8F5] flex flex-col vector-on-offwhite pt-8 sm:pt-10 md:pt-12">
 
-      {/* ── MOBILE layout — no white background for content & image, slide-in ── */}
-      <div className="md:hidden px-4 pt-6 sm:pt-8 pb-6">
-        <div className="rounded-2xl overflow-hidden">
-          <div className="p-5 pb-4">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-5 h-0.5 bg-[#2C6035]" />
-              <p className="text-[9px] font-bold tracking-widest uppercase text-[#2C6035]">OUR FEATURES</p>
-            </div>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
-                <h3 className="text-[20px] font-bold uppercase leading-tight mb-2 text-[#2C6035]">{current.title}</h3>
-                <p className="text-[13px] leading-relaxed text-[#4B4A4A]">{current.description}</p>
-              </motion.div>
-            </AnimatePresence>
+      {/* ── MOBILE layout — exactly as shared image ── */}
+      <div className="md:hidden bg-[#F9F8F5] flex flex-col">
+        <div className="px-6 pt-8 pb-2">
+          <div className="flex items-center justify-center gap-2 mb-7">
+            <div className="w-7 h-0.5 bg-[#2C6035]" />
+            <p className="text-[11px] font-bold tracking-widest uppercase text-[#2C6035]">OUR FEATURES</p>
           </div>
-          <div className="relative flex items-center justify-center p-6 overflow-hidden" style={{ minHeight: "380px" }}>
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={active}
-                custom={direction}
-                variants={wheelVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="relative z-10 w-full max-w-[360px] flex items-center justify-center"
-              >
-                {tabImg ? (
-                  <img src={tabImg} alt={current.label} className="w-full h-auto object-contain drop-shadow-2xl" />
-                ) : (
-                  <div className="flex items-center justify-center text-[#2C6035] text-xs text-center font-medium">{current.label}</div>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h3 className="text-[28px] font-extrabold uppercase leading-[1.05] tracking-tight text-[#1B4D2E]">{current.title}</h3>
+              <p className="text-[13px] leading-[1.55] text-[#6B6B6B] mt-3 pr-2">{current.description}</p>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        <div className="mt-4 flex items-center gap-2">
+        <div className="relative mt-4 w-full h-[460px] sm:h-[480px] overflow-hidden bg-[#F9F8F5] flex items-end justify-center pb-12">
+          <div
+            className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[145%] h-[62%] bg-[#2C6035] pointer-events-none"
+            style={{ borderRadius: "50% 50% 0 0 / 65% 65% 0 0" }}
+          />
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={active}
+              custom={direction}
+              variants={wheelVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="relative z-10 w-[340px] max-w-[90%] flex items-center justify-center -translate-y-6"
+            >
+              {tabImg ? (
+                <img
+                  src={tabImg}
+                  alt={current.label}
+                  className="w-full h-[430px] sm:h-[450px] object-contain drop-shadow-2xl block"
+                  style={{ maxHeight: "450px" }}
+                />
+              ) : (
+                <div className="w-full h-[300px] bg-[#2C6035] flex items-center justify-center text-white">{current.label}</div>
+              )}
+            </motion.div>
+          </AnimatePresence>
           <button
             onClick={handlePrev}
             aria-label="Previous feature"
-            className="flex-shrink-0 w-7 h-7 rounded-full bg-white border border-[#2C6035]/20 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
+            className="absolute left-3 bottom-3 z-20 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-md border border-gray-100"
           >
-            <ChevronLeft size={14} className="text-[#2C6035]" strokeWidth={2.5} />
+            <ChevronLeft size={16} className="text-[#2C6035]" strokeWidth={2.5} />
           </button>
-          <div className="flex-1 min-w-0 rounded-xl px-2 py-3 bg-white/90 backdrop-blur border border-white/60 shadow-sm overflow-hidden">
-            <div ref={scrollRef} className="flex items-end gap-3 overflow-x-auto scrollbar-hide pb-1 snap-x snap-mandatory scroll-smooth px-1">
-              {tabs.map((tab, i) => {
-                const isAct = active === i;
-                const thumb = tab.iconImage || getImageForTab(tab.label);
-                return (
-                  <button
-                    key={tab.label}
-                    ref={(el) => (itemRefs.current[i] = el)}
-                    onClick={() => go(i)}
-                    className="flex flex-col items-center flex-shrink-0 snap-center"
-                  >
-                    <div
-                      className="rounded-full overflow-hidden flex items-center justify-center transition-all duration-300 border"
-                      style={{
-                        width: isAct ? 56 : 44,
-                        height: isAct ? 56 : 44,
-                        backgroundColor: "#FFFFFF",
-                        borderColor: "#2C6035",
-                        boxShadow: isAct ? "0 4px 12px rgba(44,96,53,0.25)" : "0 1px 4px rgba(0,0,0,0.08)",
-                      }}
-                    >
-                      {thumb ? (
-                        <img src={thumb} alt={tab.label} className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-[8px] font-bold text-center p-1" style={{ color: "#2C6035" }}>
-                          {tab.label}
-                        </div>
-                      )}
-                    </div>
-                    <span
-                      className="mt-1.5 text-center leading-tight"
-                      style={{ fontSize: isAct ? "9px" : "8px", fontWeight: isAct ? 800 : 500, color: isAct ? "#2C6035" : "#5A5A5A", maxWidth: "64px" }}
-                    >
-                      {tab.label}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
           <button
             onClick={handleNext}
             aria-label="Next feature"
-            className="flex-shrink-0 w-7 h-7 rounded-full bg-white border border-[#2C6035]/20 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
+            className="absolute right-3 bottom-3 z-20 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-md border border-gray-100"
           >
-            <ChevronRight size={14} className="text-[#2C6035]" strokeWidth={2.5} />
+            <ChevronRight size={16} className="text-[#2C6035]" strokeWidth={2.5} />
           </button>
+        </div>
+
+        <div className="bg-white px-3 py-5">
+          <div ref={scrollRef} className="flex items-end justify-between gap-1 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory px-1">
+            {tabs.map((tab, i) => {
+              const isAct = active === i;
+              return (
+                <motion.button
+                  key={tab.label}
+                  ref={(el) => (itemRefs.current[i] = el)}
+                  onClick={() => go(i)}
+                  className="flex flex-col items-center flex-shrink-0 flex-1 min-w-[64px] snap-center"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <motion.div
+                    animate={isAct ? { width: 60, height: 60 } : { width: 46, height: 46 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className={`rounded-full flex items-center justify-center ${isAct ? "shadow-lg ring-2 ring-[#2C6035]/20" : "shadow-sm"}`}
+                    style={{ backgroundColor: "#2C6035" }}
+                  >
+                    <motion.span
+                      animate={isAct ? { scale: [1, 1.12, 1.06] } : { scale: 1 }}
+                      transition={isAct ? { duration: 0.6, ease: "easeOut", times: [0, 0.5, 1] } : { duration: 0.3 }}
+                      className="text-white flex items-center justify-center"
+                    >
+                      {tab.icon ? (
+                        <span className="[&>svg]:w-5 [&>svg]:h-5 [&>svg]:text-white">{tab.icon}</span>
+                      ) : tab.iconImage ? (
+                        <img src={tab.iconImage} alt={tab.label} className="w-5 h-5 object-contain brightness-0 invert" />
+                      ) : null}
+                    </motion.span>
+                  </motion.div>
+                  <motion.span
+                    animate={{ scale: isAct ? 1.06 : 1, opacity: isAct ? 1 : 0.75 }}
+                    transition={{ duration: 0.35 }}
+                    className={`mt-2 text-center leading-tight uppercase ${isAct ? "font-bold text-[#2C6035]" : "font-medium text-[#6B6B6B]"}`}
+                    style={{ fontSize: "8px", maxWidth: "68px", whiteSpace: "pre-line" }}
+                  >
+                    {tab.label.toUpperCase()}
+                  </motion.span>
+                  {isAct && <motion.div layoutId="sales-mobile-active-underline" className="w-6 h-0.5 bg-[#2C6035] mt-1.5 rounded-full" />}
+                </motion.button>
+              );
+            })}
+          </div>
         </div>
       </div>
 

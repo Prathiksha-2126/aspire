@@ -16,7 +16,7 @@ function buildEmailHtml({ fullName, companyName, email, phone, message }) {
     <tr><td>
       <table width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;">
         <tr><td style="padding:12px 0 8px;">
-          <p style="margin:0;font-size:22px;font-weight:700;color:#111827;line-height:1.3;">📋 New Contact Enquiry Received</p>
+          <p style="margin:0;font-size:22px;font-weight:700;color:#111827;line-height:1.3;">New Contact Enquiry Received</p>
         </td></tr>
         <tr><td style="padding:12px 0 0;">
           <p style="margin:0;font-size:14px;color:#1f2937;line-height:1.6;">A new enquiry has been submitted via the AspiRE website contact form and requires your attention.</p>
