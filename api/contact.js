@@ -103,7 +103,7 @@ Enquiry sent directly from ${fullName} <${email}> via AspiRE Contact Us form.`;
     //   CONTACT_TO       — inbox that should receive enquiries
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
     const RESEND_FROM = process.env.RESEND_FROM || "AspiRE Website <onboarding@resend.dev>";
-    const to = process.env.CONTACT_TO || "coppercodesconsulting@gmail.com";
+    const to = process.env.CONTACT_TO || "inquiry@coppercodes.com";
 
     if (!RESEND_API_KEY) {
       console.log("CONTACT FORM (no RESEND_API_KEY configured) — would send:", {
