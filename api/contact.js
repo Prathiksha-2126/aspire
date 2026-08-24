@@ -37,8 +37,7 @@ function buildEmailHtml({ fullName, companyName, email, phone, message }) {
           <a href="mailto:${email}?subject=Re:%20Your%20AspiRE%20Enquiry&body=Hi%20${encodeURIComponent(fullName)},%0A%0AThank%20you%20for%20contacting%20AspiRE.%0A%0A" style="font-size:14px;color:#0a58ca;text-decoration:underline;">🔍 Reply to Client</a>
         </td></tr>
         <tr><td style="padding:28px 0 0;">
-          <img src="${logoUrl}" alt="AspiRE — Digitising Real Estate" style="height:48px;width:auto;object-fit:contain;display:block;margin-bottom:2px;" />
-          <p style="margin:0;font-size:11px;color:#6b7280;">Digitising Real Estate</p>
+          <img src="${logoUrl}" alt="AspiRE — Digitising Real Estate" style="height:48px;width:auto;object-fit:contain;display:block;" />
         </td></tr>
         <tr><td style="padding:16px 0 0;">
           <p style="margin:0 0 8px;font-size:12px;color:#374151;">© ${year} AspiRE. All rights reserved.</p>

@@ -72,7 +72,7 @@ function buildEmailHtml({ fullName, companyName, email, phone, message }) {
         <tr>
           <td style="padding:28px 0 0;">
             <img src="${logoUrl}" alt="AspiRE — Digitising Real Estate"
-                 style="height:48px;width:auto;object-fit:contain;display:block;margin-bottom:2px;" />
+                 style="height:48px;width:auto;object-fit:contain;display:block;" />
           </td>
         </tr>
         <tr>
