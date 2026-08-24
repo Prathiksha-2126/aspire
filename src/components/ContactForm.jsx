@@ -48,34 +48,12 @@ function buildEmailHtml({ fullName, companyName, email, phone, message }) {
           </td>
         </tr>
 
-        <!-- Message section — like Indent Materials -->
-        <tr>
-          <td style="padding:22px 0 0;">
-            <p style="margin:0 0 8px;font-size:16px;font-weight:700;color:#111827;">
-              💬 Message
-            </p>
-            <p style="margin:0 0 10px;font-size:14px;color:#1f2937;line-height:1.6;">
-              The following message has been submitted by the client:
-            </p>
-            <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:6px;padding:14px 16px;">
-              <p style="margin:0;font-size:14px;color:#111827;line-height:1.7;white-space:pre-wrap;">${message}</p>
-            </div>
-          </td>
-        </tr>
-
-        <!-- Next Steps — light green box with left green border, like shared image -->
+        <!-- Message — in green block (was Next Steps) -->
         <tr>
           <td style="padding:22px 0 0;">
             <div style="background:#f0faf0;border-left:4px solid #0a9e4a;border-radius:4px;padding:14px 18px;">
-              <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#111827;">
-                ⏰ Next Steps:
-              </p>
-              <ul style="margin:0;padding-left:20px;font-size:14px;color:#111827;line-height:1.7;">
-                <li>Review the enquiry details above</li>
-                <li>Reply directly to the client — <strong>${email}</strong></li>
-                <li>Verify contact details and requirements</li>
-                <li>Follow up within 24 hours for best conversion</li>
-              </ul>
+              <p style="margin:0 0 10px;font-size:16px;font-weight:700;color:#111827;">💬 Message</p>
+              <p style="margin:0;font-size:14px;color:#111827;line-height:1.7;white-space:pre-wrap;">${message}</p>
             </div>
           </td>
         </tr>
@@ -94,7 +72,7 @@ function buildEmailHtml({ fullName, companyName, email, phone, message }) {
         <tr>
           <td style="padding:28px 0 0;">
             <img src="${logoUrl}" alt="AspiRE — Digitising Real Estate"
-                 style="height:32px;width:auto;object-fit:contain;display:block;margin-bottom:2px;" />
+                 style="height:48px;width:auto;object-fit:contain;display:block;margin-bottom:2px;" />
             <p style="margin:0;font-size:11px;color:#6b7280;">Digitising Real Estate</p>
           </td>
         </tr>
