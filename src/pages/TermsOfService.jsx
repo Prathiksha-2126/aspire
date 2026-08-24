@@ -41,6 +41,8 @@ export default function TermsOfService() {
   const [activeId, setActiveId] = useState("about");
   const desktopRefs = useRef({});
   const mobileRefs = useRef({});
+  const mobileScrollRef = useRef(null);
+  const [mobileTocOpen, setMobileTocOpen] = useState(false);
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     window.scrollTo(0, 0);
@@ -66,8 +68,12 @@ export default function TermsOfService() {
     const dEl = desktopRefs.current[activeId];
     if (dEl) dEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
     const mEl = mobileRefs.current[activeId];
-    if (mEl) mEl.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-  }, [activeId]);
+    const container = mobileScrollRef.current;
+    if (mEl && container && mobileTocOpen) {
+      const left = mEl.offsetLeft - container.clientWidth / 2 + mEl.offsetWidth / 2;
+      container.scrollTo({ left, behavior: "smooth" });
+    }
+  }, [activeId, mobileTocOpen]);
 
   return (
     <div className="min-h-screen bg-[#F9F8F5] font-poppins">
@@ -94,21 +100,35 @@ export default function TermsOfService() {
       </header>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6">
-        {/* Mobile horizontal nav — auto-scrolls with content */}
-        <div className="lg:hidden -mx-4 px-4">
-          <div className="bg-white rounded-xl border border-gray-200 p-3 overflow-x-auto scrollbar-hide">
-            <p className="text-[11px] font-bold tracking-widest uppercase text-[#2C6035] mb-2 whitespace-nowrap">ON THIS PAGE</p>
-            <div className="flex gap-2 flex-nowrap">
-              {sidebarItems.map((item) => (
-                <button
-                  key={item.id}
-                  ref={(el) => { if (el) mobileRefs.current[item.id] = el; }}
-                  onClick={() => scrollTo(item.id)}
-                  className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${activeId === item.id ? "bg-[#2C6035] text-white border-[#2C6035]" : "bg-white text-gray-600 border-gray-200 hover:border-[#2C6035]/30"}`}
-                >
-                  {item.label}
-                </button>
-              ))}
+        {/* Mobile top nav — hamburger toggles, horizontal scroll only (no vertical page jump) */}
+        <div className="lg:hidden -mx-4 px-4 sticky top-[60px] z-30 py-2 bg-[#F9F8F5]">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <button
+              onClick={() => setMobileTocOpen(!mobileTocOpen)}
+              className="w-full flex items-center justify-between p-3"
+              aria-label="Toggle table of contents"
+            >
+              <span className="text-[11px] font-bold tracking-widest uppercase text-[#2C6035]">ON THIS PAGE</span>
+              <span className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${mobileTocOpen ? "bg-[#2C6035] text-white" : "bg-gray-100 text-gray-700"}`}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+              </span>
+            </button>
+            <div
+              ref={mobileScrollRef}
+              className={`overflow-x-auto scrollbar-hide scroll-smooth border-t ${mobileTocOpen ? "border-gray-100 max-h-[240px] opacity-100" : "border-transparent max-h-0 opacity-0"} transition-all duration-200`}
+            >
+              <div className="flex gap-2 flex-nowrap p-3">
+                {sidebarItems.map((item) => (
+                  <button
+                    key={item.id}
+                    ref={(el) => { if (el) mobileRefs.current[item.id] = el; }}
+                    onClick={() => { scrollTo(item.id); setMobileTocOpen(false); }}
+                    className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${activeId === item.id ? "bg-[#2C6035] text-white border-[#2C6035]" : "bg-white text-gray-600 border-gray-200 hover:border-[#2C6035]/30"}`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
