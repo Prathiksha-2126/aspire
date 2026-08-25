@@ -161,13 +161,13 @@ html, body, #root, * {
 
 .blend-to-green::before {
   background-color: #2C6035;
-  background-image: linear-gradient(rgba(44, 96, 53, 0.5), rgba(44, 96, 53, 0.5)), url('/images/White Vector.png');
+  background-image: none;
 }
 
 .blend-to-light::before,
 .testimonial-to-plans::before {
   background-color: #FFFFFF;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/images/Black Vector.png');
+  background-image: none;
 }
 
 .blend-to-green > *,
