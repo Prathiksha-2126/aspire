@@ -105,7 +105,6 @@ export default function Testimonials() {
     return (
       <motion.section
         className="relative w-full flex flex-col items-center text-white select-none overflow-hidden vector-on-green blend-to-green fade-clear-top"
-        style={{ backgroundColor: "#2C6035" }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
@@ -177,7 +176,6 @@ export default function Testimonials() {
   return (
     <motion.section
       className="relative w-full h-[700px] md:h-[820px] pt-16 md:pt-24 pb-12 md:pb-16 px-4 sm:px-6 overflow-hidden flex flex-col justify-between items-center text-white select-none box-border vector-on-green blend-to-green fade-clear-top"
-      style={{ backgroundColor: "#2C6035" }}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}

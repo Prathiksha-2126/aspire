@@ -124,7 +124,6 @@ export default function OurProducts() {
     <section
       id="our-products"
       className="w-full pb-[calc(3rem*1.12)] sm:pb-[calc(4rem*1.12)] md:pb-20 lg:pb-24 px-4 sm:px-6 md:px-12 lg:px-20 overflow-hidden vector-on-green blend-to-green fade-clear-top"
-      style={{ backgroundColor: "#2C6035" }}
     >
       <div className="max-w-[1600px] mx-auto">
         {/* Heading */}

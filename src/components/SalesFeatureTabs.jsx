@@ -141,10 +141,10 @@ export default function SalesFeatureTabs({ tabs }) {
               exit="exit"
               className="relative w-full max-w-[420px] sm:max-w-[480px] flex items-center justify-center min-h-[440px] sm:min-h-[480px]"
             >
-              {/* Green blob - top edge pinned exactly to this wrapper's vertical midpoint */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 w-[840px] h-[840px] sm:w-[940px] sm:h-[940px] rounded-full bg-[#2c6035] pointer-events-none" />
-              {/* Phone + floating cards - vertical CENTER pinned to that same midpoint, so it sits right on the circle's edge */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[392px] sm:w-[451px] flex items-center justify-center">
+              {/* Green blob - a bit down */}
+              <div className="absolute left-1/2 top-[47%] -translate-x-1/2 w-[840px] h-[840px] sm:w-[940px] sm:h-[940px] rounded-full bg-[#2c6035] pointer-events-none" />
+              {/* Phone + floating cards - a bit top */}
+              <div className="absolute left-1/2 top-[38%] -translate-x-1/2 -translate-y-1/2 z-10 w-[392px] sm:w-[451px] flex items-center justify-center">
                 {tabImg ? (
                   <img
                     src={tabImg}

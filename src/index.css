@@ -81,17 +81,77 @@ html, body, #root, * {
 
 .vector-on-light {
   background-color: #FFFFFF;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/images/Black Vector.png');
+}
+
+.vector-on-light::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/Black%20Vector.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.45;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.vector-on-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.3) 100%);
+  z-index: 0;
 }
 
 .vector-on-offwhite {
   background-color: #F9F8F5;
-  background-image: linear-gradient(rgba(249, 248, 245, 0.5), rgba(249, 248, 245, 0.5)), url('/images/Black Vector.png');
+}
+
+.vector-on-offwhite::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/Black%20Vector.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.45;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.vector-on-offwhite::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(249, 248, 245, 0.05) 0%, rgba(249, 248, 245, 0.3) 100%);
+  z-index: 0;
 }
 
 .vector-on-green {
   background-color: #2C6035 !important;
-  background-image: linear-gradient(rgba(44, 96, 53, 0.5), rgba(44, 96, 53, 0.5)), url('/images/White Vector.png');
+}
+
+.vector-on-green::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/White%20Vector.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.45;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.vector-on-green::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(44, 96, 53, 0.2) 0%, rgba(44, 96, 53, 0.7) 100%);
+  z-index: 0;
 }
 
 .vector-on-green > *,
@@ -101,12 +161,17 @@ html, body, #root, * {
   z-index: 1;
 }
 
+.vector-on-offwhite {
+  position: relative;
+  isolation: isolate;
+}
+
 /* Incoming section overlaps the one above. Its own fill is painted on
    ::before and masked from transparent → opaque, so the previous section
    shows through and there is no hard box edge. */
 :root {
-  --fade-h: clamp(110px, 13vh, 140px);
-  --fade-clear: clamp(125px, 15vh, 155px);
+  --fade-h: clamp(140px, 16vh, 170px);
+  --fade-clear: clamp(155px, 18vh, 185px);
 }
 
 .vector-on-green.blend-to-green {
@@ -142,18 +207,36 @@ html, body, #root, * {
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(0, 0, 0, 0.15) calc(var(--fade-h) * 0.3),
-    rgba(0, 0, 0, 0.5) calc(var(--fade-h) * 0.65),
-    rgba(0, 0, 0, 0.85) calc(var(--fade-h) * 0.85),
+    rgba(0, 0, 0, 0.005) calc(var(--fade-h) * 0.05),
+    rgba(0, 0, 0, 0.01) calc(var(--fade-h) * 0.15),
+    rgba(0, 0, 0, 0.02) calc(var(--fade-h) * 0.25),
+    rgba(0, 0, 0, 0.04) calc(var(--fade-h) * 0.35),
+    rgba(0, 0, 0, 0.08) calc(var(--fade-h) * 0.45),
+    rgba(0, 0, 0, 0.15) calc(var(--fade-h) * 0.55),
+    rgba(0, 0, 0, 0.25) calc(var(--fade-h) * 0.65),
+    rgba(0, 0, 0, 0.4) calc(var(--fade-h) * 0.75),
+    rgba(0, 0, 0, 0.6) calc(var(--fade-h) * 0.85),
+    rgba(0, 0, 0, 0.8) calc(var(--fade-h) * 0.92),
+    rgba(0, 0, 0, 0.95) calc(var(--fade-h) * 0.97),
+    rgba(0, 0, 0, 0.99) calc(var(--fade-h) * 0.995),
     #000 var(--fade-h),
     #000 100%
   );
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(0, 0, 0, 0.15) calc(var(--fade-h) * 0.3),
-    rgba(0, 0, 0, 0.5) calc(var(--fade-h) * 0.65),
-    rgba(0, 0, 0, 0.85) calc(var(--fade-h) * 0.85),
+    rgba(0, 0, 0, 0.005) calc(var(--fade-h) * 0.05),
+    rgba(0, 0, 0, 0.01) calc(var(--fade-h) * 0.15),
+    rgba(0, 0, 0, 0.02) calc(var(--fade-h) * 0.25),
+    rgba(0, 0, 0, 0.04) calc(var(--fade-h) * 0.35),
+    rgba(0, 0, 0, 0.08) calc(var(--fade-h) * 0.45),
+    rgba(0, 0, 0, 0.15) calc(var(--fade-h) * 0.55),
+    rgba(0, 0, 0, 0.25) calc(var(--fade-h) * 0.65),
+    rgba(0, 0, 0, 0.4) calc(var(--fade-h) * 0.75),
+    rgba(0, 0, 0, 0.6) calc(var(--fade-h) * 0.85),
+    rgba(0, 0, 0, 0.8) calc(var(--fade-h) * 0.92),
+    rgba(0, 0, 0, 0.95) calc(var(--fade-h) * 0.97),
+    rgba(0, 0, 0, 0.99) calc(var(--fade-h) * 0.995),
     #000 var(--fade-h),
     #000 100%
   );

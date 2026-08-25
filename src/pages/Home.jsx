@@ -93,7 +93,6 @@ function WhyAspireSection() {
     <section
       id="why-aspire"
       className="relative w-full py-10 md:py-14 px-4 overflow-hidden box-border vector-on-light blend-to-light fade-clear-top flex flex-col items-center justify-start min-h-[720px] sm:min-h-[800px] md:min-h-[820px]"
-      style={{ backgroundColor: "#FFFFFF" }}
     >
       {/* Header */}
       <div className="text-center px-4 z-20 max-w-4xl mx-auto shrink-0 mb-7 md:mb-10">
@@ -586,7 +585,6 @@ export default function Home() {
       <motion.section
         id="our-vision"
         className="w-full min-h-screen min-h-[100dvh] px-5 sm:px-8 md:px-16 pt-0 md:pt-2 pb-16 text-center relative overflow-hidden flex flex-col justify-center items-center vector-on-light"
-        style={{ backgroundColor: "#FFFFFF" }}
         initial="hidden"
         whileInView="visible"
         viewport={{

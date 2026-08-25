@@ -108,10 +108,10 @@ export default function FeatureTabs({ tabs }) {
   const tabImg = getImageForTab(current.label);
 
   return (
-    <section id="features" className="relative overflow-hidden bg-[#F9F8F5] flex flex-col vector-on-offwhite pt-0 md:pt-12">
+    <section id="features" className="relative overflow-hidden flex flex-col vector-on-offwhite pt-0 md:pt-12">
 
             {/* MOBILE - matches desktop structure, responsively resized, fits screen */}
-      <div className="md:hidden bg-[#F9F8F5] flex flex-col min-h-[100svh]">
+      <div className="md:hidden flex flex-col min-h-[100svh]">
         {/* Header - spacing and hierarchy */}
         <div className="px-6 pt-32 pb-4 flex-shrink-0">
           <div className="flex items-center justify-center gap-2 mb-5">
@@ -142,12 +142,13 @@ export default function FeatureTabs({ tabs }) {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="relative w-full max-w-[420px] sm:max-w-[480px] flex items-center justify-center min-h-[440px] sm:min-h-[480px]"
+              className="relative w-full max-w-[420px] sm:max-w-[480px] flex items-center justify-end min-h-[440px] sm:min-h-[480px]"
+              style={{ transformOrigin: "50% calc(100% + 400px)" }}
             >
-              {/* Green blob - top edge pinned exactly to this wrapper's vertical midpoint */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 w-[840px] h-[840px] sm:w-[940px] sm:h-[940px] rounded-full bg-[#2c6035] pointer-events-none" />
-              {/* Phone + floating cards - vertical CENTER pinned to that same midpoint, so it sits right on the circle's edge */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[392px] sm:w-[451px] flex items-center justify-center">
+              {/* Green blob - bottom edge pinned to bottom - a bit down */}
+              <div className="absolute left-1/2 bottom-[-594px] sm:bottom-[-662px] -translate-x-1/2 w-[840px] h-[840px] sm:w-[940px] sm:h-[940px] rounded-full bg-[#2c6035] pointer-events-none" />
+              {/* Phone + floating cards - positioned above the circle - a bit top */}
+              <div className="absolute left-1/2 bottom-[81px] sm:bottom-[95px] -translate-x-1/2 z-10 w-[392px] sm:w-[451px] flex items-center justify-center">
                 {tabImg ? (
                   <img
                     src={tabImg}
