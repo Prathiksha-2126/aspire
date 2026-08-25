@@ -12,43 +12,83 @@ const imageMap = {
 const getImageForTab = (label) => imageMap[label] || null;
 
 export default function SalesFeatureTabs({ tabs }) {
-  const [active, setActive] = useState(0);
+  const EXTENDED = [...tabs, ...tabs, ...tabs];
+  const [virtualActive, setVirtualActive] = useState(tabs.length);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
+  const [isJumping, setIsJumping] = useState(false);
+  const active = ((virtualActive % tabs.length) + tabs.length) % tabs.length;
   const current = tabs[active];
-  const scrollRef = useRef(null);
-  const itemRefs = useRef([]);
+  const containerRef = useRef(null);
+  const trackRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const itemWidth = 76;
+
+  useEffect(() => {
+    const update = () => {
+      if (containerRef.current) setContainerWidth(containerRef.current.clientWidth);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
       if (!isPaused) {
         setDirection(1);
-        setActive((prev) => (prev === tabs.length - 1 ? 0 : prev + 1));
+        setVirtualActive((prev) => prev + 1);
       }
     }, 3000);
     return () => clearInterval(timer);
   }, [tabs.length, isPaused]);
 
   useEffect(() => {
-    const el = itemRefs.current[active];
-    const container = scrollRef.current;
-    if (!el || !container) return;
-    const rect = container.getBoundingClientRect();
-    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
-    if (!isInView) return;
-    const left = el.offsetLeft - container.clientWidth / 2 + el.clientWidth / 2;
-    container.scrollTo({ left, behavior: "smooth" });
-  }, [active]);
+    if (virtualActive >= tabs.length * 2) {
+      const t = setTimeout(() => {
+        setIsJumping(true);
+        setVirtualActive(tabs.length);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => setIsJumping(false));
+        });
+      }, 550);
+      return () => clearTimeout(t);
+    }
+    if (virtualActive < tabs.length) {
+      const t = setTimeout(() => {
+        setIsJumping(true);
+        setVirtualActive(tabs.length * 2 - 1);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => setIsJumping(false));
+        });
+      }, 550);
+      return () => clearTimeout(t);
+    }
+  }, [virtualActive, tabs.length]);
 
-  const go = (index) => {
-    if (index === active) return;
-    setDirection(index > active ? 1 : -1);
-    setActive(index);
+  const go = (logicalIndex) => {
+    const curLogical = ((virtualActive % tabs.length) + tabs.length) % tabs.length;
+    if (logicalIndex === curLogical) return;
+    let delta = logicalIndex - curLogical;
+    if (delta > tabs.length / 2) delta -= tabs.length;
+    if (delta < -tabs.length / 2) delta += tabs.length;
+    setDirection(delta > 0 ? 1 : -1);
+    setVirtualActive((prev) => prev + delta);
     setIsPaused(true);
     setTimeout(() => setIsPaused(false), 5000);
   };
-  const handlePrev = () => go(active === 0 ? tabs.length - 1 : active - 1);
-  const handleNext = () => go(active === tabs.length - 1 ? 0 : active + 1);
+  const handlePrev = () => {
+    setDirection(-1);
+    setVirtualActive((prev) => prev - 1);
+    setIsPaused(true);
+    setTimeout(() => setIsPaused(false), 5000);
+  };
+  const handleNext = () => {
+    setDirection(1);
+    setVirtualActive((prev) => prev + 1);
+    setIsPaused(true);
+    setTimeout(() => setIsPaused(false), 5000);
+  };
 
   const textVariants = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -65,14 +105,15 @@ export default function SalesFeatureTabs({ tabs }) {
   const tabImg = getImageForTab(current.label);
 
   return (
-    <section id="features" className="relative overflow-hidden bg-[#F9F8F5] flex flex-col vector-on-offwhite pt-8 sm:pt-10 md:pt-12">
+    <section id="features" className="relative overflow-hidden bg-[#F9F8F5] flex flex-col vector-on-offwhite pt-0 md:pt-12">
 
-      {/* ── MOBILE layout — exactly as shared image — reduced height */}
-      <div className="md:hidden bg-[#F9F8F5] flex flex-col">
-        <div className="px-6 pt-6 pb-1">
-          <div className="flex items-center justify-center gap-2 mb-4">
+      {/* MOBILE - fits screen, heading larger, image+green same transition as desktop, bubbles chain loop slide */}
+      <div className="md:hidden bg-[#F9F8F5] flex flex-col min-h-[100svh]">
+        {/* Header - spacing and hierarchy */}
+        <div className="px-6 pt-32 pb-4 flex-shrink-0">
+          <div className="flex items-center justify-center gap-2 mb-5">
             <div className="w-7 h-0.5 bg-[#2c6035]" />
-            <p className="text-[11px] font-bold tracking-widest uppercase text-[#2c6035]">OUR FEATURES</p>
+            <p className="text-[12px] font-bold tracking-[0.32em] uppercase text-[#2c6035]">OUR FEATURES</p>
           </div>
           <AnimatePresence mode="wait">
             <motion.div
@@ -82,17 +123,14 @@ export default function SalesFeatureTabs({ tabs }) {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-[26px] font-extrabold uppercase leading-[1.05] tracking-tight text-[#1B4D2E]">{current.title}</h3>
-              <p className="text-[13px] leading-[1.5] text-[#6B6B6B] mt-2 pr-2">{current.description}</p>
+              <h3 className="text-[32px] sm:text-[34px] font-extrabold uppercase leading-[1.05] tracking-wide text-[#2c6035]">{current.title}</h3>
+              <p className="text-[15px] leading-[1.6] text-[#6B6B6B] mt-3">{current.description}</p>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        <div className="relative mt-2 w-full h-[385px] sm:h-[405px] overflow-hidden bg-[#F9F8F5] flex items-end justify-center pb-6">
-          <div
-            className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[145%] h-[62%] bg-[#2c6035] pointer-events-none"
-            style={{ borderRadius: "50% 50% 0 0 / 65% 65% 0 0" }}
-          />
+        {/* Stage - green blob + phone + floating cards, same data as desktop */}
+        <div className="relative flex-1 flex items-center justify-center px-2 py-6 min-h-[480px] sm:min-h-[520px] overflow-hidden">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={active}
@@ -101,78 +139,71 @@ export default function SalesFeatureTabs({ tabs }) {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="relative z-10 w-[414px] max-w-[96%] flex items-center justify-center -translate-y-2"
+              className="relative w-full max-w-[420px] sm:max-w-[480px] flex items-center justify-center min-h-[440px] sm:min-h-[480px]"
             >
-              {tabImg ? (
-                <img
-                  src={tabImg}
-                  alt={current.label}
-                  className="w-full h-[420px] sm:h-[444px] object-contain drop-shadow-2xl block"
-                  style={{ maxHeight: "444px" }}
-                />
-              ) : (
-                <div className="w-full h-[300px] bg-[#2c6035] flex items-center justify-center text-white">{current.label}</div>
-              )}
+              {/* Green blob - top edge pinned exactly to this wrapper's vertical midpoint */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 w-[840px] h-[840px] sm:w-[940px] sm:h-[940px] rounded-full bg-[#2c6035] pointer-events-none" />
+              {/* Phone + floating cards - vertical CENTER pinned to that same midpoint, so it sits right on the circle's edge */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-[392px] sm:w-[451px] flex items-center justify-center">
+                {tabImg ? (
+                  <img
+                    src={tabImg}
+                    alt={current.label}
+                    className="w-full h-auto object-contain drop-shadow-2xl block"
+                  />
+                ) : (
+                  <div className="w-full h-[320px] bg-[#2c6035] flex items-center justify-center text-white rounded-2xl">{current.label}</div>
+                )}
+              </div>
             </motion.div>
           </AnimatePresence>
-          <button
-            onClick={handlePrev}
-            aria-label="Previous feature"
-            className="absolute left-3 bottom-3 z-20 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-md "
-          >
-            <ChevronLeft size={16} className="text-[#2c6035]" strokeWidth={2.5} />
-          </button>
-          <button
-            onClick={handleNext}
-            aria-label="Next feature"
-            className="absolute right-3 bottom-3 z-20 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-md "
-          >
-            <ChevronRight size={16} className="text-[#2c6035]" strokeWidth={2.5} />
-          </button>
         </div>
 
-        <div className="bg-white px-3 py-4">
-          <div ref={scrollRef} className="flex items-end justify-between gap-3 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory px-2">
-            {tabs.map((tab, i) => {
-              const isAct = active === i;
-              return (
-                <motion.button
-                  key={tab.label}
-                  ref={(el) => (itemRefs.current[i] = el)}
-                  onClick={() => go(i)}
-                  className="flex flex-col items-center flex-shrink-0 flex-1 min-w-[66px] snap-center"
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <motion.div
-                    animate={isAct ? { width: 64, height: 64 } : { width: 46, height: 46 }}
-                    transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                    className={`rounded-full overflow-hidden flex items-center justify-center ${isAct ? "shadow-none" : "shadow-none"}`}
-                    style={{}}
+        {/* Bottom tab row - continuously auto-advancing horizontal slider, pure translateX, no scale, seamless loop */}
+        <div className="bg-white px-2 py-4 flex-shrink-0 border-t border-gray-100">
+          {/* Viewport - fixed to exactly 4 item-slots wide (4×64px + 3×12px gap = 292px), centered, clipped */}
+          <div className="max-w-[292px] mx-auto overflow-hidden" ref={containerRef}>
+            <motion.div
+              ref={trackRef}
+              className="flex gap-3"
+              animate={{ x: -((virtualActive - 1) * itemWidth) }}
+              transition={{ duration: isJumping ? 0 : 0.5, ease: "easeInOut" }}
+              style={{ willChange: "transform" }}
+            >
+              {EXTENDED.map((tab, i) => {
+                const isAct = i === virtualActive;
+                const words = tab.label.toUpperCase().split(" ");
+                const twoLineLabel = words.length > 1
+                  ? `${words.slice(0, -1).join(" ")}\n${words[words.length - 1]}`
+                  : words[0];
+                return (
+                  <button
+                    key={`${tab.label}-${i}`}
+                    onClick={() => go(i % tabs.length)}
+                    className="flex flex-col items-center flex-shrink-0 min-w-[64px]"
                   >
-                    <motion.span
-                      animate={isAct ? { scale: [1, 1.14, 1.06, 1.08] } : { scale: 1 }}
-                      transition={isAct ? { duration: 1.1, ease: "easeInOut", times: [0, 0.4, 0.7, 1], repeat: Infinity, repeatDelay: 1.9 } : { duration: 0.3 }}
-                      className="w-full h-full flex items-center justify-center"
+                    <motion.div
+                      animate={{ width: isAct ? 60 : 46, height: isAct ? 60 : 46 }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                      className={`rounded-full overflow-hidden flex items-center justify-center ${isAct ? "bg-[#2c6035]" : "bg-white border border-gray-200"}`}
                     >
                       {tab.iconImage ? (
                         <img src={tab.iconImage} alt={tab.label} className="w-full h-full object-cover" />
                       ) : tab.icon ? (
-                        <span className="[&>svg]:w-5 [&>svg]:h-5 [&>svg]:text-white">{tab.icon}</span>
+                        <span className="flex items-center justify-center text-[#2c6035] [&>svg]:text-[#2c6035]">{tab.icon}</span>
                       ) : null}
-                    </motion.span>
-                  </motion.div>
-                  <motion.span
-                    animate={{ scale: isAct ? 1.06 : 1, opacity: isAct ? 1 : 0.75 }}
-                    transition={{ duration: 0.35 }}
-                    className={`mt-2 text-center leading-tight uppercase ${isAct ? "font-bold text-[#2c6035]" : "font-medium text-[#6B6B6B]"}`}
-                    style={{ fontSize: "8px", maxWidth: "68px", whiteSpace: "pre-line" }}
-                  >
-                    {tab.label.toUpperCase()}
-                  </motion.span>
-                  {isAct && <motion.div layoutId="sales-mobile-active-underline2" className="w-6 h-0.5 bg-[#2c6035] mt-1.5 rounded-full" />}
-                </motion.button>
-              );
-            })}
+                    </motion.div>
+                    <span
+                      className={`mt-2 text-center leading-tight uppercase ${isAct ? "font-bold text-[#2c6035]" : "font-medium text-[#6B6B6B]"}`}
+                      style={{ fontSize: "9px", maxWidth: "64px", whiteSpace: "pre-line" }}
+                    >
+                      {twoLineLabel}
+                    </span>
+                    {isAct && <div className="w-6 h-0.5 bg-[#2c6035] mt-1.5 rounded-full" />}
+                  </button>
+                );
+              })}
+            </motion.div>
           </div>
         </div>
       </div>
