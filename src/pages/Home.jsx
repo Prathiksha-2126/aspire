@@ -63,55 +63,17 @@ const whyAspireItems = [
 function WhyAspireSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [radius, setRadius] = useState(280);
-  const [bubbleBase, setBubbleBase] = useState(56);
-  const [centerCardW, setCenterCardW] = useState(182);
 
   useEffect(() => {
     const update = () => {
       const vw = window.innerWidth;
-      const innerW = vw - 32; // section px-4 *2
-      const isVerySmall = vw < 375;
-      const isSmall = vw < 480;
-      const bubbleR = isVerySmall ? 20 : isSmall ? 22 : 28;
-      const safeMargin = 6;
-      const maxRadiusForWidth = innerW / 2 - bubbleR - safeMargin;
 
-      let targetRadius;
-      if (vw < 375) {
-        // 320px: enlarged but still fully inside viewport
-        targetRadius = Math.min(124, maxRadiusForWidth, vw * 0.38);
-      } else if (vw < 390) {
-        targetRadius = Math.min(142, maxRadiusForWidth, vw * 0.38);
-      } else if (vw < 430) {
-        targetRadius = Math.min(160, maxRadiusForWidth, vw * 0.39);
-      } else if (vw < 480) {
-        targetRadius = Math.min(176, maxRadiusForWidth, vw * 0.39);
-      } else if (vw < 640) {
-        targetRadius = Math.min(208, vw * 0.39);
-      } else if (vw < 768) {
-        targetRadius = Math.min(240, vw * 0.37);
-      } else {
-        targetRadius = Math.min(280, vw * 0.33);
-      }
-      targetRadius = Math.max(98, Math.round(targetRadius));
-      setRadius(targetRadius);
+      // Increased circle for mobile so card/content stays fully visible
+      const minR = vw < 480 ? 190 : vw < 768 ? 230 : 220;
+      const maxR = vw < 480 ? 230 : vw < 768 ? 280 : 270;
 
-      // Bubble base size scales down on very small screens so it doesn't clip
-      if (vw < 375) setBubbleBase(42);
-      else if (vw < 430) setBubbleBase(46);
-      else if (vw < 480) setBubbleBase(50);
-      else setBubbleBase(56);
-
-      // Center card: ensure it fits inside the circle with breathing room
-      if (vw < 360) setCenterCardW(148);
-      else if (vw < 375) setCenterCardW(156);
-      else if (vw < 390) setCenterCardW(166);
-      else if (vw < 430) setCenterCardW(178);
-      else if (vw < 480) setCenterCardW(188);
-      else if (vw < 640) setCenterCardW(202);
-      else if (vw < 768) setCenterCardW(220);
-      else if (vw < 1024) setCenterCardW(270);
-      else setCenterCardW(285);
+      const calc = Math.max(minR, Math.min(vw * 0.42, maxR));
+      setRadius(calc);
     };
 
     update();
@@ -125,12 +87,12 @@ function WhyAspireSection() {
 
   const handleBubbleClick = (index) => setActiveIndex(index);
 
-  const svgSize = (radius + 18) * 2;
+  const svgSize = (radius + 40) * 2;
 
   return (
     <section
       id="why-aspire"
-      className="relative w-full py-8 sm:py-10 md:py-14 px-4 overflow-hidden box-border vector-on-light blend-to-light fade-clear-top flex flex-col items-center justify-start min-h-[640px] sm:min-h-[760px] md:min-h-[820px]"
+      className="relative w-full py-10 md:py-14 px-4 overflow-hidden box-border vector-on-light blend-to-light fade-clear-top flex flex-col items-center justify-start min-h-[720px] sm:min-h-[800px] md:min-h-[820px]"
       style={{ backgroundColor: "#FFFFFF" }}
     >
       {/* Header */}
@@ -147,8 +109,8 @@ function WhyAspireSection() {
         </p>
       </div>
 
-      {/* Circular Stage Arena — fully fits within viewport on 320-430 */}
-      <div className="relative w-full max-w-6xl flex items-center justify-center min-h-[360px] sm:min-h-[440px] md:min-h-[520px] my-auto z-10 px-2 box-border">
+      {/* Circular Stage Arena */}
+      <div className="relative w-full max-w-6xl flex items-center justify-center min-h-[420px] sm:min-h-[500px] md:min-h-[520px] my-auto z-10">
         <svg
           className="absolute pointer-events-none transition-all duration-300 z-1"
           width={svgSize}
@@ -213,13 +175,13 @@ function WhyAspireSection() {
                 animate={
                   isActive
                     ? {
-                      width: [bubbleBase, bubbleBase * 0.9, bubbleBase * 1.28, bubbleBase * 1.21],
-                      height: [bubbleBase, bubbleBase * 0.9, bubbleBase * 1.28, bubbleBase * 1.21],
+                      width: [56, 50, 72, 68],
+                      height: [56, 50, 72, 68],
                       scale: [1, 0.88, 1.18, 1.12],
                     }
                     : {
-                      width: bubbleBase,
-                      height: bubbleBase,
+                      width: 56,
+                      height: 56,
                       scale: 1,
                     }
                 }
@@ -238,7 +200,7 @@ function WhyAspireSection() {
                 <img
                   src={item.bubbleIcon}
                   alt={item.title}
-                  className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 object-contain transition-all duration-300 select-none"
+                  className="w-6 h-6 md:w-7 md:h-7 object-contain transition-all duration-300 select-none"
                   style={{
                     filter: isActive
                       ? "brightness(0) invert(1)"
@@ -290,12 +252,11 @@ function WhyAspireSection() {
                 duration: 0.25,
                 ease: "easeInOut",
               }}
-              className="rounded-2xl overflow-hidden shadow-2xl border border-white/20"
-              style={{ backgroundColor: "#2C6035", width: `${centerCardW}px`, maxWidth: "78vw" }}
+              className="rounded-2xl overflow-hidden w-[180px] sm:w-[200px] md:w-[270px] lg:w-[285px] shadow-2xl border border-white/20"
+              style={{ backgroundColor: "#2C6035" }}
             >
               <div className="p-1.5 md:p-2 pb-0">
-                <div className="rounded-xl overflow-hidden w-full bg-black flex items-center justify-center"
-                     style={{ height: centerCardW < 180 ? `${Math.round(centerCardW * 1.02)}px` : centerCardW < 200 ? "190px" : centerCardW < 260 ? "220px" : "265px" }}>
+                <div className="rounded-xl overflow-hidden w-full h-[180px] sm:h-[190px] md:h-[265px] lg:h-[280px] bg-black flex items-center justify-center">
                   <video
                     key={whyAspireItems[activeIndex].video}
                     autoPlay
@@ -624,8 +585,8 @@ export default function Home() {
       {/* ── OUR VISION ───────────────────────────────────────────────────── */}
       <motion.section
         id="our-vision"
-        className="w-full min-h-[72vh] sm:min-h-[78vh] md:min-h-screen md:min-h-[100dvh] px-5 sm:px-8 md:px-16 pt-0 md:pt-2 pb-14 md:pb-16 text-center relative overflow-hidden flex flex-col justify-center items-center vector-on-light"
-        style={{ backgroundColor: "#FFFFFF", "--fade-clear": "clamp(78px, 10vh, 108px)", "--fade-h": "clamp(80px, 10vh, 110px)" }}
+        className="w-full min-h-screen min-h-[100dvh] px-5 sm:px-8 md:px-16 pt-0 md:pt-2 pb-16 text-center relative overflow-hidden flex flex-col justify-center items-center vector-on-light"
+        style={{ backgroundColor: "#FFFFFF" }}
         initial="hidden"
         whileInView="visible"
         viewport={{
@@ -634,7 +595,7 @@ export default function Home() {
         }}
         variants={staggerContainer}
       >
-        <div className="max-w-4xl lg:max-w-5xl mx-auto flex flex-col items-center justify-center px-2 font-poppins w-full -translate-y-1 sm:-translate-y-2 md:-translate-y-3">
+        <div className="max-w-4xl lg:max-w-5xl mx-auto flex flex-col items-center justify-center px-2 font-poppins w-full">
           <motion.div
             initial={{
               opacity: 0,
