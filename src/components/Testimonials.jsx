@@ -112,7 +112,7 @@ export default function Testimonials() {
         transition={{ duration: 0.6 }}
       >
         {/* Header */}
-        <div className="text-center px-4 pt-4 pb-5 z-10 w-full">
+        <div className="text-center px-4 pt-4 pb-5 z-10 w-full -translate-y-5">
           <h2 className="text-2xl font-bold font-poppins tracking-tight text-white drop-shadow-md">Testimonial</h2>
           <p className="text-xs text-white/85 mt-1 leading-snug max-w-xs mx-auto">
             Hear from our satisfied clients who have transformed their businesses with AspiRE.
@@ -121,7 +121,7 @@ export default function Testimonials() {
 
         {/* Card */}
         <div 
-          className="px-4 pb-6 w-full flex justify-center z-10"
+          className="px-4 pb-[calc(1.5rem*1.12)] w-full flex justify-center z-10 -translate-y-6"
           onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
           onTouchEnd={(e) => { 
             touchEndX.current = e.changedTouches[0].clientX; 
@@ -160,7 +160,7 @@ export default function Testimonials() {
         </div>
 
         {/* Dots only — no arrows on mobile */}
-        <div className="flex items-center justify-center gap-4 pb-8 z-10">
+        <div className="flex items-center justify-center gap-4 pb-[calc(2rem*1.12)] z-10 -translate-y-4">
           <div className="flex gap-1.5">
             {testimonials.map((_, i) => (
               <button key={i} type="button" onClick={() => setCurrentIndex(i)}
