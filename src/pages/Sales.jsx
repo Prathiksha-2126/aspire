@@ -67,7 +67,7 @@ export default function Sales() {
         <img
           src="/images/Sales_Hero_mobile.png"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover object-center md:hidden"
+          className="absolute inset-0 w-full h-full object-cover object-[75%_center] md:hidden"
           style={{ opacity: 0.92 }}
         />
         <img
