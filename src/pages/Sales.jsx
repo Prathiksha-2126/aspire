@@ -65,9 +65,15 @@ export default function Sales() {
         className="relative h-screen flex items-start justify-start bg-gray-900 text-white pt-[clamp(170px,33vh,250px)] sm:pt-[clamp(190px,35vh,270px)] md:pt-44 pb-12 md:pb-16 overflow-hidden"
       >
         <img
+          src="/images/Sales_Hero_mobile.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-center md:hidden"
+          style={{ opacity: 0.92 }}
+        />
+        <img
           src="/images/Hero Section of AspiRe Sales.png"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover object-[87%_center] md:object-[32%_center]"
+          className="hidden md:block absolute inset-0 w-full h-full object-cover object-[32%_center]"
           style={{ opacity: 0.92 }}
         />
         {/* Dark film — nearly transparent */}
