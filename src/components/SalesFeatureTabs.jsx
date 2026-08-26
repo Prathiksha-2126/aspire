@@ -140,6 +140,7 @@ export default function SalesFeatureTabs({ tabs }) {
               animate="visible"
               exit="exit"
               className="relative w-full max-w-[420px] sm:max-w-[480px] flex items-center justify-center min-h-[440px] sm:min-h-[480px]"
+              style={{ transformOrigin: "50% calc(100% + 400px)" }}
             >
               {/* Green blob - a bit down */}
               <div className="absolute left-1/2 top-[47%] -translate-x-1/2 w-[840px] h-[840px] sm:w-[940px] sm:h-[940px] rounded-full bg-[#2c6035] pointer-events-none" />
