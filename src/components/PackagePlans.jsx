@@ -4,23 +4,34 @@ import { Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 
-const INR_PER_USD_FALLBACK = 83;
+// 5x conversion multiplier logic between INR and USD
+const INR_TO_USD_FACTOR = 5;
 
-function pricingFromINR(inrAmount, rate = INR_PER_USD_FALLBACK) {
-  const usd = Math.max(1, Math.round(inrAmount / rate));
+function pricingFromINR(inrMonthly, inrAdvance, advanceMonths) {
+  const usdMonthly = Math.max(1, Math.round(inrMonthly / INR_TO_USD_FACTOR));
+  const usdAdvance = Math.max(1, Math.round(inrAdvance / INR_TO_USD_FACTOR));
   return {
-    IN: { amount: inrAmount, currency: "INR" },
-    US: { amount: usd, currency: "USD" },
-    DEFAULT: { amount: usd, currency: "USD" },
-  };
-}
-
-function pricingFromUSD(usdAmount, rate = INR_PER_USD_FALLBACK) {
-  const inr = Math.round(usdAmount * rate);
-  return {
-    IN: { amount: inr, currency: "INR" },
-    US: { amount: usd, currency: "USD" },
-    DEFAULT: { amount: usd, currency: "USD" },
+    IN: {
+      monthly: inrMonthly,
+      advance: inrAdvance,
+      advanceMonths,
+      currency: "INR",
+      taxNote: "+ 18% GST",
+    },
+    US: {
+      monthly: usdMonthly,
+      advance: usdAdvance,
+      advanceMonths,
+      currency: "USD",
+      taxNote: "+ applicable taxes",
+    },
+    DEFAULT: {
+      monthly: usdMonthly,
+      advance: usdAdvance,
+      advanceMonths,
+      currency: "USD",
+      taxNote: "+ applicable taxes",
+    },
   };
 }
 
@@ -28,47 +39,45 @@ const plansData = {
   engineering: [
     {
       name: "BASIC PLAN",
-      description: "Perfect for small teams, the Basic Package provides essential tools to manage construction projects efficiently, keeping you organized without breaking the budget.",
+      description:
+        "Perfect for small teams, the Basic Package provides essential tools to manage construction projects efficiently, keeping you organized without breaking the budget.",
       features: ["Upto 7 Users", "Unlimited Projects", "Task tracking and deadline reminders"],
-      pricing: pricingFromINR(2499),
+      pricing: pricingFromINR(16000, 96000, 6),
       featured: false,
     },
     {
       name: "PREMIUM PLAN",
-      description: "Designed for growing businesses. The Premium Package offers advanced features and comprehensive tools to take your construction management to the next level.",
+      description:
+        "Designed for growing businesses. The Premium Package offers advanced features and comprehensive tools to take your construction management to the next level.",
       features: ["Upto 15 Users", "Customizable dashboard reports", "AI Project Planner"],
-      pricing: pricingFromINR(5999),
+      pricing: pricingFromINR(25000, 140000, 6),
       featured: true,
     },
     {
       name: "ENTERPRISE",
-      heading: "Get in touch",
-      description: "Engineered for enterprise-level excellence, the Premium Package is designed to meet the complex needs of large-scale construction businesses. It offers advanced features to streamline operations, enhance productivity, and provide detailed analytics for informed decision-making.",
-      features: [],
+      description:
+        "Engineered for enterprise-level excellence, the Premium Package is designed to meet the complex needs of large-scale construction businesses. It offers advanced features to streamline operations, enhance productivity, and provide detailed analytics for informed decision-making.",
+      features: ["Upto 25 Users"],
+      pricing: pricingFromINR(37500, 220000, 6),
       featured: false,
     },
   ],
   sales: [
     {
-      name: "BASIC PLAN",
-      description: "Perfect for growing sales teams, the Basic Package provides essential tools to manage leads, bookings, payments, and customer documents with ease.",
-      features: ["Upto 5 Users", "Unlimited Projects", "Notification Reminders"],
-      pricing: pricingFromINR(1999),
+      name: "PER USER PLAN",
+      description:
+        "Perfect for sales teams, the Basic Package provides essential tools to manage leads, bookings, payments, and customer documents with ease.",
+      features: ["Per User", "Unlimited Projects", "Notification Reminders"],
+      pricing: pricingFromINR(5000, 15000, 3),
       featured: false,
-    },
-    {
-      name: "PREMIUM PLAN",
-      description: "Designed for growing real estate businesses, the Premium Package offers advanced sales automation, customer management, and powerful reporting tools to scale your sales operations.",
-      features: ["Upto 10 Users", "Auto-generate documents", "AI Project Planner"],
-      pricing: pricingFromINR(4999),
-      featured: true,
     },
     {
       name: "ENTERPRISE",
       heading: "Get in touch",
-      description: "Engineered for enterprise-level excellence, the Premium Package is designed to meet the complex needs of large-scale construction businesses. It offers advanced features to streamline operations, enhance productivity, and provide detailed analytics for informed decision-making.",
+      description:
+        "Engineered for enterprise-level excellence, the Premium Package is designed to meet the complex needs of large-scale construction businesses. It offers advanced features to streamline operations, enhance productivity, and provide detailed analytics for informed decision-making.",
       features: [],
-      featured: false,
+      featured: true,
     },
   ],
 };
@@ -93,37 +102,31 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
   const location = useLocation();
   const plans = plansData[tab];
 
-  // Robust single-step IP detection — never blocks page render, works with any VPN
+  // Robust single-step IP detection with fallbacks & session caching
   useEffect(() => {
     let cancelled = false;
     async function detectCountry() {
-      // Manual override for testing: ?mockCountry=IN|US|DE
-      const mock = new URLSearchParams(window.location.search).get("mockCountry");
-      if (mock) {
-        const c = mock.toUpperCase();
-        const norm = c === "IN" ? "IN" : c === "US" ? "US" : "DEFAULT";
-        sessionStorage.setItem("user_country_code", norm);
-        if (!cancelled) {
-          setCountryCode(norm);
-          setIsLocationLoading(false);
-        }
-        return;
-      }
+      // Manual test parameter: ?mockCountry=IN | US | DE
+      // const mock = new URLSearchParams(window.location.search).get("mockCountry");
+      // if (mock) {
+      //   const c = mock.toUpperCase();
+      //   const norm = c === "IN" ? "IN" : c === "US" ? "US" : "DEFAULT";
+      //   sessionStorage.setItem("user_country_code", norm);
+      //   if (!cancelled) {
+      //     setCountryCode(norm);
+      //     setIsLocationLoading(false);
+      //   }
+      //   return;
+      // }
 
       const cachedCountry = sessionStorage.getItem("user_country_code");
-      const cachedIP = sessionStorage.getItem("user_ip");
-      // Show cached immediately for fast paint, but still re-validate IP in background (handles VPN switch)
       if (cachedCountry) {
         if (!cancelled) {
           setCountryCode(cachedCountry);
           setIsLocationLoading(false);
         }
-        // Don't return — continue to re-validate IP below. If IP unchanged, will just re-confirm same country.
-      } else {
-        // No cache yet, keep loading true until fetch finishes (fallback timer will handle)
       }
 
-      // Safety timeout — only if no cache yet, so VPN switch with cache still shows cached then updates to new IP
       let fallbackTimer = null;
       if (!cachedCountry) {
         fallbackTimer = setTimeout(() => {
@@ -135,7 +138,6 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
       }
 
       try {
-        // Try ipapi.co first (primary), then fallback APIs — capture IP to handle VPN switches
         let code = null;
         let ip = null;
         try {
@@ -159,13 +161,10 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
         }
         clearTimeout(fallbackTimer);
         if (cancelled) return;
+
         const upper = (code || "DEFAULT").toUpperCase();
         const normalized = upper === "IN" ? "IN" : upper === "US" ? "US" : "DEFAULT";
-        // Update cache only if IP changed or country changed (handles VPN switch without manual clear)
-        const prevIP = sessionStorage.getItem("user_ip");
-        if (ip && prevIP && ip !== prevIP) {
-          // IP changed (VPN switched) — force update
-        }
+
         if (ip) sessionStorage.setItem("user_ip", ip);
         sessionStorage.setItem("user_country_code", normalized);
         setCountryCode(normalized);
@@ -177,6 +176,7 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
         if (!cancelled) setIsLocationLoading(false);
       }
     }
+
     detectCountry();
     return () => {
       cancelled = true;
@@ -221,6 +221,7 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
         subtitle="Pick a plan that works best for you and get the most out of AspiRE for your construction projects."
       />
 
+      {/* Tab switcher */}
       <div className="flex justify-center mb-8 md:mb-12">
         <div className="bg-[#EAF7F0] rounded-2xl p-1.5 flex shadow-sm border border-[#055938]/10 relative">
           {["engineering", "sales"].map((t) => (
@@ -244,17 +245,25 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
         </div>
       </div>
 
+      {/* Plan cards */}
       <AnimatePresence mode="wait">
         <motion.div
           key={tab}
-          className="mx-auto grid w-full max-w-[1240px] gap-5 sm:gap-6 lg:gap-8 grid-cols-1 md:grid-cols-3 md:items-stretch justify-items-center"
+          className={`mx-auto grid w-full max-w-[1240px] gap-5 sm:gap-6 lg:gap-8 ${
+            tab === "sales"
+              ? "grid-cols-1 md:grid-cols-2 max-w-[800px]"
+              : "grid-cols-1 md:grid-cols-3"
+          } md:items-stretch justify-items-center`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
         >
           {plans.map((plan, index) => {
-            const planPricing = plan.pricing ? plan.pricing[countryCode] || plan.pricing.DEFAULT : null;
+            const planPricing = plan.pricing
+              ? plan.pricing[countryCode] || plan.pricing.DEFAULT
+              : null;
+
             return (
               <motion.div
                 key={plan.name}
@@ -264,42 +273,132 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08, duration: 0.45 }}
                 className={`rounded-3xl p-6 sm:p-8 md:p-9 flex flex-col justify-between w-full transition-all duration-300 box-border ${
-                  plan.featured ? "bg-[#055938] text-white shadow-2xl" : "bg-white text-gray-800 border border-gray-100 shadow-md hover:shadow-xl"
+                  plan.featured
+                    ? "bg-[#055938] text-white shadow-2xl"
+                    : "bg-white text-gray-800 border border-gray-100 shadow-md hover:shadow-xl"
                 }`}
-                style={{ maxWidth: "380px", minHeight: "420px" }}
+                style={{ maxWidth: "380px", minHeight: "440px" }}
               >
                 <div className="flex flex-col flex-1">
                   {plan.heading ? (
                     <>
-                      <h3 className="text-sm sm:text-base font-medium text-[#055938] mb-1">
-                        {plan.name === "ENTERPRISE" ? "Enterprise" : plan.name}
+                      <h3
+                        className={`text-sm sm:text-base font-medium mb-1 ${
+                          plan.featured ? "text-white/80" : "text-[#055938]"
+                        }`}
+                      >
+                        Enterprise
                       </h3>
-                      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-5">{plan.heading}</h2>
-                      <div className="h-px w-full bg-gray-200/80 mb-5" />
-                      <p className="text-sm leading-relaxed text-gray-500 font-normal">{plan.description}</p>
+                      <h2
+                        className={`text-2xl sm:text-3xl font-bold mb-5 ${
+                          plan.featured ? "text-white" : "text-gray-900"
+                        }`}
+                      >
+                        {plan.heading}
+                      </h2>
+                      <div
+                        className={`h-px w-full mb-5 ${
+                          plan.featured ? "bg-white/20" : "bg-gray-200/80"
+                        }`}
+                      />
+                      <p
+                        className={`text-sm leading-relaxed font-normal ${
+                          plan.featured ? "text-white/85" : "text-gray-500"
+                        }`}
+                      >
+                        {plan.description}
+                      </p>
                     </>
                   ) : (
                     <>
-                      <h3 className={`text-lg sm:text-xl font-semibold tracking-wide uppercase mb-2 ${plan.featured ? "text-white" : "text-[#055938]"}`}>
+                      <h3
+                        className={`text-lg sm:text-xl font-semibold tracking-wide uppercase mb-2 ${
+                          plan.featured ? "text-white" : "text-[#055938]"
+                        }`}
+                      >
                         {plan.name}
                       </h3>
+
+                      {/* Pricing Tag */}
                       {planPricing && (
                         <div className="mb-4">
-                          <span className={`text-3xl sm:text-4xl font-bold tracking-tight ${plan.featured ? "text-white" : "text-gray-900"}`}>
-                            {isLocationLoading ? "..." : formatPrice(planPricing.amount, planPricing.currency)}
-                          </span>
-                          <span className={`text-xs sm:text-sm font-medium ml-1 ${plan.featured ? "text-white/80" : "text-gray-500"}`}>/ month</span>
+                          <div className="flex items-baseline gap-1">
+                            <span
+                              className={`text-3xl sm:text-4xl font-bold tracking-tight ${
+                                plan.featured ? "text-white" : "text-gray-900"
+                              }`}
+                            >
+                              {isLocationLoading
+                                ? "..."
+                                : formatPrice(planPricing.monthly, planPricing.currency)}
+                            </span>
+                            <span
+                              className={`text-xs sm:text-sm font-medium ${
+                                plan.featured ? "text-white/80" : "text-gray-500"
+                              }`}
+                            >
+                              / month
+                            </span>
+                          </div>
+
+                          <div className="mt-1 flex flex-col gap-0.5">
+                            <span
+                              className={`text-[11px] font-medium tracking-wide ${
+                                plan.featured ? "text-emerald-200" : "text-emerald-700"
+                              }`}
+                            >
+                              (post {planPricing.advanceMonths} months) {planPricing.taxNote}
+                            </span>
+                            <span
+                              className={`text-xs font-semibold mt-1 ${
+                                plan.featured ? "text-white/90" : "text-gray-700"
+                              }`}
+                            >
+                              Advance ({planPricing.advanceMonths} mo):{" "}
+                              {isLocationLoading
+                                ? "..."
+                                : formatPrice(planPricing.advance, planPricing.currency)}{" "}
+                              <span className="text-[10px] font-normal opacity-80">
+                                {planPricing.taxNote}
+                              </span>
+                            </span>
+                          </div>
                         </div>
                       )}
-                      <p className={`text-sm leading-relaxed font-normal mb-5 ${plan.featured ? "text-white/85" : "text-gray-500"}`}>{plan.description}</p>
-                      <div className={`h-px w-full mb-5 ${plan.featured ? "bg-white/20" : "bg-gray-200/80"}`} />
+
+                      <p
+                        className={`text-sm leading-relaxed font-normal mb-5 ${
+                          plan.featured ? "text-white/85" : "text-gray-500"
+                        }`}
+                      >
+                        {plan.description}
+                      </p>
+                      <div
+                        className={`h-px w-full mb-5 ${
+                          plan.featured ? "bg-white/20" : "bg-gray-200/80"
+                        }`}
+                      />
                       <ul className="space-y-3 sm:space-y-4 mt-2">
                         {plan.features.map((f) => (
                           <li key={f} className="flex items-center gap-3">
-                            <span className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${plan.featured ? "bg-white" : "bg-[#055938]"}`}>
-                              <Check size={12} strokeWidth={2.5} className={plan.featured ? "text-[#055938]" : "text-white"} />
+                            <span
+                              className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
+                                plan.featured ? "bg-white" : "bg-[#055938]"
+                              }`}
+                            >
+                              <Check
+                                size={12}
+                                strokeWidth={2.5}
+                                className={plan.featured ? "text-[#055938]" : "text-white"}
+                              />
                             </span>
-                            <span className={`text-sm font-normal leading-snug ${plan.featured ? "text-white/95" : "text-gray-600"}`}>{f}</span>
+                            <span
+                              className={`text-sm font-normal leading-snug ${
+                                plan.featured ? "text-white/95" : "text-gray-600"
+                              }`}
+                            >
+                              {f}
+                            </span>
                           </li>
                         ))}
                       </ul>
@@ -312,7 +411,9 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
         </motion.div>
       </AnimatePresence>
 
-      <p className="mt-10 md:mt-12 text-center font-poppins text-base sm:text-lg md:text-xl font-semibold text-[#4B4A4A]">For Custom Enterprise Costing Get In Touch with us</p>
+      <p className="mt-10 md:mt-12 text-center font-poppins text-base sm:text-lg md:text-xl font-semibold text-[#4B4A4A]">
+        For Custom Enterprise Costing Get In Touch with us
+      </p>
     </motion.section>
   );
 }
