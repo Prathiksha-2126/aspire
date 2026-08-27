@@ -4,13 +4,6 @@ import { Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 
-// ---- Auto-sync pricing helper ----
-// Single source of truth: define price in ONE currency (INR recommended for India-first business).
-// The other currency is auto-derived so you only edit one number and the other updates.
-// Change INR_PER_USD if you want a different effective rate, or keep it live via fetch below.
-// NOTE: This keeps IN vs US pricing *different* (not 1:1 conversion) because we use a fixed business rate,
-// not the live FX spot. If you change `inr` from 2499 to 3000, USD auto-becomes Math.round(3000 / 83) = 36.
-// To edit via USD instead, use pricingFromUSD(usd) — it will auto-derive INR.
 const INR_PER_USD_FALLBACK = 83;
 
 function pricingFromINR(inrAmount, rate = INR_PER_USD_FALLBACK) {
@@ -35,17 +28,14 @@ const plansData = {
   engineering: [
     {
       name: "BASIC PLAN",
-      description:
-        "Perfect for small teams, the Basic Package provides essential tools to manage construction projects efficiently, keeping you organized without breaking the budget.",
+      description: "Perfect for small teams, the Basic Package provides essential tools to manage construction projects efficiently, keeping you organized without breaking the budget.",
       features: ["Upto 7 Users", "Unlimited Projects", "Task tracking and deadline reminders"],
-      // Edit only the INR here — US auto-updates. Or use pricingFromUSD(39) to edit via USD.
       pricing: pricingFromINR(2499),
       featured: false,
     },
     {
       name: "PREMIUM PLAN",
-      description:
-        "Designed for growing businesses. The Premium Package offers advanced features and comprehensive tools to take your construction management to the next level.",
+      description: "Designed for growing businesses. The Premium Package offers advanced features and comprehensive tools to take your construction management to the next level.",
       features: ["Upto 15 Users", "Customizable dashboard reports", "AI Project Planner"],
       pricing: pricingFromINR(5999),
       featured: true,
@@ -53,8 +43,7 @@ const plansData = {
     {
       name: "ENTERPRISE",
       heading: "Get in touch",
-      description:
-        "Engineered for enterprise-level excellence, the Premium Package is designed to meet the complex needs of large-scale construction businesses. It offers advanced features to streamline operations, enhance productivity, and provide detailed analytics for informed decision-making.",
+      description: "Engineered for enterprise-level excellence, the Premium Package is designed to meet the complex needs of large-scale construction businesses. It offers advanced features to streamline operations, enhance productivity, and provide detailed analytics for informed decision-making.",
       features: [],
       featured: false,
     },
@@ -62,16 +51,14 @@ const plansData = {
   sales: [
     {
       name: "BASIC PLAN",
-      description:
-        "Perfect for growing sales teams, the Basic Package provides essential tools to manage leads, bookings, payments, and customer documents with ease.",
+      description: "Perfect for growing sales teams, the Basic Package provides essential tools to manage leads, bookings, payments, and customer documents with ease.",
       features: ["Upto 5 Users", "Unlimited Projects", "Notification Reminders"],
       pricing: pricingFromINR(1999),
       featured: false,
     },
     {
       name: "PREMIUM PLAN",
-      description:
-        "Designed for growing real estate businesses, the Premium Package offers advanced sales automation, customer management, and powerful reporting tools to scale your sales operations.",
+      description: "Designed for growing real estate businesses, the Premium Package offers advanced sales automation, customer management, and powerful reporting tools to scale your sales operations.",
       features: ["Upto 10 Users", "Auto-generate documents", "AI Project Planner"],
       pricing: pricingFromINR(4999),
       featured: true,
@@ -79,13 +66,25 @@ const plansData = {
     {
       name: "ENTERPRISE",
       heading: "Get in touch",
-      description:
-        "Engineered for enterprise-level excellence, the Premium Package is designed to meet the complex needs of large-scale construction businesses. It offers advanced features to streamline operations, enhance productivity, and provide detailed analytics for informed decision-making.",
+      description: "Engineered for enterprise-level excellence, the Premium Package is designed to meet the complex needs of large-scale construction businesses. It offers advanced features to streamline operations, enhance productivity, and provide detailed analytics for informed decision-making.",
       features: [],
       featured: false,
     },
   ],
 };
+
+async function fetchWithTimeout(url, ms = 2500) {
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), ms);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(t);
+    if (!res.ok) throw new Error(`${url} ${res.status}`);
+    return await res.json();
+  } finally {
+    clearTimeout(t);
+  }
+}
 
 export default function PackagePlans({ defaultTab = "engineering" }) {
   const [tab, setTab] = useState(defaultTab);
@@ -94,31 +93,77 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
   const location = useLocation();
   const plans = plansData[tab];
 
-  // Single-step IP detection — ipapi.co reads IP from socket headers, no IP param needed
+  // Robust single-step IP detection — never blocks page render, works with any VPN
   useEffect(() => {
+    let cancelled = false;
     async function detectCountry() {
-      const cached = sessionStorage.getItem("user_country_code");
-      if (cached) {
-        setCountryCode(cached);
-        setIsLocationLoading(false);
+      // Manual override for testing: ?mockCountry=IN|US|DE
+      const mock = new URLSearchParams(window.location.search).get("mockCountry");
+      if (mock) {
+        const c = mock.toUpperCase();
+        const norm = c === "IN" ? "IN" : c === "US" ? "US" : "DEFAULT";
+        sessionStorage.setItem("user_country_code", norm);
+        if (!cancelled) {
+          setCountryCode(norm);
+          setIsLocationLoading(false);
+        }
         return;
       }
+
+      const cached = sessionStorage.getItem("user_country_code");
+      if (cached) {
+        if (!cancelled) {
+          setCountryCode(cached);
+          setIsLocationLoading(false);
+        }
+        return;
+      }
+
+      // Safety timeout — page must render even if all IP APIs are blocked by VPN/adblock
+      const fallbackTimer = setTimeout(() => {
+        if (!cancelled) {
+          setCountryCode("DEFAULT");
+          setIsLocationLoading(false);
+        }
+      }, 3500);
+
       try {
-        const res = await fetch("https://ipapi.co/json/");
-        if (!res.ok) throw new Error(`ipapi ${res.status}`);
-        const data = await res.json();
-        const code = (data.country_code || "DEFAULT").toUpperCase();
-        const normalized = code === "IN" ? "IN" : code === "US" ? "US" : "DEFAULT";
+        // Try ipapi.co first (primary), then fallback APIs
+        let code = null;
+        try {
+          const d1 = await fetchWithTimeout("https://ipapi.co/json/", 2500);
+          code = d1.country_code || d1.country;
+        } catch {}
+        if (!code) {
+          try {
+            const d2 = await fetchWithTimeout("https://ipwho.is/json/", 2500);
+            code = d2.country_code || d2.country;
+          } catch {}
+        }
+        if (!code) {
+          try {
+            const d3 = await fetchWithTimeout("https://freeipapi.com/api/json", 2500);
+            code = d3.countryCode || d3.country_code;
+          } catch {}
+        }
+        clearTimeout(fallbackTimer);
+        if (cancelled) return;
+        const upper = (code || "DEFAULT").toUpperCase();
+        const normalized = upper === "IN" ? "IN" : upper === "US" ? "US" : "DEFAULT";
         sessionStorage.setItem("user_country_code", normalized);
         setCountryCode(normalized);
-      } catch (err) {
-        console.warn("Location detection failed, fallback to DEFAULT:", err);
-        setCountryCode("DEFAULT");
+      } catch {
+        clearTimeout(fallbackTimer);
+        if (!cancelled) setCountryCode("DEFAULT");
       } finally {
-        setIsLocationLoading(false);
+        clearTimeout(fallbackTimer);
+        if (!cancelled) setIsLocationLoading(false);
       }
     }
     detectCountry();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
