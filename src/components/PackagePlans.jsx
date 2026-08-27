@@ -110,46 +110,63 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
         return;
       }
 
-      const cached = sessionStorage.getItem("user_country_code");
-      if (cached) {
+      const cachedCountry = sessionStorage.getItem("user_country_code");
+      const cachedIP = sessionStorage.getItem("user_ip");
+      // Show cached immediately for fast paint, but still re-validate IP in background (handles VPN switch)
+      if (cachedCountry) {
         if (!cancelled) {
-          setCountryCode(cached);
+          setCountryCode(cachedCountry);
           setIsLocationLoading(false);
         }
-        return;
+        // Don't return — continue to re-validate IP below. If IP unchanged, will just re-confirm same country.
+      } else {
+        // No cache yet, keep loading true until fetch finishes (fallback timer will handle)
       }
 
-      // Safety timeout — page must render even if all IP APIs are blocked by VPN/adblock
-      const fallbackTimer = setTimeout(() => {
-        if (!cancelled) {
-          setCountryCode("DEFAULT");
-          setIsLocationLoading(false);
-        }
-      }, 3500);
+      // Safety timeout — only if no cache yet, so VPN switch with cache still shows cached then updates to new IP
+      let fallbackTimer = null;
+      if (!cachedCountry) {
+        fallbackTimer = setTimeout(() => {
+          if (!cancelled) {
+            setCountryCode("DEFAULT");
+            setIsLocationLoading(false);
+          }
+        }, 3500);
+      }
 
       try {
-        // Try ipapi.co first (primary), then fallback APIs
+        // Try ipapi.co first (primary), then fallback APIs — capture IP to handle VPN switches
         let code = null;
+        let ip = null;
         try {
           const d1 = await fetchWithTimeout("https://ipapi.co/json/", 2500);
           code = d1.country_code || d1.country;
+          ip = d1.ip;
         } catch {}
         if (!code) {
           try {
             const d2 = await fetchWithTimeout("https://ipwho.is/json/", 2500);
             code = d2.country_code || d2.country;
+            ip = d2.ip;
           } catch {}
         }
         if (!code) {
           try {
             const d3 = await fetchWithTimeout("https://freeipapi.com/api/json", 2500);
             code = d3.countryCode || d3.country_code;
+            ip = d3.ip || d3.ipAddress;
           } catch {}
         }
         clearTimeout(fallbackTimer);
         if (cancelled) return;
         const upper = (code || "DEFAULT").toUpperCase();
         const normalized = upper === "IN" ? "IN" : upper === "US" ? "US" : "DEFAULT";
+        // Update cache only if IP changed or country changed (handles VPN switch without manual clear)
+        const prevIP = sessionStorage.getItem("user_ip");
+        if (ip && prevIP && ip !== prevIP) {
+          // IP changed (VPN switched) — force update
+        }
+        if (ip) sessionStorage.setItem("user_ip", ip);
         sessionStorage.setItem("user_country_code", normalized);
         setCountryCode(normalized);
       } catch {
