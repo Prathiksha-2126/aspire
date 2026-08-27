@@ -6,7 +6,7 @@ import SectionHeading from "./SectionHeading";
 
 // US Pricing formula: (INR * 5) converted to USD using the exchange rate
 const US_PRICE_MULTIPLIER = 5;
-const INR_PER_USD_RATE = 83;
+const INR_PER_USD_RATE = 95.49;
 
 function pricingFromINR(inrMonthly, inrAdvance, advanceMonths) {
   const usdMonthly = Math.max(
