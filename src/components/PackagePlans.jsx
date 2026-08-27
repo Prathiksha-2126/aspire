@@ -4,12 +4,20 @@ import { Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 
-// 5x conversion multiplier logic between INR and USD
-const INR_TO_USD_FACTOR = 5;
+// US Pricing formula: (INR * 5) converted to USD using the exchange rate
+const US_PRICE_MULTIPLIER = 5;
+const INR_PER_USD_RATE = 83;
 
 function pricingFromINR(inrMonthly, inrAdvance, advanceMonths) {
-  const usdMonthly = Math.max(1, Math.round(inrMonthly / INR_TO_USD_FACTOR));
-  const usdAdvance = Math.max(1, Math.round(inrAdvance / INR_TO_USD_FACTOR));
+  const usdMonthly = Math.max(
+    1,
+    Math.round((inrMonthly * US_PRICE_MULTIPLIER) / INR_PER_USD_RATE)
+  );
+  const usdAdvance = Math.max(
+    1,
+    Math.round((inrAdvance * US_PRICE_MULTIPLIER) / INR_PER_USD_RATE)
+  );
+
   return {
     IN: {
       monthly: inrMonthly,
