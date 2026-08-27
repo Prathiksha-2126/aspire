@@ -4,19 +4,22 @@ import { Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 
-// US Pricing formula: (INR * 5) converted to USD using the exchange rate
-const US_PRICE_MULTIPLIER = 5;
-const INR_PER_USD_RATE = 95.49;
+// Exchange rate baseline (1 USD = 95.5 INR => ₹16,000 / 95.5 ≈ $167.53)
+const INR_PER_USD_BASE = 95.5;
+const USD_MULTIPLIER = 5;
+
+function convertInrToUsd(inrAmount) {
+  // Step 1: Convert INR to base USD
+  const baseUsd = inrAmount / INR_PER_USD_BASE;
+  // Step 2: Multiply the USD amount by 5
+  const scaledUsd = baseUsd * USD_MULTIPLIER;
+  // Step 3: Round off (>= .5 rounds up, < .5 rounds down)
+  return Math.max(1, Math.round(scaledUsd));
+}
 
 function pricingFromINR(inrMonthly, inrAdvance, advanceMonths) {
-  const usdMonthly = Math.max(
-    1,
-    Math.round((inrMonthly * US_PRICE_MULTIPLIER) / INR_PER_USD_RATE)
-  );
-  const usdAdvance = Math.max(
-    1,
-    Math.round((inrAdvance * US_PRICE_MULTIPLIER) / INR_PER_USD_RATE)
-  );
+  const usdMonthly = convertInrToUsd(inrMonthly);
+  const usdAdvance = convertInrToUsd(inrAdvance);
 
   return {
     IN: {
