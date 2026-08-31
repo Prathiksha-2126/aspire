@@ -104,7 +104,7 @@ function WhyAspireSection() {
           className="text-xs sm:text-sm md:text-base lg:text-lg leading-snug font-medium"
           style={{ color: "#383838" }}
         >
-          Built by industry experts to solve the real bottlenecks in construction and development
+          Built by industry experts to solve the real bottlenecks in construction.
         </p>
       </div>
 
@@ -633,11 +633,11 @@ export default function Home() {
             style={{ color: "#5d9767ff" }}
             variants={fadeInUpVariants}
           >
-            Our vision is to become the trusted technology partner for real
-            estate developers by creating innovative solutions that simplify
-            complex workflows. We aim to help businesses make faster
+            Our vision is to become the trusted technology partner for real estate
+            developers with AspiRE that simplify your
+            complex workflows. We aim to help developers make faster
             decisions, improve productivity, and deliver exceptional projects
-            through AI driven digital platforms.
+            through our AI driven digital platform.
           </motion.p>
         </div>
       </motion.section>

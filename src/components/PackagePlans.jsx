@@ -52,7 +52,7 @@ const plansData = {
       name: "BASIC PLAN",
       description:
         "Perfect for small teams, the Basic Package provides essential tools to manage construction projects efficiently, keeping you organized without breaking the budget.",
-      features: ["Upto 7 Users", "Unlimited Projects", "Task tracking and deadline reminders"],
+      features: ["Upto 7 Users"],
       pricing: pricingFromINR(16000, 96000, 6),
       featured: false,
     },
@@ -60,7 +60,7 @@ const plansData = {
       name: "PREMIUM PLAN",
       description:
         "Designed for growing businesses. The Premium Package offers advanced features and comprehensive tools to take your construction management to the next level.",
-      features: ["Upto 15 Users", "Customizable dashboard reports", "AI Project Planner"],
+      features: ["Upto 15 Users", "AI Project Planner"],
       pricing: pricingFromINR(25000, 140000, 6),
       featured: true,
     },
@@ -68,7 +68,7 @@ const plansData = {
       name: "ENTERPRISE",
       description:
         "Engineered for enterprise-level excellence, the Premium Package is designed to meet the complex needs of large-scale construction businesses. It offers advanced features to streamline operations, enhance productivity, and provide detailed analytics for informed decision-making.",
-      features: ["Upto 25 Users"],
+      features: ["For 25 Users", "AI Project Planner"],
       pricing: pricingFromINR(37500, 220000, 6),
       featured: false,
     },
@@ -77,8 +77,8 @@ const plansData = {
     {
       name: "PER USER PLAN",
       description:
-        "Perfect for sales teams, the Basic Package provides essential tools to manage leads, bookings, payments, and customer documents with ease.",
-      features: ["Per User", "Unlimited Projects", "Notification Reminders"],
+        "Perfect for sales teams, the Per User Package provides essential tools to manage leads, bookings, payments, and customer documents with ease.",
+      features: ["Lead Management", "Unlimited Projects", "Auto Document Generation"],
       pricing: pricingFromINR(5000, 15000, 3),
       featured: false,
     },
@@ -319,6 +319,40 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
                       >
                         {plan.description}
                       </p>
+                      {planPricing && tab === "engineering" && plan.name === "ENTERPRISE" && (
+                        <div className="mt-4">
+                          <div className="flex items-baseline gap-1.5 flex-wrap">
+                            <span
+                              className={`text-xs sm:text-sm font-medium ${
+                                plan.featured ? "text-white/80" : "text-gray-500"
+                              }`}
+                            >
+                              Starting at
+                            </span>
+                            <span
+                              className={`text-3xl sm:text-4xl font-bold tracking-tight ${
+                                plan.featured ? "text-white" : "text-gray-900"
+                              }`}
+                            >
+                              {isLocationLoading ? "..." : formatPrice(planPricing.monthly, planPricing.currency)}
+                            </span>
+                            <span
+                              className={`text-[11px] sm:text-xs font-medium ${
+                                plan.featured ? "text-white/80" : "text-gray-500"
+                              }`}
+                            >
+                              {planPricing.taxNote}
+                            </span>
+                            <span
+                              className={`text-xs sm:text-sm font-medium ${
+                                plan.featured ? "text-white/80" : "text-gray-500"
+                              }`}
+                            >
+                              / month
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </>
                   ) : (
                     <>
@@ -333,7 +367,7 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
                       {/* Pricing Tag */}
                       {planPricing && (
                         <div className="mb-4">
-                          <div className="flex items-baseline gap-1">
+                          <div className="flex items-baseline gap-1.5 flex-wrap">
                             <span
                               className={`text-3xl sm:text-4xl font-bold tracking-tight ${
                                 plan.featured ? "text-white" : "text-gray-900"
@@ -344,34 +378,18 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
                                 : formatPrice(planPricing.monthly, planPricing.currency)}
                             </span>
                             <span
+                              className={`text-[11px] sm:text-xs font-medium ${
+                                plan.featured ? "text-white/80" : "text-gray-500"
+                              }`}
+                            >
+                              {planPricing.taxNote}
+                            </span>
+                            <span
                               className={`text-xs sm:text-sm font-medium ${
                                 plan.featured ? "text-white/80" : "text-gray-500"
                               }`}
                             >
                               / month
-                            </span>
-                          </div>
-
-                          <div className="mt-1 flex flex-col gap-0.5">
-                            <span
-                              className={`text-[11px] font-medium tracking-wide ${
-                                plan.featured ? "text-emerald-200" : "text-emerald-700"
-                              }`}
-                            >
-                              (post {planPricing.advanceMonths} months) {planPricing.taxNote}
-                            </span>
-                            <span
-                              className={`text-xs font-semibold mt-1 ${
-                                plan.featured ? "text-white/90" : "text-gray-700"
-                              }`}
-                            >
-                              Advance ({planPricing.advanceMonths} mo):{" "}
-                              {isLocationLoading
-                                ? "..."
-                                : formatPrice(planPricing.advance, planPricing.currency)}{" "}
-                              <span className="text-[10px] font-normal opacity-80">
-                                {planPricing.taxNote}
-                              </span>
                             </span>
                           </div>
                         </div>
@@ -416,11 +434,19 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
                     </>
                   )}
                 </div>
+                <div className="mt-6 pt-4 border-t border-gray-100">
+                  {tab === "engineering" && plan.name === "ENTERPRISE" && (
+                    <p className="text-[11px] leading-snug text-gray-600 mb-1">For user more than 25, kindly connect with us.</p>
+                  )}
+                  <p className="text-[11px] italic leading-snug text-gray-500">
+                    *{planPricing ? `${planPricing.advanceMonths} months` : tab === "sales" ? "3 months" : "6 months"} advance will be applicable
+                  </p>
+                </div>
               </motion.div>
             );
           })}
         </motion.div>
-      </AnimatePresence>
+        </AnimatePresence>
 
       <p className="mt-10 md:mt-12 text-center font-poppins text-base sm:text-lg md:text-xl font-semibold text-[#4B4A4A]">
         For Custom Enterprise Costing Get In Touch with us
