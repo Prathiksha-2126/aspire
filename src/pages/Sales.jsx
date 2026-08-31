@@ -86,7 +86,7 @@ export default function Sales() {
             <span className="block whitespace-nowrap mt-2 sm:mt-2.5 md:mt-3">Costing You Revenue?</span>
           </h1>
           <p className="text-white text-[17px] sm:text-[18px] md:text-[21px] lg:text-[22px] leading-[1.45] md:leading-[1.5] mb-6 sm:mb-8 max-w-[252px] sm:max-w-[320px] md:max-w-2xl drop-shadow-[0_1px_6px_rgba(0,0,0,0.7)]">
-            Every unit. Every customer. Every transaction in real time.
+            Every unit. Every customer. Every transaction in real time with AspiRE Sales.
           </p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
