@@ -6,7 +6,7 @@ const imageMap = {
   "Lead Management": "/images/Lead Management Features Section of AspiRe Sales.png",
   "Booking Management": "/images/Booking Management Features of AspiRE Sales.png",
   "Document Automation": "/images/Document Automation Features of AspiRE Sales.png",
-  "Reports Analytics": "/images/Reports & Analytics Features of AspiRE Sales.png",
+  "Reports & Analytics": "/images/Reports & Analytics Features of AspiRE Sales.png",
 };
 
 const getImageForTab = (label) => imageMap[label] || null;

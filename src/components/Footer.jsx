@@ -69,18 +69,18 @@ export default function Footer() {
           <Link to="/terms-of-service" className={linkClass} style={textColor}>Terms of Service</Link>
         </div>
 
-        {/* India */}
-        <div className="text-xs sm:text-sm" style={textColor}>
-          <p className="font-semibold mb-0.5 sm:mb-1">India</p>
-          <p className="leading-relaxed">A1-211, 2nd Floor, Expat Vida, Above KFC, Near Gera School, Kadamba Plateau, Old Goa-403402</p>
-          <a href="tel:+917020858404" className="mt-1 sm:mt-2 font-semibold block hover:underline cursor-pointer">+91 7020858404</a>
-        </div>
-
         {/* USA */}
         <div className="text-xs sm:text-sm" style={textColor}>
           <p className="font-semibold mb-0.5 sm:mb-1">USA</p>
           <p className="leading-relaxed">3075 Book Road Ste 103, #9162 Naperville, IL 60567-9162</p>
           <a href="tel:+18155569058" className="mt-1 sm:mt-2 font-semibold block hover:underline cursor-pointer">+1 815 556 9058</a>
+        </div>
+
+        {/* India */}
+        <div className="text-xs sm:text-sm" style={textColor}>
+          <p className="font-semibold mb-0.5 sm:mb-1">India</p>
+          <p className="leading-relaxed">A1-211, 2nd Floor, Expat Vida, Above KFC, Near Gera School, Kadamba Plateau, Old Goa-403402</p>
+          <a href="tel:+917020858404" className="mt-1 sm:mt-2 font-semibold block hover:underline cursor-pointer">+91 7020858404</a>
         </div>
       </div>
 
