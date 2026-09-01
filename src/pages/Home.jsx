@@ -629,12 +629,11 @@ export default function Home() {
           </motion.h2>
 
           <motion.p
-            className="w-full max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl lg:text-2xl leading-relaxed font-normal text-center"
+            className="w-full max-w-4xl mx-auto text-lg sm:text-xl md:text-2xl lg:text-2xl leading-relaxed font-normal text-center"
             style={{ color: "#5d9767ff" }}
             variants={fadeInUpVariants}
           >
-            Our vision is to become the trusted technology partner for real estate
-            developers with AspiRE that simplify your
+            Our vision is to become the trusted technology partner <span className="whitespace-nowrap">for real estate</span> developers with AspiRE that simplify your
             complex workflows. We aim to help developers make faster
             decisions, improve productivity, and deliver exceptional projects
             through our AI driven digital platform.

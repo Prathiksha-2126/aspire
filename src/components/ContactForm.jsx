@@ -164,23 +164,9 @@ export default function ContactForm() {
           </h2>
 
           <motion.p className="font-semibold leading-relaxed" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
-            India
-          </motion.p>
-          <motion.p className="text-white/80 mb-3 text-sm leading-relaxed" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}>
-            A1-211, 2nd Floor, Expat Vida, Above KFC, Near GERRA School, Kadamba Plateau, Old Goa-403402
-          </motion.p>
-          <motion.a href="tel:+919011879123" onClick={(e) => { e.stopPropagation(); window.location.href = "tel:+919011879123"; }}
-            className="border border-white rounded-md px-4 py-2 text-sm flex items-center gap-2 cursor-pointer transition-colors hover:bg-[#2C6035] w-fit mb-4"
-            style={{ backgroundColor: "#2C6035", color: "white" }}
-            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          >
-            <Phone size={15} /> +91 9011879123
-          </motion.a>
-          <motion.p className="font-semibold leading-relaxed" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}>
             USA
           </motion.p>
-          <motion.p className="text-white/80 mb-3 text-sm leading-relaxed" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }}>
+          <motion.p className="text-white/80 mb-3 text-sm leading-relaxed" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}>
             3075 Book Road Ste 103, #9162 Naperville, IL 60567-9162
           </motion.p>
           <motion.a href="tel:+18155569058" onClick={(e) => { e.stopPropagation(); window.location.href = "tel:+18155569058"; }}
@@ -190,6 +176,20 @@ export default function ContactForm() {
           >
             <img src="/images/flag.png" alt="USA" className="w-5 h-auto" />
             <Phone size={15} /> +1 815 556 9058
+          </motion.a>
+          <motion.p className="font-semibold leading-relaxed" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}>
+            India
+          </motion.p>
+          <motion.p className="text-white/80 mb-3 text-sm leading-relaxed" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }}>
+            A1-211, 2nd Floor, Expat Vida, Above KFC, Near GERRA School, Kadamba Plateau, Old Goa-403402
+          </motion.p>
+          <motion.a href="tel:+919011879123" onClick={(e) => { e.stopPropagation(); window.location.href = "tel:+919011879123"; }}
+            className="border border-white rounded-md px-4 py-2 text-sm flex items-center gap-2 cursor-pointer transition-colors hover:bg-[#2C6035] w-fit mb-4"
+            style={{ backgroundColor: "#2C6035", color: "white" }}
+            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          >
+            <Phone size={15} /> +91 9011879123
           </motion.a>
 
           <motion.img

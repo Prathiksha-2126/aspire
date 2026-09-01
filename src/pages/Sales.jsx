@@ -38,8 +38,8 @@ const tabs = [
   {
     icon: <PieChart size={18} />,
     iconImage: "/images/Reports Analytics ICon.png",
-    label: "Reports Analytics",
-    title: "Reports Analytics",
+    label: "Reports & Analytics",
+    title: "Reports & Analytics",
     description:
       "Real-time dashboards and reports for sales, collections, inventory and lead funnel.",
   },

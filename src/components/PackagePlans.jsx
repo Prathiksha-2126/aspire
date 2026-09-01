@@ -320,38 +320,40 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
                         {plan.description}
                       </p>
                       {planPricing && tab === "engineering" && plan.name === "ENTERPRISE" && (
-                        <div className="mt-4">
-                          <div className="flex items-baseline gap-1.5 flex-wrap">
-                            <span
-                              className={`text-xs sm:text-sm font-medium ${
-                                plan.featured ? "text-white/80" : "text-gray-500"
-                              }`}
-                            >
-                              Starting at
-                            </span>
-                            <span
-                              className={`text-3xl sm:text-4xl font-bold tracking-tight ${
-                                plan.featured ? "text-white" : "text-gray-900"
-                              }`}
-                            >
-                              {isLocationLoading ? "..." : formatPrice(planPricing.monthly, planPricing.currency)}
-                            </span>
-                            <span
-                              className={`text-[11px] sm:text-xs font-medium ${
-                                plan.featured ? "text-white/80" : "text-gray-500"
-                              }`}
-                            >
-                              {planPricing.taxNote}
-                            </span>
-                            <span
-                              className={`text-xs sm:text-sm font-medium ${
-                                plan.featured ? "text-white/80" : "text-gray-500"
-                              }`}
-                            >
-                              / month
-                            </span>
+                        <>
+                          <p
+                            className={`text-xs font-medium mt-3 ${
+                              plan.featured ? "text-white/80" : "text-gray-500"
+                            }`}
+                          >
+                            Starting at
+                          </p>
+                          <div className="mt-1">
+                            <div className="flex items-baseline gap-1.5 flex-wrap">
+                              <span
+                                className={`text-3xl sm:text-4xl font-bold tracking-tight ${
+                                  plan.featured ? "text-white" : "text-gray-900"
+                                }`}
+                              >
+                                {isLocationLoading ? "..." : formatPrice(planPricing.monthly, planPricing.currency)}
+                              </span>
+                              <span
+                                className={`text-[11px] sm:text-xs font-medium ${
+                                  plan.featured ? "text-white/80" : "text-gray-500"
+                                }`}
+                              >
+                                {planPricing.taxNote}
+                              </span>
+                              <span
+                                className={`text-xs sm:text-sm font-medium ${
+                                  plan.featured ? "text-white/80" : "text-gray-500"
+                                }`}
+                              >
+                                / month
+                              </span>
+                            </div>
                           </div>
-                        </div>
+                        </>
                       )}
                     </>
                   ) : (
@@ -363,6 +365,15 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
                       >
                         {plan.name}
                       </h3>
+                      {tab === "engineering" && plan.name === "ENTERPRISE" && (
+                        <p
+                          className={`text-xs font-medium mb-2 ${
+                            plan.featured ? "text-white/80" : "text-gray-500"
+                          }`}
+                        >
+                          Starting at
+                        </p>
+                      )}
 
                       {/* Pricing Tag */}
                       {planPricing && (
@@ -434,11 +445,11 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
                     </>
                   )}
                 </div>
-                <div className="mt-6 pt-4 border-t border-gray-100">
+                <div className="mt-4">
                   {tab === "engineering" && plan.name === "ENTERPRISE" && (
                     <p className="text-[11px] leading-snug text-gray-600 mb-1">For user more than 25, kindly connect with us.</p>
                   )}
-                  <p className="text-[11px] italic leading-snug text-gray-500">
+                  <p className={`text-[11px] italic leading-snug ${plan.featured ? "text-white" : "text-gray-500"}`}>
                     *{planPricing ? `${planPricing.advanceMonths} months` : tab === "sales" ? "3 months" : "6 months"} advance will be applicable
                   </p>
                 </div>

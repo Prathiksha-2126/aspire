@@ -41,7 +41,7 @@ export default function FeatureTabs({ tabs }) {
         setDirection(1);
         setVirtualActive((prev) => prev + 1);
       }
-    }, 3000);
+    }, 10000);
     return () => clearInterval(timer);
   }, [tabs.length, isPaused]);
 
@@ -78,19 +78,19 @@ export default function FeatureTabs({ tabs }) {
     setDirection(delta > 0 ? 1 : -1);
     setVirtualActive((prev) => prev + delta);
     setIsPaused(true);
-    setTimeout(() => setIsPaused(false), 5000);
+    setTimeout(() => setIsPaused(false), 10000);
   };
   const handlePrev = () => {
     setDirection(-1);
     setVirtualActive((prev) => prev - 1);
     setIsPaused(true);
-    setTimeout(() => setIsPaused(false), 5000);
+    setTimeout(() => setIsPaused(false), 10000);
   };
   const handleNext = () => {
     setDirection(1);
     setVirtualActive((prev) => prev + 1);
     setIsPaused(true);
-    setTimeout(() => setIsPaused(false), 5000);
+    setTimeout(() => setIsPaused(false), 10000);
   };
 
   const textVariants = {

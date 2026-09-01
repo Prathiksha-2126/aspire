@@ -40,8 +40,8 @@ export default function OurAimSection(props) {
                 — {eyebrow}
               </p>
 
-              {/* Heading */}
-              <h2 className="text-3xl md:text-4xl lg:text-[48px] font-bold leading-tight mb-6 md:mb-8 text-gray-900 font-poppins">
+              {/* Heading - decreased size, increased line spacing */}
+              <h2 className="text-2xl md:text-3xl lg:text-[42px] font-bold leading-snug md:leading-[1.35] mb-8 md:mb-10 text-gray-900 font-poppins">
                 {heading.map((seg, i) => (
                   <span key={i} style={seg.highlight ? { color: green } : undefined}>
                     {seg.text}
