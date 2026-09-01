@@ -7,42 +7,42 @@ const testimonials = [
     name: "Tanmay Usgaonkar",
     role: "Partner – Maharudra Real Estate",
     rating: 5,
-    quote: "An essential tool for construction management—simple to use, highly efficient, and keeps every project on track!",
+    quote: "AspiRE helps me review and approve everything from my phone when I’m away from my desk. That’s what I really like about it, it lets me keep things moving without having to be at my desk.",
     image: "/images/Tanmay Usgaonkar - Maharudra.jpeg",
   },
   {
     name: "Cedric Vaz",
     role: "Owner – EDCON Real Estate",
     rating: 4,
-    quote: "Managing project activities is now faster and systematic—keeping every stage of the project efficiently on track!",
+    quote: "AspiRE has given us a lot more clarity on what’s actually happening across our sites, without having to physically visit them.",
     image: null,
   },
   {
     name: "Marcus Cardoso",
     role: "Director – Ruby Realtors Goa Private Limited",
     rating: 4,
-    quote: "A powerful tool for streamlining operations—improves visibility, reduces manual work, and enables better project coordination.",
+    quote: "AspiRE has made it much easier for us to keep track of our projects and stay updated on what’s happening across different sites.",
     image: null,
   },
   {
     name: "Sanket Singbal",
     role: "Director – Sanvi Developers",
     rating: 5,
-    quote: "It has transformed the way we manage our construction projects—streamlined, efficient, and incredibly user-friendly!",
+    quote: "AspiRE has made it simple for me preparing Demand Letters, Agreements, Receipts etc.. which used to consume lot of our time before.",
     image: null,
   },
   {
     name: "Kabir Morajkar",
     role: "Partner – Vaastu Estate Developers",
     rating: 5,
-    quote: "Simplified how we manage construction projects—keeps everything organised, improves coordination, and boosts team efficiency!",
+    quote: "AspiRE has made it much easier to keep track of tasks and make sure they’re completed on time. I also really like how simple the reports are, it gives me a clear picture of what’s happening without having to go through everything.",
     image: "/images/Kabir Morajkar - Vaastu.jpeg",
   },
   {
     name: "Varun Kudchadkar",
     role: "Director – JMD Group",
     rating: 4,
-    quote: "Made project management more structured and efficient. It is easy to use, saves valuable time, and helps teams stay updated and productive.",
+    quote: "AspiRE has made things much easier for our team. It helps us know what needs to be done and keeps the daily work organised.",
     image: "/images/Varun Kudchadkar - JMD.jpeg",
   },
 ];
@@ -58,6 +58,14 @@ function TestimonialAvatar({ item }) {
       <User size={26} className="hidden sm:block" strokeWidth={1.8} />
     </>
   );
+}
+
+function getQuoteSize(quote) {
+  const len = quote.length;
+  if (len > 180) return "text-xs sm:text-sm md:text-[15px]";
+  if (len > 140) return "text-[13px] sm:text-sm md:text-base";
+  if (len > 110) return "text-sm sm:text-[15px] md:text-[17px]";
+  return "text-sm sm:text-base md:text-lg";
 }
 
 export default function Testimonials() {
@@ -142,7 +150,7 @@ export default function Testimonials() {
             >
               <div className="relative flex-1 flex flex-col justify-center text-center px-1">
                 <span className="text-4xl font-serif leading-none absolute top-0 left-0 text-gray-300/80 select-none">"</span>
-                <p className="font-serif text-sm leading-relaxed px-4 my-auto font-medium text-gray-900">{item.quote}</p>
+                <p className={`font-serif leading-relaxed px-4 my-auto font-medium text-gray-900 ${getQuoteSize(item.quote)}`}>{item.quote}</p>
                 <span className="text-4xl font-serif leading-none absolute bottom-0 right-0 text-gray-300/80 select-none">"</span>
               </div>
               <div className="flex items-center gap-3 pt-3 border-t border-gray-200/60 mt-3 shrink-0">
@@ -229,7 +237,7 @@ export default function Testimonials() {
               >
                 <div className="relative flex-1 flex flex-col justify-center text-center px-1 overflow-hidden">
                   <span className="text-4xl sm:text-5xl font-serif leading-none absolute top-0 left-0 text-gray-300/80 select-none">"</span>
-                  <p className="font-serif text-sm sm:text-base md:text-lg leading-relaxed px-4 my-auto font-medium text-gray-900 line-clamp-6">{item.quote}</p>
+                  <p className={`font-serif leading-relaxed px-4 my-auto font-medium text-gray-900 ${getQuoteSize(item.quote)}`}>{item.quote}</p>
                   <span className="text-4xl sm:text-5xl font-serif leading-none absolute bottom-0 right-0 text-gray-300/80 select-none">"</span>
                 </div>
                 <div className="flex items-center gap-3 pt-3 border-t border-gray-200/60 mt-3 shrink-0">

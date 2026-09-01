@@ -86,7 +86,7 @@ export default function Footer() {
 
       <hr className="my-4 sm:my-5 md:my-7 max-w-6xl mx-auto" style={{ borderColor: "#775151", opacity: 0.6 }} />
       <p className="text-center text-xs sm:text-sm font-semibold" style={{ color: "#906262" }}>
-        © 2026 CopperCodes Consulting LLP. All rights reserved.
+        © {new Date().getFullYear()} CopperCodes Consulting LLP. All rights reserved.
       </p>
     </footer>
   );

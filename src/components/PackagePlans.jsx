@@ -5,44 +5,37 @@ import { motion, AnimatePresence } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 
 // Exchange rate baseline (1 USD = 95.5 INR => ₹16,000 / 95.5 ≈ $167.53)
-const INR_PER_USD_BASE = 95.5;
-const USD_MULTIPLIER = 5;
+// const INR_PER_USD_BASE = 95.5;
+// const USD_MULTIPLIER = 5;
 
-function convertInrToUsd(inrAmount) {
-  // Step 1: Convert INR to base USD
-  const baseUsd = inrAmount / INR_PER_USD_BASE;
-  // Step 2: Multiply the USD amount by 5
-  const scaledUsd = baseUsd * USD_MULTIPLIER;
-  // Step 3: Round off (>= .5 rounds up, < .5 rounds down)
-  return Math.max(1, Math.round(scaledUsd));
-}
+// function convertInrToUsd(inrAmount) {
+//   // Step 1: Convert INR to base USD
+//   const baseUsd = inrAmount / INR_PER_USD_BASE;
+//   // Step 2: Multiply the USD amount by 5
+//   const scaledUsd = baseUsd * USD_MULTIPLIER;
+//   // Step 3: Round off (>= .5 rounds up, < .5 rounds down)
+//   return Math.max(1, Math.round(scaledUsd));
+// }
+
+// function pricingFromINR(inrMonthly, inrAdvance, advanceMonths) {
+//   const usdMonthly = convertInrToUsd(inrMonthly);
+//   const usdAdvance = convertInrToUsd(inrAdvance);
+//   return {
+//     IN: { monthly: inrMonthly, advance: inrAdvance, advanceMonths, currency: "INR", taxNote: "+ 18% GST" },
+//     US: { monthly: usdMonthly, advance: usdAdvance, advanceMonths, currency: "USD", taxNote: "+ applicable taxes" },
+//     DEFAULT: { monthly: usdMonthly, advance: usdAdvance, advanceMonths, currency: "USD", taxNote: "+ applicable taxes" },
+//   };
+// }
 
 function pricingFromINR(inrMonthly, inrAdvance, advanceMonths) {
-  const usdMonthly = convertInrToUsd(inrMonthly);
-  const usdAdvance = convertInrToUsd(inrAdvance);
-
+  // Kept for sales (still uses INR→USD conversion), engineering now uses hardcoded USD below
+  const rate = 95.5;
+  const usdMonthly = Math.max(1, Math.round((inrMonthly / rate) * 5));
+  const usdAdvance = Math.max(1, Math.round((inrAdvance / rate) * 5));
   return {
-    IN: {
-      monthly: inrMonthly,
-      advance: inrAdvance,
-      advanceMonths,
-      currency: "INR",
-      taxNote: "+ 18% GST",
-    },
-    US: {
-      monthly: usdMonthly,
-      advance: usdAdvance,
-      advanceMonths,
-      currency: "USD",
-      taxNote: "+ applicable taxes",
-    },
-    DEFAULT: {
-      monthly: usdMonthly,
-      advance: usdAdvance,
-      advanceMonths,
-      currency: "USD",
-      taxNote: "+ applicable taxes",
-    },
+    IN: { monthly: inrMonthly, advance: inrAdvance, advanceMonths, currency: "INR", taxNote: "+ 18% GST" },
+    US: { monthly: usdMonthly, advance: usdAdvance, advanceMonths, currency: "USD", taxNote: "+ applicable taxes" },
+    DEFAULT: { monthly: usdMonthly, advance: usdAdvance, advanceMonths, currency: "USD", taxNote: "+ applicable taxes" },
   };
 }
 
@@ -53,7 +46,12 @@ const plansData = {
       description:
         "Perfect for small teams, the Basic Package provides essential tools to manage construction projects efficiently, keeping you organized without breaking the budget.",
       features: ["Upto 7 Users"],
-      pricing: pricingFromINR(16000, 96000, 6),
+      // Hardcoded USD as requested — logic commented above
+      pricing: {
+        IN: { monthly: 16000, advance: 96000, advanceMonths: 6, currency: "INR", taxNote: "+ 18% GST" },
+        US: { monthly: 795, advance: 4770, advanceMonths: 6, currency: "USD", taxNote: "+ applicable taxes" },
+        DEFAULT: { monthly: 795, advance: 4770, advanceMonths: 6, currency: "USD", taxNote: "+ applicable taxes" },
+      },
       featured: false,
     },
     {
@@ -61,7 +59,11 @@ const plansData = {
       description:
         "Designed for growing businesses. The Premium Package offers advanced features and comprehensive tools to take your construction management to the next level.",
       features: ["Upto 15 Users", "AI Project Planner"],
-      pricing: pricingFromINR(25000, 140000, 6),
+      pricing: {
+        IN: { monthly: 25000, advance: 140000, advanceMonths: 6, currency: "INR", taxNote: "+ 18% GST" },
+        US: { monthly: 995, advance: 5970, advanceMonths: 6, currency: "USD", taxNote: "+ applicable taxes" },
+        DEFAULT: { monthly: 995, advance: 5970, advanceMonths: 6, currency: "USD", taxNote: "+ applicable taxes" },
+      },
       featured: true,
     },
     {
@@ -69,7 +71,11 @@ const plansData = {
       description:
         "Engineered for enterprise-level excellence, the Premium Package is designed to meet the complex needs of large-scale construction businesses. It offers advanced features to streamline operations, enhance productivity, and provide detailed analytics for informed decision-making.",
       features: ["For 25 Users", "AI Project Planner"],
-      pricing: pricingFromINR(37500, 220000, 6),
+      pricing: {
+        IN: { monthly: 37500, advance: 220000, advanceMonths: 6, currency: "INR", taxNote: "+ 18% GST" },
+        US: { monthly: 1295, advance: 7770, advanceMonths: 6, currency: "USD", taxNote: "+ applicable taxes" },
+        DEFAULT: { monthly: 1295, advance: 7770, advanceMonths: 6, currency: "USD", taxNote: "+ applicable taxes" },
+      },
       featured: false,
     },
   ],
@@ -79,14 +85,19 @@ const plansData = {
       description:
         "Perfect for sales teams, the Per User Package provides essential tools to manage leads, bookings, payments, and customer documents with ease.",
       features: ["Lead Management", "Unlimited Projects", "Auto Document Generation"],
-      pricing: pricingFromINR(5000, 15000, 3),
+      // pricingFromINR(5000, 15000, 3) — logic commented, hardcoded USD $250 as requested
+      pricing: {
+        IN: { monthly: 5000, advance: 15000, advanceMonths: 3, currency: "INR", taxNote: "+ 18% GST" },
+        US: { monthly: 250, advance: 750, advanceMonths: 3, currency: "USD", taxNote: "+ applicable taxes" },
+        DEFAULT: { monthly: 250, advance: 750, advanceMonths: 3, currency: "USD", taxNote: "+ applicable taxes" },
+      },
       featured: false,
     },
     {
       name: "ENTERPRISE",
       heading: "Get in touch",
       description:
-        "Engineered for enterprise-level excellence, the Premium Package is designed to meet the complex needs of large-scale construction businesses. It offers advanced features to streamline operations, enhance productivity, and provide detailed analytics for informed decision-making.",
+        "The Enterprise Package is designed to meet the complex needs of large-scale real estate businesses. It helps streamline leads and booking management, automate documentation, improve sales operations, and provide detailed reports and analytics for informed decision-making.",
       features: [],
       featured: true,
     },
@@ -290,103 +301,79 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
                 }`}
                 style={{ maxWidth: "380px", minHeight: "440px" }}
               >
-                <div className="flex flex-col flex-1">
+                <div className="flex flex-col flex-1 min-h-[300px]">
                   {plan.heading ? (
                     <>
                       <h3
-                        className={`text-sm sm:text-base font-medium mb-1 ${
+                        className={`text-sm sm:text-base font-medium mb-1 min-h-[20px] ${
                           plan.featured ? "text-white/80" : "text-[#055938]"
                         }`}
                       >
                         Enterprise
                       </h3>
                       <h2
-                        className={`text-2xl sm:text-3xl font-bold mb-5 ${
+                        className={`text-2xl sm:text-3xl font-bold mb-4 min-h-[36px] ${
                           plan.featured ? "text-white" : "text-gray-900"
                         }`}
                       >
                         {plan.heading}
                       </h2>
-                      <div
-                        className={`h-px w-full mb-5 ${
-                          plan.featured ? "bg-white/20" : "bg-gray-200/80"
-                        }`}
-                      />
+                      <div className={`h-px w-full mb-4 min-h-px ${plan.featured ? "bg-white/20" : "bg-gray-200/80"}`} />
                       <p
-                        className={`text-sm leading-relaxed font-normal ${
+                        className={`text-sm leading-relaxed font-normal min-h-[90px] ${
                           plan.featured ? "text-white/85" : "text-gray-500"
                         }`}
                       >
                         {plan.description}
                       </p>
-                      {planPricing && tab === "engineering" && plan.name === "ENTERPRISE" && (
-                        <>
-                          <p
-                            className={`text-xs font-medium mt-3 ${
-                              plan.featured ? "text-white/80" : "text-gray-500"
-                            }`}
-                          >
-                            Starting at
-                          </p>
-                          <div className="mt-1">
-                            <div className="flex items-baseline gap-1.5 flex-wrap">
+                      <div className={`h-px w-full mt-auto mb-5 min-h-px ${plan.featured ? "bg-white/20" : "bg-gray-200/80"}`} />
+                      <ul className="space-y-3 sm:space-y-4 mt-2 min-h-[56px]">
+                        {plan.features.length > 0 ? (
+                          plan.features.map((f) => (
+                            <li key={f} className="flex items-center gap-3">
                               <span
-                                className={`text-3xl sm:text-4xl font-bold tracking-tight ${
-                                  plan.featured ? "text-white" : "text-gray-900"
+                                className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
+                                  plan.featured ? "bg-white" : "bg-[#055938]"
                                 }`}
                               >
-                                {isLocationLoading ? "..." : formatPrice(planPricing.monthly, planPricing.currency)}
+                                <Check size={12} strokeWidth={2.5} className={plan.featured ? "text-[#055938]" : "text-white"} />
                               </span>
-                              <span
-                                className={`text-[11px] sm:text-xs font-medium ${
-                                  plan.featured ? "text-white/80" : "text-gray-500"
-                                }`}
-                              >
-                                {planPricing.taxNote}
-                              </span>
-                              <span
-                                className={`text-xs sm:text-sm font-medium ${
-                                  plan.featured ? "text-white/80" : "text-gray-500"
-                                }`}
-                              >
-                                / month
-                              </span>
-                            </div>
-                          </div>
-                        </>
-                      )}
+                              <span className={`text-sm font-normal leading-snug ${plan.featured ? "text-white/95" : "text-gray-600"}`}>{f}</span>
+                            </li>
+                          ))
+                        ) : (
+                          <li className="flex items-center gap-3 opacity-0 select-none pointer-events-none">
+                            <span className="w-5 h-5 rounded-full flex-shrink-0" />
+                            <span className="text-sm">&nbsp;</span>
+                          </li>
+                        )}
+                      </ul>
                     </>
                   ) : (
                     <>
                       <h3
-                        className={`text-lg sm:text-xl font-semibold tracking-wide uppercase mb-2 ${
+                        className={`text-lg sm:text-xl font-semibold tracking-wide uppercase min-h-[28px] mb-2 ${
                           plan.featured ? "text-white" : "text-[#055938]"
                         }`}
                       >
                         {plan.name}
                       </h3>
-                      {tab === "engineering" && plan.name === "ENTERPRISE" && (
-                        <p
-                          className={`text-xs font-medium mb-2 ${
-                            plan.featured ? "text-white/80" : "text-gray-500"
-                          }`}
-                        >
-                          Starting at
-                        </p>
-                      )}
+                      <div className="min-h-[16px] mb-2">
+                        {tab === "engineering" && plan.name === "ENTERPRISE" && (
+                          <p className={`text-xs font-medium ${plan.featured ? "text-white/80" : "text-gray-500"}`}>Starting at</p>
+                        )}
+                      </div>
 
-                      {/* Pricing Tag */}
-                      {planPricing && (
-                        <div className="mb-4">
+                      {/* Pricing Tag - fixed height */}
+                      <div className="min-h-[52px] mb-4">
+                        {planPricing && (
                           <div className="flex items-baseline gap-1.5 flex-wrap">
                             <span
                               className={`text-3xl sm:text-4xl font-bold tracking-tight ${
                                 plan.featured ? "text-white" : "text-gray-900"
                               }`}
                             >
-                              {isLocationLoading
-                                ? "..."
-                                : formatPrice(planPricing.monthly, planPricing.currency)}
+                              {isLocationLoading ? "..." : formatPrice(planPricing.monthly, planPricing.currency)}
                             </span>
                             <span
                               className={`text-[11px] sm:text-xs font-medium ${
@@ -403,22 +390,19 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
                               / month
                             </span>
                           </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
+                      <div className={`h-px w-full mb-4 min-h-px ${plan.featured ? "bg-white/20" : "bg-gray-200/80"}`} />
 
                       <p
-                        className={`text-sm leading-relaxed font-normal mb-5 ${
+                        className={`text-sm leading-relaxed font-normal min-h-[90px] mb-5 ${
                           plan.featured ? "text-white/85" : "text-gray-500"
                         }`}
                       >
                         {plan.description}
                       </p>
-                      <div
-                        className={`h-px w-full mb-5 ${
-                          plan.featured ? "bg-white/20" : "bg-gray-200/80"
-                        }`}
-                      />
-                      <ul className="space-y-3 sm:space-y-4 mt-2">
+                      <div className={`h-px w-full mt-auto mb-5 min-h-px ${plan.featured ? "bg-white/20" : "bg-gray-200/80"}`} />
+                      <ul className="space-y-3 sm:space-y-4 mt-2 min-h-[56px]">
                         {plan.features.map((f) => (
                           <li key={f} className="flex items-center gap-3">
                             <span
@@ -447,7 +431,7 @@ export default function PackagePlans({ defaultTab = "engineering" }) {
                 </div>
                 <div className="mt-4">
                   {tab === "engineering" && plan.name === "ENTERPRISE" && (
-                    <p className="text-[11px] leading-snug text-gray-600 mb-1">For user more than 25, kindly connect with us.</p>
+                    <p className="text-[11px] leading-snug text-gray-600 mb-1">For more than 25 users, kindly connect with us.</p>
                   )}
                   <p className={`text-[11px] italic leading-snug ${plan.featured ? "text-white" : "text-gray-500"}`}>
                     *{planPricing ? `${planPricing.advanceMonths} months` : tab === "sales" ? "3 months" : "6 months"} advance will be applicable
