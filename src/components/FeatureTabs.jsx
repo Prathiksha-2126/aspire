@@ -134,7 +134,7 @@ export default function FeatureTabs({ tabs }) {
 
         {/* Stage - green blob + phone + floating cards, same data as desktop */}
         <div className="relative flex-1 flex items-center justify-center px-2 py-6 min-h-[480px] sm:min-h-[520px] overflow-hidden">
-          <AnimatePresence mode="wait" custom={direction}>
+          <AnimatePresence mode="wait" custom={direction} initial={false}>
             <motion.div
               key={active}
               custom={direction}
@@ -142,7 +142,7 @@ export default function FeatureTabs({ tabs }) {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="relative w-full max-w-[420px] sm:max-w-[480px] flex items-center justify-end min-h-[440px] sm:min-h-[480px]"
+              className="relative w-full max-w-[420px] sm:max-w-[480px] flex items-center justify-center min-h-[440px] sm:min-h-[480px] pointer-events-none"
               style={{ transformOrigin: "50% calc(100% + 400px)" }}
             >
               {/* Green blob - bottom edge pinned to bottom - a bit down */}
@@ -163,45 +163,48 @@ export default function FeatureTabs({ tabs }) {
           </AnimatePresence>
         </div>
 
-        {/* Bottom tab row - continuously auto-advancing horizontal slider, pure translateX, no scale, seamless loop */}
-        <div className="bg-white px-2 py-4 flex-shrink-0 border-t border-gray-100 overflow-hidden" ref={containerRef}>
-          <motion.div
-            ref={trackRef}
-            className="flex gap-3"
-            animate={{ x: containerWidth ? containerWidth / 2 - (virtualActive * itemWidth + 26) : 0 }}
-            transition={{ duration: isJumping ? 0 : 0.5, ease: "easeInOut" }}
-            style={{ willChange: "transform" }}
-          >
-            {EXTENDED.map((tab, i) => {
-              const isAct = i === virtualActive;
-              return (
-                <button
-                  key={`${tab.label}-${i}`}
-                  onClick={() => go(i % tabs.length)}
-                  className="flex flex-col items-center flex-shrink-0 min-w-[64px]"
-                >
-                  <motion.div
-                    animate={{ width: isAct ? 60 : 46, height: isAct ? 60 : 46 }}
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className={`rounded-full overflow-hidden flex items-center justify-center ${isAct ? "bg-[#2c6035]" : "bg-white border border-gray-200"}`}
-                  >
-                    {tab.iconImage ? (
-                      <img src={tab.iconImage} alt={tab.label} className="w-full h-full object-cover" />
-                    ) : tab.icon ? (
-                      <span className="flex items-center justify-center text-[#2c6035] [&>svg]:text-[#2c6035]">{tab.icon}</span>
-                    ) : null}
-                  </motion.div>
-                  <span
-                    className={`mt-2 text-center leading-tight uppercase ${isAct ? "font-bold text-[#2c6035]" : "font-medium text-[#6B6B6B]"}`}
-                    style={{ fontSize: "9px", maxWidth: "64px", whiteSpace: "pre-line" }}
-                  >
-                    {tab.label === "Gantt Chart" ? "GANTT\nCHART" : tab.label === "AI Project Planner" ? "AI PROJECT\nPLANNER" : tab.label === "Materials Management" ? "MATERIALS\nMANAGEMENT" : tab.label === "Attendance Management" ? "ATTENDANCE\nMANAGEMENT" : tab.label === "Payment Tracking" ? "PAYMENT\nTRACKING" : tab.label.toUpperCase()}
-                  </span>
-                  {isAct && <div className="w-6 h-0.5 bg-[#2c6035] mt-1.5 rounded-full" />}
-                </button>
-              );
-            })}
-          </motion.div>
+        {/* Bottom tab slider - bubbles fully visible from edge to edge */}
+        <div className="bg-white py-4 flex-shrink-0 border-t border-gray-100">
+          {/* Slider viewport - shows exactly 5 icons */}
+          <div className="overflow-hidden mx-auto" ref={containerRef} style={{ maxWidth: "368px" }}>
+              <motion.div
+                ref={trackRef}
+                className="flex gap-3"
+                animate={{ x: containerWidth ? containerWidth / 2 - (virtualActive * itemWidth + 26) : 0 }}
+                transition={{ duration: isJumping ? 0 : 0.5, ease: "easeInOut" }}
+                style={{ willChange: "transform" }}
+              >
+                {EXTENDED.map((tab, i) => {
+                  const isAct = i === virtualActive;
+                  return (
+                    <button
+                      key={`${tab.label}-${i}`}
+                      onClick={() => go(i % tabs.length)}
+                      className="flex flex-col items-center flex-shrink-0 min-w-[64px]"
+                    >
+                      <motion.div
+                        animate={{ width: isAct ? 60 : 46, height: isAct ? 60 : 46 }}
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                        className={`rounded-full overflow-hidden flex items-center justify-center ${isAct ? "bg-[#2c6035]" : "bg-white border border-gray-200"}`}
+                      >
+                        {tab.iconImage ? (
+                          <img src={tab.iconImage} alt={tab.label} className="w-full h-full object-cover" />
+                        ) : tab.icon ? (
+                          <span className="flex items-center justify-center text-[#2c6035] [&>svg]:text-[#2c6035]">{tab.icon}</span>
+                        ) : null}
+                      </motion.div>
+                      <span
+                        className={`mt-2 text-center leading-tight uppercase ${isAct ? "font-bold text-[#2c6035]" : "font-medium text-[#6B6B6B]"}`}
+                        style={{ fontSize: "9px", maxWidth: "64px", whiteSpace: "pre-line" }}
+                      >
+                        {tab.label === "Gantt Chart" ? "GANTT\nCHART" : tab.label === "AI Project Planner" ? "AI PROJECT\nPLANNER" : tab.label === "Materials Management" ? "MATERIALS\nMANAGEMENT" : tab.label === "Attendance Management" ? "ATTENDANCE\nMANAGEMENT" : tab.label === "Payment Tracking" ? "PAYMENT\nTRACKING" : tab.label.toUpperCase()}
+                      </span>
+                      {isAct && <div className="w-6 h-0.5 bg-[#2c6035] mt-1.5 rounded-full" />}
+                    </button>
+                  );
+                })}
+              </motion.div>
+          </div>
         </div>
       </div>
 

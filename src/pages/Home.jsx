@@ -354,6 +354,15 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20 md:bg-gradient-to-r md:from-black/50 md:via-black/20 md:to-transparent" />
         </div>
 
+        {/* Mobile logo — absolute top-left, only visible on mobile */}
+        <div className="absolute md:hidden top-5 left-5 z-20">
+          <img
+            src="/images/AspiRE Main Logo.png"
+            alt="AspiRE"
+            className="h-16 w-auto object-contain"
+          />
+        </div>
+
         <motion.div
           className="relative w-full max-w-7xl mx-auto z-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 lg:gap-16 items-center px-5 sm:px-8 md:px-16"
           style={{
@@ -367,6 +376,7 @@ export default function Home() {
             animate="visible"
             variants={staggerContainer}
           >
+
             <motion.h1
               className="text-3xl sm:text-4xl md:text-[56px] font-bold leading-tight md:leading-[68px] mb-4 md:mb-6 text-white"
               variants={fadeInUpVariants}

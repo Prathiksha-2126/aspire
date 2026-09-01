@@ -179,16 +179,16 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Logo — fixed only on mobile, absolute on desktop, auto switches Main ↔ Black */}
+      {/* Logo — hidden on mobile, absolute on desktop only, auto switches Main ↔ Black */}
       <div
         ref={logoRef}
-        className="fixed top-4 left-4 md:absolute md:top-5 md:left-12 z-40 transition-colors duration-300 will-change-transform"
+        className="hidden md:block absolute md:top-5 md:left-12 z-40 transition-colors duration-300 will-change-transform"
       >
         <Link to="/#hero" onClick={handleLogoClick}>
           <img
             src={isLightBg ? "/images/Black AspiRE Logo.png" : "/images/AspiRE Main Logo.png"}
             alt="AspiRE - Digitising Real Estate"
-            className="h-16 md:h-20 w-auto object-contain drop-shadow-md transition-all duration-300"
+            className="h-20 w-auto object-contain drop-shadow-md transition-all duration-300"
           />
         </Link>
       </div>

@@ -94,6 +94,15 @@ export default function Engineering() {
         {/* Mobile: slightly stronger bottom fade to keep text just above device */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent md:hidden pointer-events-none" />
 
+        {/* Mobile logo — absolute top-left, only visible on mobile */}
+        <div className="absolute md:hidden top-5 left-5 z-20">
+          <img
+            src="/images/AspiRE Main Logo.png"
+            alt="AspiRE"
+            className="h-16 w-auto object-contain"
+          />
+        </div>
+
         <div className="relative z-10 w-full max-w-6xl text-left px-4 sm:px-6 md:px-20 lg:px-28">
           <h1 className="text-[30px] sm:text-[34px] md:text-[48px] lg:text-[58px] font-bold text-white tracking-tight leading-[1.08] md:leading-[1.1] mb-3 max-w-[360px] sm:max-w-[560px] md:max-w-[620px] lg:max-w-[700px]">
             <span className="block whitespace-nowrap">Do You Know What's</span>

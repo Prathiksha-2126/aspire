@@ -80,6 +80,15 @@ export default function Sales() {
         <div className="absolute inset-0 bg-black/15 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent md:from-black/45 md:via-black/12" />
 
+        {/* Mobile logo — absolute top-left, only visible on mobile */}
+        <div className="absolute md:hidden top-5 left-5 z-20">
+          <img
+            src="/images/AspiRE Main Logo.png"
+            alt="AspiRE"
+            className="h-16 w-auto object-contain"
+          />
+        </div>
+
         <div className="relative z-10 w-full max-w-6xl text-left px-4 sm:px-6 md:px-20 lg:px-28">
           <h1 className="text-[30px] sm:text-[34px] md:text-[48px] lg:text-[58px] font-bold text-white tracking-tight leading-[1.08] md:leading-[1.1] mb-3 max-w-[360px] sm:max-w-[560px] md:max-w-[600px] lg:max-w-[680px]">
             <span className="block whitespace-nowrap">Are Booking Delays</span>

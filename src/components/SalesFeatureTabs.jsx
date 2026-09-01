@@ -131,7 +131,7 @@ export default function SalesFeatureTabs({ tabs }) {
 
         {/* Stage - green blob + phone + floating cards, same data as desktop */}
         <div className="relative flex-1 flex items-center justify-center px-2 py-6 min-h-[480px] sm:min-h-[520px] overflow-hidden">
-          <AnimatePresence mode="wait" custom={direction}>
+          <AnimatePresence mode="wait" custom={direction} initial={false}>
             <motion.div
               key={active}
               custom={direction}
@@ -139,7 +139,7 @@ export default function SalesFeatureTabs({ tabs }) {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="relative w-full max-w-[420px] sm:max-w-[480px] flex items-center justify-center min-h-[440px] sm:min-h-[480px]"
+              className="relative w-full max-w-[420px] sm:max-w-[480px] flex items-center justify-center min-h-[440px] sm:min-h-[480px] pointer-events-none"
               style={{ transformOrigin: "50% calc(100% + 400px)" }}
             >
               {/* Green blob - a bit down */}

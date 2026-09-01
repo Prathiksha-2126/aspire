@@ -79,6 +79,15 @@ export default function TermsOfService() {
     <div className="min-h-screen bg-[#F9F8F5] font-poppins">
       {/* Header */}
       <header id="hero" className="relative bg-[#0d120d] text-white pt-28 md:pt-32 pb-14 px-4 text-center border-b border-white/5">
+        {/* Mobile logo — absolute top-left, only visible on mobile */}
+        <div className="absolute md:hidden top-5 left-5 z-20">
+          <img
+            src="/images/AspiRE Main Logo.png"
+            alt="AspiRE"
+            className="h-16 w-auto object-contain"
+          />
+        </div>
+
         <p className="text-[11px] tracking-[0.2em] uppercase text-white/60 mb-3">LEGAL</p>
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Terms of Service</h1>
         <p className="text-sm md:text-base text-white/70 max-w-xl mx-auto">The rules and responsibilities that govern your use of AspiRE.</p>
